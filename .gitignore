@@ -1,0 +1,5 @@
+.vscode/*
+
+*.poerd
+*.backup
+*.log
