@@ -2,10 +2,11 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+CREATE SCHEMA IF NOT EXISTS auth;
 
 CREATE TABLE IF NOT EXISTS auth.company
 (
-    id bigint NOT NULL,
+    id bigserial NOT NULL,
     name character varying(225) COLLATE pg_catalog."default" NOT NULL,
     nit_code character varying(225) COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS auth.company
 
 CREATE TABLE IF NOT EXISTS auth.contract
 (
-    id bigint NOT NULL,
+    id bigserial NOT NULL,
     company_id bigint NOT NULL,
     employee_id bigint NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
@@ -37,12 +38,12 @@ CREATE TABLE IF NOT EXISTS auth."docType"
 
 CREATE TABLE IF NOT EXISTS auth.employee
 (
-    id bigint NOT NULL,
+    id bigserial NOT NULL,
     name character varying(225) COLLATE pg_catalog."default" NOT NULL,
     "lastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
     "secondLasName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(225)[] COLLATE pg_catalog."default" NOT NULL,
-    phone character varying(225)[] COLLATE pg_catalog."default" NOT NULL,
+    email character varying(225) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(225) COLLATE pg_catalog."default" NOT NULL,
     "docType_id" bigint NOT NULL,
     "docNum" numeric NOT NULL,
     "employeeRole_id" bigint NOT NULL,
@@ -55,7 +56,7 @@ CREATE TABLE IF NOT EXISTS auth.employee
 
 CREATE TABLE IF NOT EXISTS auth.employee_role
 (
-    id bigint NOT NULL,
+    id bigserial NOT NULL,
     "employeeRole" character varying(225) COLLATE pg_catalog."default" NOT NULL,
     created_at character varying COLLATE pg_catalog."default" NOT NULL DEFAULT now(),
     updated_at character varying COLLATE pg_catalog."default" NOT NULL DEFAULT now(),
