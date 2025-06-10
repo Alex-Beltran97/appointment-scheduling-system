@@ -67,4 +67,14 @@ INSERT INTO auth.user_role (role) VALUES ('Usuario'::character varying)
 
 -- SELECT * FROM auth.user_role;
 
+-- Insert data for Payment Status table
+
+INSERT INTO auth.payment_status (status) VALUES ('Exitoso'::character varying)
+  returning id;
+
+INSERT INTO auth.payment_status (status) VALUES ('Fallido'::character varying)
+  returning id;
+
+-- SELECT * FROM auth.payment_status;
+
 COMMIT;

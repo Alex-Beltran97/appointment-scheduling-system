@@ -5,3 +5,4 @@ export { default as docTypeRouter } from './docType.route';
 export { default as employeeRoleRouter } from './employeeRole.route';
 export { default as userRoleRouter } from './userRole.route';
 export { default as profileRouter } from './profile.route';
+export { default as paymentStatusRouter } from './paymentStatus.route';
