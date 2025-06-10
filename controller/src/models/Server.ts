@@ -6,7 +6,7 @@ import { AppSource } from '../data';
 import { DataSource } from 'typeorm';
 config();
 
-import { companyRouter, contractRouter, employeeRouter, docTypeRouter, employeeRoleRouter } from '../routers/auth';
+import { companyRouter, contractRouter, employeeRouter, docTypeRouter, employeeRoleRouter, userRoleRouter } from '../routers/auth';
 
 class Server {
   public readonly express : Application = express();
@@ -31,6 +31,7 @@ class Server {
     this.express.use(`${this.API_PATH}/employee`, employeeRouter);
     this.express.use(`${this.API_PATH}/doc-type`, docTypeRouter);
     this.express.use(`${this.API_PATH}/employee-role`, employeeRoleRouter);
+    this.express.use(`${this.API_PATH}/user-role`, userRoleRouter);
   }
 
   private _dbInitializer() : Promise<DataSource>{

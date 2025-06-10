@@ -3,3 +3,4 @@ export { default as contractRouter } from './contract.route';
 export { default as employeeRouter } from './employee.route';
 export { default as docTypeRouter } from './docType.route';
 export { default as employeeRoleRouter } from './employeeRole.route';
+export { default as userRoleRouter } from './userRole.route';
