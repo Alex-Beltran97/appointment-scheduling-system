@@ -1,0 +1,5 @@
+export { default as companyRouter } from './company.route';
+export { default as contractRouter } from './contract.route';
+export { default as employeeRouter } from './employee.route';
+export { default as docTypeRouter } from './docType.route';
+export { default as employeeRoleRouter } from './employeeRole.route';
