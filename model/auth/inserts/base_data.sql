@@ -77,4 +77,16 @@ INSERT INTO auth.payment_status (status) VALUES ('Fallido'::character varying)
 
 -- SELECT * FROM auth.payment_status;
 
+-- Insert data for Plan table
+
+INSERT INTO auth.plan (name, price, description) VALUES (
+'Mensual'::character varying, 100000::numeric, 'Plan mensual con funcionalidades limitadas.'::text) 
+  returning id;
+
+INSERT INTO auth.plan (name, price, description) VALUES (
+'Anual'::character varying, 1000000::numeric, 'Plan anual con todas las funcionalidades.'::text) 
+  returning id;
+
+-- SELECT * FROM auth.plan;
+
 COMMIT;
