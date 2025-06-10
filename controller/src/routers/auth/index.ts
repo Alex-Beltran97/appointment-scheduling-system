@@ -4,3 +4,4 @@ export { default as employeeRouter } from './employee.route';
 export { default as docTypeRouter } from './docType.route';
 export { default as employeeRoleRouter } from './employeeRole.route';
 export { default as userRoleRouter } from './userRole.route';
+export { default as profileRouter } from './profile.route';

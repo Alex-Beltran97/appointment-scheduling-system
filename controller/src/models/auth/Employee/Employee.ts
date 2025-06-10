@@ -17,6 +17,9 @@ export class Employee {
   @Column()
   secondLastName!: string;
   
+  @Column({name: 'birth_date', type: 'timestamp with time zone'})
+  birthDate!: Date;
+  
   @Column({unique: true})
   email!: string;
 

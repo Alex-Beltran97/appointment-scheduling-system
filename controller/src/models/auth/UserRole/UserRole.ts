@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Employee } from '../Employee/Employee';
+import { Profile } from '../Profile/Profile';
 
 @Entity({ schema: 'auth', name: 'user_role' })
 export class UserRole {
@@ -8,6 +8,9 @@ export class UserRole {
 
   @Column()
   role!: string;
+
+  @OneToMany(() => Profile, profile => profile.userRole)
+  profiles!: Profile[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

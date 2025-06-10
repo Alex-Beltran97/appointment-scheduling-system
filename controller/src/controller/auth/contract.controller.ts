@@ -45,7 +45,7 @@ class ContractController {
       };
 
       const newContract = repo.create({ company, employee, start_date });
-      const saved = await repo.save(newContract);
+      await repo.save(newContract);
 
       res.status(201).json({
         message: `Contract data created successfully`
