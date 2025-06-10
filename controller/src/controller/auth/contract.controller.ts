@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
 import { Contract, DocType, Employee } from '../../models/auth';
+import ContractDTO from '../../models/auth/Contract/ContractDTO';
 
 class ContractController {
   public async getContracts(req: Request, res: Response) : Promise<void> {
     try {
       const repo = AppSource.getRepository(Contract);
       const contracts = await repo.find({
-        relations: ['company', 'employee'],
+        relations: ['company', 'employee','employee.docType', 'employee.employeeRole'],
       });
+
+      const response = contracts.map(ContractDTO.fromEntity);
+
       res.status(200).json({
-        response: contracts,
+        response,
         message: `Contract data fetched successfully`
       });
     } catch (error) {
