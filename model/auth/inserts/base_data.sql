@@ -42,7 +42,7 @@ INSERT INTO auth.employee_role (
 
 INSERT INTO auth.employee_role (
 "employeeRole") VALUES (
-'Coordinador'::character varying)
+'Empleado'::character varying)
   returning id;
 
 -- SELECT * FROM auth.employee_role;
@@ -50,7 +50,7 @@ INSERT INTO auth.employee_role (
 -- Insert data for employee table
 
 INSERT INTO auth.employee (
-name, "lastName", "secondLasName", email, phone, "docType_id", "docNum", "employeeRole_id", "employeeCode") VALUES (
+name, "lastName", "secondLastName", email, phone, "docType_id", "docNum", "employeeRole_id", "employeeCode") VALUES (
 'Pepito Jaimito'::character varying, 'Perez'::character varying, 'Prieto'::character varying, 'pepito.perez@example.com'::character varying, '+573135553333'::character varying, '1'::bigint, '1033888333'::numeric, '1'::bigint, 'T12345'::character varying)
   returning id;
 

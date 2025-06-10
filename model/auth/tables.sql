@@ -2,8 +2,6 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS auth;
-
 CREATE TABLE IF NOT EXISTS auth.company
 (
     id bigserial NOT NULL,
@@ -41,7 +39,7 @@ CREATE TABLE IF NOT EXISTS auth.employee
     id bigserial NOT NULL,
     name character varying(225) COLLATE pg_catalog."default" NOT NULL,
     "lastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "secondLasName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
+    "secondLastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
     email character varying(225) COLLATE pg_catalog."default" NOT NULL,
     phone character varying(225) COLLATE pg_catalog."default" NOT NULL,
     "docType_id" bigint NOT NULL,
