@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Payment } from '../Payment/Payment';
 
 @Entity({ schema: 'auth', name: 'payment_status' })
 export class PaymentStatus {
@@ -7,6 +8,9 @@ export class PaymentStatus {
 
   @Column()
   status!: string;
+
+  @OneToMany(() => Payment, payment => payment.paymnet_status)
+  payments!: Payment[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

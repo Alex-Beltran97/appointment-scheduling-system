@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Profile } from '../Profile/Profile';
+import { Suscription } from '../Suscription/Suscription';
 
 @Entity({ schema: 'auth', name: 'plan' })
 export class Plan {
@@ -14,6 +14,9 @@ export class Plan {
   
   @Column()
   description!: string;
+
+  @OneToMany(() => Suscription, suscription => suscription.plan)
+  suscriptions!: Suscription[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

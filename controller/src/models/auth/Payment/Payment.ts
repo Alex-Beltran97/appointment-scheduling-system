@@ -1,12 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Suscription } from '../Suscription/Suscription';
+import { PaymentStatus } from '../PaymentStatus/PaymentStatus';
 
 @Entity({ schema: 'auth', name: 'payments' })
 export class Payment {
   @PrimaryGeneratedColumn()
   id!: number;
   
-  @Column()
-  suscription_id!: number;
+  @ManyToOne(() => Suscription, suscription => suscription.payments)
+  @JoinColumn({name: 'suscription_id'})
+  suscription!: Suscription;
   
   @Column({type: 'timestamp with time zone'})
   payment_date!: Date;
@@ -14,8 +17,9 @@ export class Payment {
   @Column()
   amount!: number;
   
-  @Column()
-  paymentStatus_id!: number;
+  @ManyToOne(() => PaymentStatus, paymentStatus => paymentStatus.payments)
+  @JoinColumn({name: 'paymentStatus_id'})
+  paymnet_status!: PaymentStatus;
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
