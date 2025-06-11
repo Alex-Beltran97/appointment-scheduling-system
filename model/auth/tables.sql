@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS auth.company
     id serial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     nit_code character varying COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    is_active boolean NOT NULL DEFAULT true,
     CONSTRAINT "PK_056f7854a7afdba7cbd6d45fc20" PRIMARY KEY (id)
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS auth.employee_role
 (
     id serial NOT NULL,
     "employeeRole" character varying COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT "PK_1c105b756816efbdeae09a9ab65" PRIMARY KEY (id)
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS auth.payment_status
 (
     id serial NOT NULL,
     status character varying COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT "PK_b59e2e874b077ea7acf724e4711" PRIMARY KEY (id)
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS auth.payment_status
 CREATE TABLE IF NOT EXISTS auth.payments
 (
     id serial NOT NULL,
-    payment_date timestamp with time zone NOT NULL,
+    payment_date timestamp with time zone NOT NULL DEFAULT now(),
     amount integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS auth.plan
     name character varying COLLATE pg_catalog."default" NOT NULL,
     price integer NOT NULL,
     description character varying COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY (id)
@@ -115,11 +115,11 @@ CREATE TABLE IF NOT EXISTS auth.profile
     "employeeCode" character varying COLLATE pg_catalog."default" NOT NULL,
     username character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    "userRole_id" integer,
-    "docType_id" integer,
+    "userRole_id" integer NOT NULL,
+    "docType_id" integer NOT NULL,
     CONSTRAINT "PK_3dd8bfc97e4a77c70971591bdcb" PRIMARY KEY (id),
     CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email)
 );
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS auth.profile
 CREATE TABLE IF NOT EXISTS auth.suscription
 (
     id serial NOT NULL,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
