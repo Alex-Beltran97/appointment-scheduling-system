@@ -8,6 +8,9 @@ export class UserRole {
 
   @Column()
   role!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @OneToMany(() => Profile, profile => profile.userRole)
   profiles!: Profile[];

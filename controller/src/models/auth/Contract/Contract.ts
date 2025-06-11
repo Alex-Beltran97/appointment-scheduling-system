@@ -18,10 +18,10 @@ export class Contract {
   @Column({type: 'boolean', default: true})
   is_active!: boolean;
 
-  @CreateDateColumn({type: 'timestamp with time zone'})
+  @Column({type: 'timestamp with time zone'})
   start_date!: Date;
 
-  @CreateDateColumn({type: 'timestamp with time zone'})
+  @Column({type: 'timestamp with time zone', nullable: true, default: null})
   end_date!: Date;
   
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})

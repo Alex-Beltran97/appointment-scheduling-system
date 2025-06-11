@@ -16,7 +16,7 @@ export class Suscription {
   @JoinColumn({name: 'plan_id'})
   plan!: Plan;
   
-  @Column()
+  @Column({ type: 'boolean', default: true })
   is_active!: boolean;
   
   @Column({type: 'timestamp with time zone'})

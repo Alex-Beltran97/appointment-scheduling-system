@@ -12,6 +12,9 @@ export class Company {
   
   @Column()
   nit_code!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @OneToMany(() => Contract, contract => contract.company)
   contracts!: Contract[];

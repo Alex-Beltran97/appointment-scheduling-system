@@ -8,6 +8,9 @@ export class EmployeeRole {
 
   @Column()
   employeeRole!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @OneToMany(() => Employee, (employee) => employee.employeeRole)
   employees!: Employee[];

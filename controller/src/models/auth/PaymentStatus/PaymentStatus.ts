@@ -8,6 +8,9 @@ export class PaymentStatus {
 
   @Column()
   status!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @OneToMany(() => Payment, payment => payment.paymnet_status)
   payments!: Payment[];

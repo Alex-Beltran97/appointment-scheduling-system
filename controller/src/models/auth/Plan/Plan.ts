@@ -14,6 +14,9 @@ export class Plan {
   
   @Column()
   description!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @OneToMany(() => Suscription, suscription => suscription.plan)
   suscriptions!: Suscription[];

@@ -53,6 +53,9 @@ export class Profile {
   
   @Column()
   password!: string;
+  
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
