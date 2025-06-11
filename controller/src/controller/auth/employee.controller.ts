@@ -7,7 +7,7 @@ class EmployeeController {
     try {
       const repo = AppSource.getRepository(Employee);
       const employees = await repo.find({
-        relations: ['docType', 'employeeRole'],
+        relations: ['docType', 'employeeRole', 'constract', 'constract.company'],
       });
 
       const response = employees.map(EmployeeDTO.fromEntity);

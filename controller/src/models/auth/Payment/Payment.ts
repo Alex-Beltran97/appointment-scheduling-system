@@ -11,7 +11,7 @@ export class Payment {
   @JoinColumn({name: 'suscription_id'})
   suscription!: Suscription;
   
-  @Column({type: 'timestamp with time zone'})
+  @Column({type: 'timestamp with time zone', default: () => 'NOW()'})
   payment_date!: Date;
   
   @Column()

@@ -6,7 +6,9 @@ class PaymentController {
   public async getPayments(req: Request, res: Response) : Promise<void> {
     try {
       const repo = AppSource.getRepository(Payment);
-      const response = await repo.find();
+      const response = await repo.find({
+        relations: ['paymnet_status', 'suscription', 'suscription.company', 'suscription.plan']
+      });
       res.status(200).json({
         response,
         message: `Payments data fetched successfully`

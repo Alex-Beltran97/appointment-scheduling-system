@@ -6,7 +6,9 @@ class SuscriptionController {
   public async getSuscriptions(req: Request, res: Response) : Promise<void> {
     try {
       const repo = AppSource.getRepository(Suscription);
-      const response = await repo.find();
+      const response = await repo.find({
+        relations: ['company', 'plan']
+      });
       res.status(200).json({
         response,
         message: `Suscription data fetched successfully`
