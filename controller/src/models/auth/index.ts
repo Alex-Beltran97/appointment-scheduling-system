@@ -9,3 +9,4 @@ export { Profile } from './Profile/Profile';
 export { PaymentStatus } from './PaymentStatus/PaymentStatus';
 export { Plan } from './Plan/Plan';
 export { Suscription } from './Suscription/Suscription';
+export { Payment } from './Payment/Payment';

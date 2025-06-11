@@ -8,3 +8,4 @@ export { default as profileRouter } from './profile.route';
 export { default as paymentStatusRouter } from './paymentStatus.route';
 export { default as planRouter } from './plan.route';
 export { default as suscriptionRouter } from './suscription.route';
+export { default as paymentRouter } from './payment.route';
