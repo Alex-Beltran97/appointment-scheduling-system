@@ -4,7 +4,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS auth.company
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     nit_code character varying COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS auth.company
 
 CREATE TABLE IF NOT EXISTS auth.contract
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS auth.contract
 
 CREATE TABLE IF NOT EXISTS auth."docType"
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     "docType" character varying COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS auth."docType"
 
 CREATE TABLE IF NOT EXISTS auth.employee
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     "lastName" character varying COLLATE pg_catalog."default" NOT NULL,
     "secondLastName" character varying COLLATE pg_catalog."default" NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS auth.employee
 
 CREATE TABLE IF NOT EXISTS auth.employee_role
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     "employeeRole" character varying COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS auth.employee_role
 
 CREATE TABLE IF NOT EXISTS auth.payment_status
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     status character varying COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS auth.payment_status
 
 CREATE TABLE IF NOT EXISTS auth.payments
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     payment_date timestamp with time zone NOT NULL DEFAULT now(),
     amount integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS auth.payments
 
 CREATE TABLE IF NOT EXISTS auth.plan
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     price integer NOT NULL,
     description character varying COLLATE pg_catalog."default" NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS auth.plan
 
 CREATE TABLE IF NOT EXISTS auth.profile
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     "lastName" character varying COLLATE pg_catalog."default" NOT NULL,
     "secondLastName" character varying COLLATE pg_catalog."default" NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS auth.profile
 
 CREATE TABLE IF NOT EXISTS auth.suscription
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS auth.suscription
 
 CREATE TABLE IF NOT EXISTS auth.user_role
 (
-    id serial NOT NULL,
+    id bigserial NOT NULL,
     role character varying COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
