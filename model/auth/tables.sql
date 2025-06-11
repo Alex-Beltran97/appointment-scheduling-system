@@ -2,7 +2,7 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS auth.company
+CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS auth.company
     CONSTRAINT "PK_056f7854a7afdba7cbd6d45fc20" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.contract
+CREATE TABLE IF NOT EXISTS core.contract
 (
     id bigserial NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS auth.contract
     CONSTRAINT "REL_e629d91803764629bdd2fc7ce9" UNIQUE (employee_id)
 );
 
-CREATE TABLE IF NOT EXISTS auth."docType"
+CREATE TABLE IF NOT EXISTS core."docType"
 (
     id bigserial NOT NULL,
     "docType" character varying COLLATE pg_catalog."default" NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS auth."docType"
     CONSTRAINT "PK_1b44f3824362ef93f9df4cee7bf" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.employee
+CREATE TABLE IF NOT EXISTS core.employee
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS auth.employee
     CONSTRAINT "UQ_817d1d427138772d47eca048855" UNIQUE (email)
 );
 
-CREATE TABLE IF NOT EXISTS auth.employee_role
+CREATE TABLE IF NOT EXISTS core.employee_role
 (
     id bigserial NOT NULL,
     "employeeRole" character varying COLLATE pg_catalog."default" NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS auth.employee_role
     CONSTRAINT "PK_1c105b756816efbdeae09a9ab65" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.payment_status
+CREATE TABLE IF NOT EXISTS core.payment_status
 (
     id bigserial NOT NULL,
     status character varying COLLATE pg_catalog."default" NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS auth.payment_status
     CONSTRAINT "PK_b59e2e874b077ea7acf724e4711" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.payments
+CREATE TABLE IF NOT EXISTS core.payments
 (
     id bigserial NOT NULL,
     payment_date timestamp with time zone NOT NULL DEFAULT now(),
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS auth.payments
     CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.plan
+CREATE TABLE IF NOT EXISTS core.plan
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS auth.plan
     CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.profile
+CREATE TABLE IF NOT EXISTS core.profile
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS auth.profile
     CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email)
 );
 
-CREATE TABLE IF NOT EXISTS auth.suscription
+CREATE TABLE IF NOT EXISTS core.suscription
 (
     id bigserial NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS auth.suscription
     CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS auth.user_role
+CREATE TABLE IF NOT EXISTS core.user_role
 (
     id bigserial NOT NULL,
     role character varying COLLATE pg_catalog."default" NOT NULL,
@@ -147,74 +147,74 @@ CREATE TABLE IF NOT EXISTS auth.user_role
     CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id)
 );
 
-ALTER TABLE IF EXISTS auth.contract
+ALTER TABLE IF EXISTS core.contract
     ADD CONSTRAINT "FK_1dbf9a5c77120410dfac83b817c" FOREIGN KEY (company_id)
-    REFERENCES auth.company (id) MATCH SIMPLE
+    REFERENCES core.company (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.contract
+ALTER TABLE IF EXISTS core.contract
     ADD CONSTRAINT "FK_e629d91803764629bdd2fc7ce9d" FOREIGN KEY (employee_id)
-    REFERENCES auth.employee (id) MATCH SIMPLE
+    REFERENCES core.employee (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 CREATE INDEX IF NOT EXISTS "REL_e629d91803764629bdd2fc7ce9"
-    ON auth.contract(employee_id);
+    ON core.contract(employee_id);
 
 
-ALTER TABLE IF EXISTS auth.employee
+ALTER TABLE IF EXISTS core.employee
     ADD CONSTRAINT "FK_5e8182dd71a452da3e81ea85237" FOREIGN KEY ("employeeRole_id")
-    REFERENCES auth.employee_role (id) MATCH SIMPLE
+    REFERENCES core.employee_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.employee
+ALTER TABLE IF EXISTS core.employee
     ADD CONSTRAINT "FK_862f75abc3bfd9fd1cdb67506f6" FOREIGN KEY ("docType_id")
-    REFERENCES auth."docType" (id) MATCH SIMPLE
+    REFERENCES core."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.payments
+ALTER TABLE IF EXISTS core.payments
     ADD CONSTRAINT "FK_500d5dc384fecbc927697ab94bf" FOREIGN KEY ("paymentStatus_id")
-    REFERENCES auth.payment_status (id) MATCH SIMPLE
+    REFERENCES core.payment_status (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.payments
+ALTER TABLE IF EXISTS core.payments
     ADD CONSTRAINT "FK_a12a4b77828244f987b47c7a3a6" FOREIGN KEY (suscription_id)
-    REFERENCES auth.suscription (id) MATCH SIMPLE
+    REFERENCES core.suscription (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.profile
+ALTER TABLE IF EXISTS core.profile
     ADD CONSTRAINT "FK_522e0554d4633909962c220e968" FOREIGN KEY ("userRole_id")
-    REFERENCES auth.user_role (id) MATCH SIMPLE
+    REFERENCES core.user_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.profile
+ALTER TABLE IF EXISTS core.profile
     ADD CONSTRAINT "FK_ffdae762f604317dca306710abe" FOREIGN KEY ("docType_id")
-    REFERENCES auth."docType" (id) MATCH SIMPLE
+    REFERENCES core."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.suscription
+ALTER TABLE IF EXISTS core.suscription
     ADD CONSTRAINT "FK_6d7650d0df0098e007eef965e7f" FOREIGN KEY (company_id)
-    REFERENCES auth.company (id) MATCH SIMPLE
+    REFERENCES core.company (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.suscription
+ALTER TABLE IF EXISTS core.suscription
     ADD CONSTRAINT "FK_d4691e595a767f94d61e7dd14a4" FOREIGN KEY (plan_id)
-    REFERENCES auth.plan (id) MATCH SIMPLE
+    REFERENCES core.plan (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 

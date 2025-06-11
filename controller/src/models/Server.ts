@@ -10,7 +10,7 @@ import {
   companyRouter, contractRouter, employeeRouter, docTypeRouter, employeeRoleRouter,
   userRoleRouter, profileRouter, paymentStatusRouter, planRouter, suscriptionRouter,
   paymentRouter
-} from '../routers/auth';
+} from '../routers/core';
 
 class Server {
   public readonly express : Application = express();

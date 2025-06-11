@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION auth.update_updated_at_column() RETURNS TRIGGER
+CREATE OR REPLACE FUNCTION core.update_updated_at_column() RETURNS TRIGGER
 AS $$
 DECLARE
 	schema_name text := TG_TABLE_SCHEMA;

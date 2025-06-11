@@ -4,26 +4,26 @@ BEGIN;
 
 -- Insert data for contract table
 
-INSERT INTO auth.contract
+INSERT INTO core.contract
 ("start_date", "company_id", "employee_id") VALUES (
 '2023-01-01'::timestamp with time zone, '1'::bigint, '1'::bigint)
   returning id;
 
--- SELECT * FROM auth.contract;
+-- SELECT * FROM core.contract;
 
 -----------------------------------------------------------------------------
 
 -- Insert data for suscription and payments tables
 
 WITH inserted_suscription AS (
-  INSERT INTO auth.suscription
+  INSERT INTO core.suscription
     ("start_date", "end_date", "company_id", "plan_id")
   VALUES 
     ('2025-01-01'::timestamptz, '2026-01-01'::timestamptz, 1::bigint, 2::bigint)
   RETURNING id
 ),
 payment_insert AS (
-  INSERT INTO auth.payments
+  INSERT INTO core.payments
     (amount, suscription_id, "paymentStatus_id")
   SELECT 
     100000::numeric, id, 1::bigint
@@ -31,14 +31,14 @@ payment_insert AS (
   RETURNING id
 )
 
--- SELECT * FROM auth.suscription;
--- SELECT * FROM auth.payments;
+-- SELECT * FROM core.suscription;
+-- SELECT * FROM core.payments;
 
 -----------------------------------------------------------------------------
 
 -- Insert data for profile table
 
-INSERT INTO auth.profile
+INSERT INTO core.profile
 (
   name,
   "lastName",
@@ -73,7 +73,7 @@ INSERT INTO auth.profile
   '3'::bigint
   ) returning id;
 
--- SELECT * FROM auth.profile;
+-- SELECT * FROM core.profile;
 
 -----------------------------------------------------------------------------
 
