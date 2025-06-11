@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { Company, Contract, Employee, DocType, EmployeeRole, UserRole, Profile, PaymentStatus, Plan } from '../models/auth';
+import { Company, Contract, Employee, DocType, EmployeeRole, UserRole, Profile, PaymentStatus, Plan, Suscription } from '../models/auth';
 
 const authEntities = [
   Company,
@@ -11,7 +11,8 @@ const authEntities = [
   UserRole,
   Profile,
   PaymentStatus,
-  Plan
+  Plan,
+  Suscription
 ];
 
 export const AppSource = new DataSource({

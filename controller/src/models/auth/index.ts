@@ -8,3 +8,4 @@ export { UserRole } from './UserRole/UserRole';
 export { Profile } from './Profile/Profile';
 export { PaymentStatus } from './PaymentStatus/PaymentStatus';
 export { Plan } from './Plan/Plan';
+export { Suscription } from './Suscription/Suscription';

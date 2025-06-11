@@ -7,3 +7,4 @@ export {default as userRoleController} from './userRole.controller';
 export {default as profileController} from './profile.controller';
 export {default as paymentStatusController} from './paymentStatus.controller';
 export {default as planController} from './plan.controller';
+export {default as suscriptionController} from './suscription.controller';

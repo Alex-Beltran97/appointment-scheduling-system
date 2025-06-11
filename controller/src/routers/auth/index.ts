@@ -7,3 +7,4 @@ export { default as userRoleRouter } from './userRole.route';
 export { default as profileRouter } from './profile.route';
 export { default as paymentStatusRouter } from './paymentStatus.route';
 export { default as planRouter } from './plan.route';
+export { default as suscriptionRouter } from './suscription.route';
