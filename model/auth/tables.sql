@@ -2,220 +2,220 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-CREATE SCHEMA IF NOT EXISTS auth;
-
 CREATE TABLE IF NOT EXISTS auth.company
 (
     id bigserial NOT NULL,
-    name character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    nit_code character varying(225) COLLATE pg_catalog."default" NOT NULL,
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    nit_code character varying COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT company_pkey PRIMARY KEY (id)
+    is_active boolean NOT NULL DEFAULT true,
+    CONSTRAINT "PK_056f7854a7afdba7cbd6d45fc20" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.contract
 (
     id bigserial NOT NULL,
-    company_id bigint NOT NULL,
-    employee_id bigint NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     start_date timestamp with time zone NOT NULL,
-    end_date time with time zone,
+    end_date timestamp with time zone,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT contract_pkey PRIMARY KEY (id)
+    company_id integer,
+    employee_id integer,
+    CONSTRAINT "PK_17c3a89f58a2997276084e706e8" PRIMARY KEY (id),
+    CONSTRAINT "REL_e629d91803764629bdd2fc7ce9" UNIQUE (employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS auth."docType"
 (
     id bigserial NOT NULL,
-    "docType" character varying(225) COLLATE pg_catalog."default",
+    "docType" character varying COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT "docType_pkey" PRIMARY KEY (id)
+    CONSTRAINT "PK_1b44f3824362ef93f9df4cee7bf" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.employee
 (
     id bigserial NOT NULL,
-    name character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "lastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "secondLasName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    phone character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "docType_id" bigint NOT NULL,
-    "docNum" numeric NOT NULL,
-    "employeeRole_id" bigint NOT NULL,
-    "employeeCode" character varying(225) COLLATE pg_catalog."default" NOT NULL,
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    "lastName" character varying COLLATE pg_catalog."default" NOT NULL,
+    "secondLastName" character varying COLLATE pg_catalog."default" NOT NULL,
+    birth_date timestamp with time zone NOT NULL,
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    phone character varying COLLATE pg_catalog."default" NOT NULL,
+    "docNum" integer NOT NULL,
+    "employeeCode" character varying COLLATE pg_catalog."default" NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT employee_pkey PRIMARY KEY (id),
-    CONSTRAINT email_uq UNIQUE (email)
+    "docType_id" integer,
+    "employeeRole_id" integer,
+    CONSTRAINT "PK_3c2bc72f03fd5abbbc5ac169498" PRIMARY KEY (id),
+    CONSTRAINT "UQ_817d1d427138772d47eca048855" UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS auth.employee_role
 (
     id bigserial NOT NULL,
-    "employeeRole" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    created_at character varying COLLATE pg_catalog."default" NOT NULL DEFAULT now(),
-    updated_at character varying COLLATE pg_catalog."default" NOT NULL DEFAULT now(),
-    CONSTRAINT employee_role_pkey PRIMARY KEY (id)
+    "employeeRole" character varying COLLATE pg_catalog."default" NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT "PK_1c105b756816efbdeae09a9ab65" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.payment_status
 (
     id bigserial NOT NULL,
-    status character varying[] COLLATE pg_catalog."default" NOT NULL,
+    status character varying COLLATE pg_catalog."default" NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT payment_status_pkey PRIMARY KEY (id)
+    CONSTRAINT "PK_b59e2e874b077ea7acf724e4711" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.payments
 (
     id bigserial NOT NULL,
-    suscription_id bigint NOT NULL,
-    payment_date timestamp with time zone NOT NULL,
-    amount numeric NOT NULL DEFAULT 0,
-    "paymentStatus_id" bigint NOT NULL,
+    payment_date timestamp with time zone NOT NULL DEFAULT now(),
+    amount integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT payments_pkey PRIMARY KEY (id)
+    suscription_id integer,
+    "paymentStatus_id" integer,
+    CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.plan
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
-    price numeric NOT NULL,
-    description text COLLATE pg_catalog."default" NOT NULL,
+    price integer NOT NULL,
+    description character varying COLLATE pg_catalog."default" NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT plan_pkey PRIMARY KEY (id)
+    CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.profile
 (
     id bigserial NOT NULL,
-    "userRole_id" bigint NOT NULL,
-    name character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "lastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "secondLastName" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    phone character varying[] COLLATE pg_catalog."default" NOT NULL,
-    "countryCode" character varying COLLATE pg_catalog."default",
-    "cityCode" character varying COLLATE pg_catalog."default",
-    email character varying[] COLLATE pg_catalog."default" NOT NULL,
-    "docType_id" bigint NOT NULL,
-    "docNum" numeric NOT NULL,
-    "nitCode" character varying(225) COLLATE pg_catalog."default" NOT NULL,
-    "employeeCode" character varying COLLATE pg_catalog."default",
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    "lastName" character varying COLLATE pg_catalog."default" NOT NULL,
+    "secondLastName" character varying COLLATE pg_catalog."default" NOT NULL,
+    birth_date timestamp with time zone NOT NULL,
+    phone character varying COLLATE pg_catalog."default" NOT NULL,
+    "countryCode" character varying COLLATE pg_catalog."default" NOT NULL,
+    "cityCode" character varying COLLATE pg_catalog."default" NOT NULL,
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    "docNum" integer NOT NULL,
+    "nitCode" character varying COLLATE pg_catalog."default" NOT NULL,
+    "employeeCode" character varying COLLATE pg_catalog."default" NOT NULL,
     username character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT profile_pkey PRIMARY KEY (id)
+    "userRole_id" integer NOT NULL,
+    "docType_id" integer NOT NULL,
+    CONSTRAINT "PK_3dd8bfc97e4a77c70971591bdcb" PRIMARY KEY (id),
+    CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS auth.suscription
 (
     id bigserial NOT NULL,
-    company_id bigint NOT NULL,
-    plan_id bigint NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT suscription_pkey PRIMARY KEY (id)
+    company_id integer,
+    plan_id integer,
+    CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS auth.user_role
 (
     id bigserial NOT NULL,
     role character varying COLLATE pg_catalog."default" NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT user_role_pkey PRIMARY KEY (id)
+    CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS auth.contract
-    ADD CONSTRAINT company_id_fk FOREIGN KEY (company_id)
+    ADD CONSTRAINT "FK_1dbf9a5c77120410dfac83b817c" FOREIGN KEY (company_id)
     REFERENCES auth.company (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS auth.contract
-    ADD CONSTRAINT employee_id_fk FOREIGN KEY (employee_id)
+    ADD CONSTRAINT "FK_e629d91803764629bdd2fc7ce9d" FOREIGN KEY (employee_id)
     REFERENCES auth.employee (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
+CREATE INDEX IF NOT EXISTS "REL_e629d91803764629bdd2fc7ce9"
+    ON auth.contract(employee_id);
 
 
 ALTER TABLE IF EXISTS auth.employee
-    ADD CONSTRAINT "docType_id_fk" FOREIGN KEY ("docType_id")
-    REFERENCES auth."docType" (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS auth.employee
-    ADD CONSTRAINT "employeeRole_id_fk" FOREIGN KEY ("employeeRole_id")
+    ADD CONSTRAINT "FK_5e8182dd71a452da3e81ea85237" FOREIGN KEY ("employeeRole_id")
     REFERENCES auth.employee_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS auth.payments
-    ADD CONSTRAINT "paymentStatus_id_fk" FOREIGN KEY ("paymentStatus_id")
-    REFERENCES auth.payment_status (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS auth.payments
-    ADD CONSTRAINT suscription_id_fk FOREIGN KEY (suscription_id)
-    REFERENCES auth.suscription (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS auth.profile
-    ADD CONSTRAINT "docType_id_fk" FOREIGN KEY ("docType_id")
+ALTER TABLE IF EXISTS auth.employee
+    ADD CONSTRAINT "FK_862f75abc3bfd9fd1cdb67506f6" FOREIGN KEY ("docType_id")
     REFERENCES auth."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS auth.payments
+    ADD CONSTRAINT "FK_500d5dc384fecbc927697ab94bf" FOREIGN KEY ("paymentStatus_id")
+    REFERENCES auth.payment_status (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS auth.payments
+    ADD CONSTRAINT "FK_a12a4b77828244f987b47c7a3a6" FOREIGN KEY (suscription_id)
+    REFERENCES auth.suscription (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS auth.profile
-    ADD CONSTRAINT "userRole_id_fk" FOREIGN KEY ("userRole_id")
+    ADD CONSTRAINT "FK_522e0554d4633909962c220e968" FOREIGN KEY ("userRole_id")
     REFERENCES auth.user_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS auth.profile
+    ADD CONSTRAINT "FK_ffdae762f604317dca306710abe" FOREIGN KEY ("docType_id")
+    REFERENCES auth."docType" (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS auth.suscription
-    ADD CONSTRAINT company_id_fk FOREIGN KEY (company_id)
+    ADD CONSTRAINT "FK_6d7650d0df0098e007eef965e7f" FOREIGN KEY (company_id)
     REFERENCES auth.company (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS auth.suscription
-    ADD CONSTRAINT plan_id_fk FOREIGN KEY (plan_id)
+    ADD CONSTRAINT "FK_d4691e595a767f94d61e7dd14a4" FOREIGN KEY (plan_id)
     REFERENCES auth.plan (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 END;

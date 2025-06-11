@@ -1,0 +1,11 @@
+export { default as companyRouter } from './company.route';
+export { default as contractRouter } from './contract.route';
+export { default as employeeRouter } from './employee.route';
+export { default as docTypeRouter } from './docType.route';
+export { default as employeeRoleRouter } from './employeeRole.route';
+export { default as userRoleRouter } from './userRole.route';
+export { default as profileRouter } from './profile.route';
+export { default as paymentStatusRouter } from './paymentStatus.route';
+export { default as planRouter } from './plan.route';
+export { default as suscriptionRouter } from './suscription.route';
+export { default as paymentRouter } from './payment.route';
