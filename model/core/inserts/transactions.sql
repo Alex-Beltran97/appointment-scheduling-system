@@ -1,6 +1,6 @@
 BEGIN;
 
--- ******************Trasactions:**************************
+-- ******************Transactions:**************************
 
 -- Insert data for contract table
 
@@ -13,26 +13,31 @@ INSERT INTO core.contract
 
 -----------------------------------------------------------------------------
 
--- Insert data for suscription and payments tables
+-- Insert data for payments table
 
-WITH inserted_suscription AS (
-  INSERT INTO core.suscription
-    ("start_date", "end_date", "company_id", "plan_id")
-  VALUES 
-    ('2025-01-01'::timestamptz, '2026-01-01'::timestamptz, 1::bigint, 2::bigint)
-  RETURNING id
-),
-payment_insert AS (
+WITH inserted_payment AS (
   INSERT INTO core.payments
-    (amount, suscription_id, "paymentStatus_id")
-  SELECT 
-    100000::numeric, id, 1::bigint
-  FROM inserted_suscription
+    (amount, "paymentStatus_id", "company_id", "plan_id")
+  VALUES 
+    (1000000::numeric, 1::bigint, 1::bigint, 1::bigint)
   RETURNING id
 )
+-- SELECT * FROM core.payments;
+
+-----------------------------------------------------------------------------
+
+-- Insert data for core.suscription table
+
+INSERT INTO core.suscription
+  ("start_date", "end_date", id_payment)
+SELECT 
+  '2025-06-13'::timestamptz,
+  '2025-07-13'::timestamptz,
+  id
+FROM inserted_payment
+RETURNING id;
 
 -- SELECT * FROM core.suscription;
--- SELECT * FROM core.payments;
 
 -----------------------------------------------------------------------------
 

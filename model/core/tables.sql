@@ -81,8 +81,9 @@ CREATE TABLE IF NOT EXISTS core.payments
     amount integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    suscription_id integer,
-    "paymentStatus_id" integer,
+    "paymentStatus_id" integer NOT NULL,
+    company_id integer NOT NULL,
+    plan_id integer NOT NULL,
     CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY (id)
 );
 
@@ -131,8 +132,7 @@ CREATE TABLE IF NOT EXISTS core.suscription
     end_date timestamp with time zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
-    company_id integer,
-    plan_id integer,
+    id_payment integer,
     CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY (id)
 );
 
@@ -184,10 +184,19 @@ ALTER TABLE IF EXISTS core.payments
 
 
 ALTER TABLE IF EXISTS core.payments
-    ADD CONSTRAINT "FK_a12a4b77828244f987b47c7a3a6" FOREIGN KEY (suscription_id)
-    REFERENCES core.suscription (id) MATCH SIMPLE
+    ADD CONSTRAINT "FK_company_id" FOREIGN KEY (company_id)
+    REFERENCES core.company (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS core.payments
+    ADD CONSTRAINT "FK_plan_id" FOREIGN KEY (plan_id)
+    REFERENCES core.plan (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
 
 
 ALTER TABLE IF EXISTS core.profile
@@ -205,16 +214,10 @@ ALTER TABLE IF EXISTS core.profile
 
 
 ALTER TABLE IF EXISTS core.suscription
-    ADD CONSTRAINT "FK_6d7650d0df0098e007eef965e7f" FOREIGN KEY (company_id)
-    REFERENCES core.company (id) MATCH SIMPLE
+    ADD CONSTRAINT "FK_plan_id" FOREIGN KEY (id_payment)
+    REFERENCES core.payments (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
-
-
-ALTER TABLE IF EXISTS core.suscription
-    ADD CONSTRAINT "FK_d4691e595a767f94d61e7dd14a4" FOREIGN KEY (plan_id)
-    REFERENCES core.plan (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE NO ACTION
+    NOT VALID;
 
 END;

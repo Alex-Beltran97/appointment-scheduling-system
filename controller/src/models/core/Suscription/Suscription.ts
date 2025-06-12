@@ -1,20 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Company } from '../Company/Company';
-import { Plan } from '../Plan/Plan';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { Payment } from '../Payment/Payment';
 
 @Entity({ schema: 'core', name: 'suscription' })
 export class Suscription {
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @ManyToOne(() => Company, company => company.suscriptions)
-  @JoinColumn({name: 'company_id'})
-  company!: Company;
-  
-  @ManyToOne(() => Plan, plan => plan.suscriptions)
-  @JoinColumn({name: 'plan_id'})
-  plan!: Plan;
   
   @Column({ type: 'boolean', default: true })
   is_active!: boolean;
@@ -25,8 +15,9 @@ export class Suscription {
   @Column({type: 'timestamp with time zone'})
   end_date!: Date;
 
-  @OneToMany(() => Payment, payment => payment.suscription)
-  payments!: Payment[];
+  @ManyToOne(() => Payment, payment => payment.suscriptions)
+  @JoinColumn({name: 'payment_id'})
+  payment!: Payment;
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

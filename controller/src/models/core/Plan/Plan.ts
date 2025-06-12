@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Suscription } from '../Suscription/Suscription';
+import { Payment } from '../Payment/Payment';
 
 @Entity({ schema: 'core', name: 'plan' })
 export class Plan {
@@ -18,8 +18,8 @@ export class Plan {
   @Column({ type: 'boolean', default: true })
   is_active!: boolean;
 
-  @OneToMany(() => Suscription, suscription => suscription.plan)
-  suscriptions!: Suscription[];
+  @OneToMany(() => Payment, payment => payment.plan)
+  payments!: Payment[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
