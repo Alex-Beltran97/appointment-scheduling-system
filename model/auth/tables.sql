@@ -23,8 +23,7 @@ CREATE TABLE IF NOT EXISTS core.contract
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     company_id integer,
     employee_id integer,
-    CONSTRAINT "PK_17c3a89f58a2997276084e706e8" PRIMARY KEY (id),
-    CONSTRAINT "REL_e629d91803764629bdd2fc7ce9" UNIQUE (employee_id)
+    CONSTRAINT "PK_17c3a89f58a2997276084e706e8" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS core."docType"

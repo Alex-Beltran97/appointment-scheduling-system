@@ -14,7 +14,7 @@ class EmployeeDTO {
     public docNum: number,
     public employeeRole: string,
     public employeeCode: string,
-    public contract: Contract,
+    public contracts: Contract[],
     public created_at: Date,
     public updated_at: Date
   ) {}
@@ -30,9 +30,9 @@ class EmployeeDTO {
       employee.phone,
       employee.docType?.docType || '',
       employee.docNum,
-      employee.employeeRole.employeeRole || '',
+      employee.employeeRole?.employeeRole || '',
       employee.employeeCode,
-      employee.constract || null,
+      employee.constracts || null,
       employee.created_at,
       employee.updated_at
     );

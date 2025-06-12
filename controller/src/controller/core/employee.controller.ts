@@ -7,7 +7,7 @@ class EmployeeController {
     try {
       const repo = AppSource.getRepository(Employee);
       const employees = await repo.find({
-        relations: ['docType', 'employeeRole', 'constract', 'constract.company'],
+        relations: ['docType', 'employeeRole', 'constracts', 'constracts.company'],
       });
 
       const response = employees.map(EmployeeDTO.fromEntity);
@@ -72,14 +72,14 @@ class EmployeeController {
         return;
       };
 
-      const newEmployee = repo.create(req.body);
+      const newEmployee = repo.create({...req.body, docType, employeeRole});
       await repo.save(newEmployee);
       
       res.status(201).json({
-        message: `Emplyee created successfully`
+        message: `Employee created successfully`
       });
     } catch (error) {
-      console.error(`Error fetching Emplyee data:`, error);
+      console.error(`Error fetching Employee data:`, error);
       res.status(500).json({ message: 'Internal Server Error' });    
     };
   }
@@ -118,7 +118,7 @@ class EmployeeController {
         return;
       };
 
-      repo.merge(employee, req.body);
+      repo.merge(employee, {...req.body, docType, employeeRole});
 
       await repo.save(employee);
       

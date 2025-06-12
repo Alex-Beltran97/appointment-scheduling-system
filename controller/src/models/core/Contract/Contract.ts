@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Company } from '../Company/Company';
 import { Employee } from '../Employee/Employee';
 
@@ -11,7 +11,7 @@ export class Contract {
   @JoinColumn({name: 'company_id'})
   company!: Company;  
 
-  @OneToOne(() => Employee, employee => employee.id)
+  @ManyToOne(() => Employee, employee => employee.constracts)
   @JoinColumn({name: 'employee_id'})
   employee!: Employee;  
 

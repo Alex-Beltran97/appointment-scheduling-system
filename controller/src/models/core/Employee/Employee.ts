@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { DocType } from '../DocType/DocType';
 import { EmployeeRole } from '../EmployeeRole/EmployeeRole';
 import { Contract } from '../Contract/Contract';
@@ -37,8 +37,8 @@ export class Employee {
   @JoinColumn({ name: 'employeeRole_id' })
   employeeRole!: EmployeeRole;
 
-  @OneToOne(() => Contract, contract => contract.employee)
-  constract!: Contract;
+  @OneToMany(() => Contract, contract => contract.employee)
+  constracts!: Contract[];
   
   @Column()
   employeeCode!: string;
