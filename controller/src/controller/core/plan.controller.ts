@@ -74,8 +74,6 @@ class PlanController {
     };
 
     try {
-      const { name } = req.body;
-
       const repo = AppSource.getRepository(Plan);
 
       const plan = await repo.findOneBy({ id });

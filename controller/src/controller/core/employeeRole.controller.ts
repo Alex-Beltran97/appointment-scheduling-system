@@ -6,7 +6,9 @@ class EmployeeRoleController {
   public async getEmployeesRoles(req: Request, res: Response) : Promise<void> {
     try {
       const repo = AppSource.getRepository(EmployeeRole);
-      const employeesRoles = await repo.find();
+      const employeesRoles = await repo.find({
+        where: { is_active: true }
+      });
       res.status(200).json({
         response: employeesRoles,
         message: `Employee role data fetched successfully`
