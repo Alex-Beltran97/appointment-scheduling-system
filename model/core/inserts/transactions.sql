@@ -29,7 +29,7 @@ WITH inserted_payment AS (
 -- Insert data for core.suscription table
 
 INSERT INTO core.suscription
-  ("start_date", "end_date", id_payment)
+  ("start_date", "end_date", "payment_id")
 SELECT 
   '2025-06-13'::timestamptz,
   '2025-07-13'::timestamptz,

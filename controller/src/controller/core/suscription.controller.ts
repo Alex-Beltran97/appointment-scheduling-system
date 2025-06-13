@@ -7,7 +7,7 @@ class SuscriptionController {
     try {
       const repo = AppSource.getRepository(Suscription);
       const response = await repo.find({
-        relations: ['company', 'plan']
+        relations: ['payment']
       });
       res.status(200).json({
         response,

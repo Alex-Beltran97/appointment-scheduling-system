@@ -18,7 +18,7 @@ export class Suscription {
   @ManyToOne(() => Payment, payment => payment.suscriptions)
   @JoinColumn({name: 'payment_id'})
   payment!: Payment;
-
+  
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
 
