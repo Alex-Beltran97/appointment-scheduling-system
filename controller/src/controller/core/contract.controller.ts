@@ -102,24 +102,30 @@ class ContractController {
     };
 
     try {
+      let company, employee;
+
       const { company_id, employee_id, start_date, end_date } = req.body;
       
       const companyRepo = AppSource.getRepository(Company);
       const employeeRepo = AppSource.getRepository(Employee);
       const repo = AppSource.getRepository(Contract);
 
-      const company = await companyRepo.findOneBy({ id: company_id });
-      const employee = await employeeRepo.findOneBy({ id: employee_id });
       const contract = await repo.findOneBy({ id });
-
-      if (!company) {
-        res.status(404).json({ message: 'Company not found' });
-        return;
+      
+      if (company_id) {
+        company = await companyRepo.findOneBy({ id: company_id });
+        if (!company) {
+          res.status(404).json({ message: 'Company not found' });
+          return;
+        };
       };
-
-      if (!employee) {
-        res.status(404).json({ message: 'Employee not found' });
-        return;
+      
+      if (employee_id) {
+        employee = await employeeRepo.findOneBy({ id: employee_id });
+        if (!employee) {
+          res.status(404).json({ message: 'Employee not found' });
+          return;
+        };
       };
 
       if (!contract) {
@@ -127,7 +133,13 @@ class ContractController {
         return;
       };
 
-      repo.merge(contract, { company, employee, start_date, end_date });
+      repo.merge(contract, {
+        ...(company && { company }),
+        ...(employee && { employee }),
+        start_date,
+        end_date
+      });
+      
       await repo.save(contract);
 
       res.status(200).json({

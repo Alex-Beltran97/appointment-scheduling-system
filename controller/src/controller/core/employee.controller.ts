@@ -93,24 +93,30 @@ class EmployeeController {
     };
 
     try {
+      let docType, employeeRole;
+
       const { docType_id, employeeRole_id } = req.body;
 
       const repo = AppSource.getRepository(Employee);
       const docTypeRepo = AppSource.getRepository(DocType);
       const employeeRoleRepo = AppSource.getRepository(EmployeeRole);
 
-      const docType = await docTypeRepo.findOneBy({ id: docType_id });
-      const employeeRole = await employeeRoleRepo.findOneBy({ id: employeeRole_id });
       const employee = await repo.findOneBy({ id });
-
-      if (!docType) {
-        res.status(404).json({ message: `Doc Type with id ${docType_id} not found` });
-        return;
+      
+      if (docType_id) {
+        docType = await docTypeRepo.findOneBy({ id: docType_id });
+        if (!docType) {
+          res.status(404).json({ message: `Doc Type with id ${docType_id} not found` });
+          return;
+        };        
       };
-
-      if (!employeeRole) {
-        res.status(404).json({ message: `Employee Role with id ${employeeRole_id} not found` });
-        return;
+      
+      if (employeeRole_id) {
+        employeeRole = await employeeRoleRepo.findOneBy({ id: employeeRole_id });
+        if (!employeeRole) {
+          res.status(404).json({ message: `Employee Role with id ${employeeRole_id} not found` });
+          return;
+        };
       };
 
       if (!employee) {
@@ -118,7 +124,11 @@ class EmployeeController {
         return;
       };
 
-      repo.merge(employee, {...req.body, docType, employeeRole});
+      repo.merge(employee, {
+        ...req.body,
+        ...(docType && { docType }),
+        ...(employeeRole && { docType })
+      });
 
       await repo.save(employee);
       

@@ -74,8 +74,6 @@ class CompanyController {
     };
 
     try {
-      const { name } = req.body;
-
       const repo = AppSource.getRepository(Company);
 
       const company = await repo.findOneBy({ id });
