@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS core.plan
     CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS core.profile
+CREATE TABLE IF NOT EXISTS auth.profile
 (
     id bigserial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS core.suscription
     CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS core.user_role
+CREATE TABLE IF NOT EXISTS auth.user_role
 (
     id bigserial NOT NULL,
     role character varying COLLATE pg_catalog."default" NOT NULL,
@@ -199,14 +199,14 @@ ALTER TABLE IF EXISTS core.payments
     NOT VALID;
 
 
-ALTER TABLE IF EXISTS core.profile
+ALTER TABLE IF EXISTS auth.profile
     ADD CONSTRAINT "FK_522e0554d4633909962c220e968" FOREIGN KEY ("userRole_id")
-    REFERENCES core.user_role (id) MATCH SIMPLE
+    REFERENCES auth.user_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS core.profile
+ALTER TABLE IF EXISTS auth.profile
     ADD CONSTRAINT "FK_ffdae762f604317dca306710abe" FOREIGN KEY ("docType_id")
     REFERENCES core."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION

@@ -44,7 +44,7 @@ EXECUTE PROCEDURE core.update_updated_at_column();
 
 -- Profile
 CREATE TRIGGER set_updated_at_profile
-AFTER UPDATE ON core.profile
+AFTER UPDATE ON auth.profile
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();
@@ -58,7 +58,7 @@ EXECUTE FUNCTION core.update_updated_at_column();
 
 -- User Role
 CREATE TRIGGER set_updated_at_user_role
-AFTER UPDATE ON core.user_role
+AFTER UPDATE ON auth.user_role
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();
