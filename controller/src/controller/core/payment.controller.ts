@@ -57,8 +57,6 @@ class PaymentController {
       const paymentStatusRepo = AppSource.getRepository(PaymentStatus);
       const companyRepo = AppSource.getRepository(Company);
       const planRepo = AppSource.getRepository(Plan);
-      
-      
 
       const company = await companyRepo.findOne({
         where: { id: company_id, is_active: true }
@@ -67,8 +65,6 @@ class PaymentController {
       const plan = await planRepo.findOne({
         where: { id: plan_id, is_active: true }
       });
-
-      
 
       if (!company) {
         res.status(404).json({ message: "Company not found" });
