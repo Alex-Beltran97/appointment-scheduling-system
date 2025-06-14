@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
-import { DocType, Profile, UserRole } from '../../models/core';
-import ProfileDTO from '../../models/core/Profile/ProfileDTO';
+import { DocType } from '../../models/core';
+import { Profile, UserRole, ProfileDTO } from '../../models/auth';
 
 class ProfileController {
   public async getProfiles(req: Request, res: Response) : Promise<void> {

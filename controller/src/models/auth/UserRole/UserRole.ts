@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Profile } from '../Profile/Profile';
 
-@Entity({ schema: 'core', name: 'user_role' })
+@Entity({ schema: 'auth', name: 'user_role' })
 export class UserRole {
   @PrimaryGeneratedColumn()
   id!: number;

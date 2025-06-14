@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
-import { UserRole } from '../../models/core';
+import { UserRole } from '../../models/auth';
 
 class UserRoleController {
   public async getRolesTypes(req: Request, res: Response) : Promise<void> {
