@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"tsc -w\" \"nodemon dist/js/app.js \" "
+    "start": "concurrently \"tsc -w\" \"nodemon dist/js/app.js \" ",
+    "clear": "rm -rf node_modules/ package-lock.json"
   },
   "keywords": [],
   "author": "",
@@ -12,9 +13,11 @@
   "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
@@ -23,8 +26,10 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.10",
     "concurrently": "^9.1.2",
     "eslint": "^8.57.1",

@@ -4,26 +4,33 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import { AppSource } from '../data';
 import { DataSource } from 'typeorm';
+import cookieParser from 'cookie-parser';
 config();
 
 import { 
-  companyRouter, contractRouter, employeeRouter, docTypeRouter, employeeRoleRouter,
-  userRoleRouter, profileRouter, paymentStatusRouter, planRouter, suscriptionRouter,
+  companyRouter, contractRouter, employeeRouter, docTypeRouter,
+  employeeRoleRouter, paymentStatusRouter, planRouter, suscriptionRouter,
   paymentRouter
 } from '../routers/core';
+import { profileRouter, userRoleRouter } from '../routers/auth';
 
 class Server {
-  public readonly express : Application = express();
-  public readonly PORT : String = process.env.PORT || '3001';
-  public readonly API_PATH : String = '/api/v1';
+  private readonly express : Application = express();
+  private readonly PORT : String = process.env.PORT || '3001';
+  private readonly API_PATH : String = '/api/v1';
 
   constructor() {
+    this._middlewares();
+    this._routes();
+  };
+
+  private _middlewares() {
     this.express.use(express.json());
     this.express.use(express.urlencoded({ extended: true }));
     this.express.use(morgan('dev'));
     this.express.use(cors());
-    this._routes();
-  };
+    this.express.use(cookieParser());
+  }
 
   private _routes() {
     this._authRoutes();
