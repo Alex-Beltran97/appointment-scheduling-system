@@ -121,7 +121,9 @@ CREATE TABLE IF NOT EXISTS auth.profile
     "userRole_id" integer NOT NULL,
     "docType_id" integer NOT NULL,
     CONSTRAINT "PK_3dd8bfc97e4a77c70971591bdcb" PRIMARY KEY (id),
-    CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email)
+    CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email),
+    CONSTRAINT "UQ_docNum" UNIQUE ("docNum"),
+    CONSTRAINT "UQ_username" UNIQUE (username)
 );
 
 CREATE TABLE IF NOT EXISTS core.suscription

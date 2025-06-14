@@ -1,3 +1,5 @@
+BEGIN;
+
 -- Company
 CREATE OR REPLACE TRIGGER set_updated_at_company AFTER UPDATE ON core.company
 FOR EACH ROW
@@ -62,3 +64,5 @@ AFTER UPDATE ON auth.user_role
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();
+
+COMMIT;
