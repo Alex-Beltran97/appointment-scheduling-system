@@ -1,9 +1,14 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
-import { DocType, Profile, UserRole } from '../../models/core';
-import ProfileDTO from '../../models/core/Profile/ProfileDTO';
+import { DocType } from '../../models/core';
+import { Profile, UserRole, ProfileDTO } from '../../models/auth';
+import bcrypt from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
 class ProfileController {
+  private readonly saltRounds: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
+  private readonly JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY!;
+
   public async getProfiles(req: Request, res: Response) : Promise<void> {
     const { deleted } = req.query;
     try {
@@ -64,6 +69,10 @@ class ProfileController {
       const {
         userRole_id,
         docType_id,
+        docNum,
+        email,
+        username,
+        password,
         ...rest
       } = req.body;
 
@@ -73,6 +82,33 @@ class ProfileController {
 
       const userRole = await userRolerepo.findOneBy({ id: userRole_id });
       const docType = await docTyperepo.findOneBy({ id: docType_id });
+
+      const existingProfile = await repo.findOne({
+        where: [
+          { docNum },
+          { email },
+          { username }
+        ]
+      });
+
+      if (existingProfile) {
+        if (existingProfile.docNum === docNum) {
+          res.status(409).json({
+            message: `Profile with document number ${docNum} already exists`
+          });
+          return;
+        } else if (existingProfile.email === email) {
+          res.status(409).json({
+            message: `Profile with email ${email} already exists`
+          });
+          return;
+        } else if (existingProfile.username === username) {
+          res.status(409).json({
+            message: `Profile with username ${username} already exists`
+          });
+          return;
+        };
+      };
 
       if (!userRole) {
         res.status(404).json({
@@ -87,14 +123,76 @@ class ProfileController {
         });
         return;
       };
+
+      const hashedPassword = await bcrypt.hash(password, this.saltRounds);
       
-      const newProfile = repo.create({userRole, docType, ...rest});
+      const newProfile = repo.create({
+        userRole,
+        docType,
+        docNum,
+        email,
+        username,
+        password: hashedPassword,
+        ...rest
+      });
 
       await repo.save(newProfile);
 
       res.status(201).json({
         message: `Profile data created successfully`
       });
+    } catch (error) {
+      console.error(`Error fetching Profile data:`, error);
+      res.status(500).json({ message: 'Internal Server Error' });    
+    };
+  }
+
+  public async loginProfile(req: Request, res: Response) : Promise<void> {
+    try {
+
+      const {
+        username,
+        password,
+      } = req.body;
+
+      const repo = AppSource.getRepository(Profile);
+
+      const existingProfile = await repo.findOne({
+        where: { username, is_active: true },
+        relations: ['userRole', 'docType']
+      });
+
+      if (!existingProfile) {
+        res.status(404).json({ message: "Profile was not found" });
+        return;
+      };
+
+      const isPasswordValid = await bcrypt.compare(password, existingProfile.password);
+
+      if (!isPasswordValid) {
+        res.status(401).json({ message: "Invalid credentials" });
+        return;
+      };
+    
+      const profile = ProfileDTO.fromEntity(existingProfile);
+
+      const token = sign(
+        { id: profile.id, username: profile.username, userRole: profile.userRole },
+        this.JWT_SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+
+      res.cookie('acces_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600000
+      });
+
+      res.status(200).json({
+        message: `Profile logged in successfully`,
+        token,
+      });    
     } catch (error) {
       console.error(`Error fetching Profile data:`, error);
       res.status(500).json({ message: 'Internal Server Error' });    

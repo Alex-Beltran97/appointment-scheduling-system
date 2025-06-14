@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { UserRole } from '../UserRole/UserRole';
-import { DocType } from '../DocType/DocType';
+import { DocType } from '../../core/DocType/DocType';
 
-@Entity({ schema: 'core', name: 'profile' })
+@Entity({ schema: 'auth', name: 'profile' })
 export class Profile {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -39,7 +39,7 @@ export class Profile {
   @JoinColumn({name: 'docType_id'})
   docType!: DocType;
 
-  @Column()
+  @Column({unique: true})
   docNum!: number;
 
   @Column()
@@ -48,7 +48,7 @@ export class Profile {
   @Column()
   employeeCode!: string;
 
-  @Column()
+  @Column({ unique: true })
   username!: string;
   
   @Column()

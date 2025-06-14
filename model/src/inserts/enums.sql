@@ -4,13 +4,13 @@ BEGIN;
 
 -- Insert data for user_role table
 
-INSERT INTO core.user_role (role) VALUES ('Administrador'::character varying)
+INSERT INTO auth.user_role (role) VALUES ('Administrador'::character varying)
   returning id;
 
-INSERT INTO core.user_role (role) VALUES ('Usuario'::character varying)
+INSERT INTO auth.user_role (role) VALUES ('Usuario'::character varying)
   returning id;
 
--- SELECT * FROM core.user_role;
+-- SELECT * FROM auth.user_role;
 
 -----------------------------------------------------------------------------
 

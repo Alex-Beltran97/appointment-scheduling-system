@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Employee } from '../Employee/Employee';
-import { Profile } from '../Profile/Profile';
+import { Profile } from '../../auth';
 
 @Entity({ schema: 'core', name: 'docType' })
 export class DocType {

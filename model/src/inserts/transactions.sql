@@ -43,7 +43,7 @@ RETURNING id;
 
 -- Insert data for profile table
 
-INSERT INTO core.profile
+INSERT INTO auth.profile
 (
   name,
   "lastName",
@@ -78,7 +78,7 @@ INSERT INTO core.profile
   '3'::bigint
   ) returning id;
 
--- SELECT * FROM core.profile;
+-- SELECT * FROM auth.profile;
 
 -----------------------------------------------------------------------------
 
