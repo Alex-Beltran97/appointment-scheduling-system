@@ -39,7 +39,7 @@ export class Profile {
   @JoinColumn({name: 'docType_id'})
   docType!: DocType;
 
-  @Column()
+  @Column({unique: true})
   docNum!: number;
 
   @Column()
@@ -48,7 +48,7 @@ export class Profile {
   @Column()
   employeeCode!: string;
 
-  @Column()
+  @Column({ unique: true })
   username!: string;
   
   @Column()

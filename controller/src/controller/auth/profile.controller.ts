@@ -2,8 +2,11 @@ import { Request, Response } from 'express';
 import { AppSource } from '../../data';
 import { DocType } from '../../models/core';
 import { Profile, UserRole, ProfileDTO } from '../../models/auth';
+import bcrypt from 'bcrypt';
 
 class ProfileController {
+  private readonly saltRounds: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
+
   public async getProfiles(req: Request, res: Response) : Promise<void> {
     const { deleted } = req.query;
     try {
@@ -64,6 +67,10 @@ class ProfileController {
       const {
         userRole_id,
         docType_id,
+        docNum,
+        email,
+        username,
+        password,
         ...rest
       } = req.body;
 
@@ -73,6 +80,33 @@ class ProfileController {
 
       const userRole = await userRolerepo.findOneBy({ id: userRole_id });
       const docType = await docTyperepo.findOneBy({ id: docType_id });
+
+      const existingProfile = await repo.findOne({
+        where: [
+          { docNum },
+          { email },
+          { username }
+        ]
+      });
+
+      if (existingProfile) {
+        if (existingProfile.docNum === docNum) {
+          res.status(409).json({
+            message: `Profile with document number ${docNum} already exists`
+          });
+          return;
+        } else if (existingProfile.email === email) {
+          res.status(409).json({
+            message: `Profile with email ${email} already exists`
+          });
+          return;
+        } else if (existingProfile.username === username) {
+          res.status(409).json({
+            message: `Profile with username ${username} already exists`
+          });
+          return;
+        };
+      };
 
       if (!userRole) {
         res.status(404).json({
@@ -87,8 +121,18 @@ class ProfileController {
         });
         return;
       };
+
+      const hashedPassword = await bcrypt.hash(password, 10);
       
-      const newProfile = repo.create({userRole, docType, ...rest});
+      const newProfile = repo.create({
+        userRole,
+        docType,
+        docNum,
+        email,
+        username,
+        password: hashedPassword,
+        ...rest
+      });
 
       await repo.save(newProfile);
 
