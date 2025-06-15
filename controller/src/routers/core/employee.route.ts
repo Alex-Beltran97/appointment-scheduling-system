@@ -5,10 +5,10 @@ const {getEmployees, getEmployee, createEmployee, updateEmployee, deleteEmployee
 
 const router = Router();
 
-router.get('/', getEmployees);
-router.get('/:id', getEmployee);
-router.post('/', createEmployee);
-router.patch('/:id', updateEmployee);
-router.delete('/:id', deleteEmployee);
+router.get('/', getEmployees.bind(employeeController));
+router.get('/:id', getEmployee.bind(employeeController));
+router.post('/', createEmployee.bind (employeeController));
+router.patch('/:id', updateEmployee.bind (employeeController));
+router.delete('/:id', deleteEmployee.bind(employeeController));
 
 export default router;

@@ -5,10 +5,10 @@ const {getdocTypes, getdocType, createdocType, updateDocType, deleteRoleType} = 
 
 const router = Router();
 
-router.get('/', getdocTypes);
-router.get('/:id', getdocType);
-router.post('/', createdocType);
-router.patch('/:id', updateDocType);
-router.delete('/:id', deleteRoleType);
+router.get('/', getdocTypes.bind(docTypeController));
+router.get('/:id', getdocType.bind(docTypeController));
+router.post('/', createdocType.bind(docTypeController));
+router.patch('/:id', updateDocType.bind(docTypeController));
+router.delete('/:id', deleteRoleType.bind(docTypeController));
 
 export default router;

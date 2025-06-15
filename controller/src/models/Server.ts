@@ -1,11 +1,9 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import { config } from 'dotenv';
 import { AppSource } from '../data';
 import { DataSource } from 'typeorm';
 import cookieParser from 'cookie-parser';
-config();
 
 import { 
   companyRouter, contractRouter, employeeRouter, docTypeRouter,
@@ -13,10 +11,11 @@ import {
   paymentRouter
 } from '../routers/core';
 import { profileRouter, userRoleRouter } from '../routers/auth';
+import { config } from '../config';
 
 class Server {
   private readonly express : Application = express();
-  private readonly PORT : String = process.env.PORT || '3001';
+  private readonly PORT : String = config.server.port || '3001';
   private readonly API_PATH : String = '/api/v1';
 
   constructor() {

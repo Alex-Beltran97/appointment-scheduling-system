@@ -4,9 +4,10 @@ import { DocType } from '../../models/core';
 import { Profile, UserRole, ProfileDTO } from '../../models/auth';
 import bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { config } from '../../config';
 
 class ProfileController {
-  private readonly saltRounds: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
+  private readonly saltRounds: number = config.login.saltRounds ? parseInt(config.login.saltRounds) : 10;
   private readonly JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY!;
 
   public async getProfiles(req: Request, res: Response) : Promise<void> {
@@ -178,7 +179,7 @@ class ProfileController {
 
       const token = sign(
         { id: profile.id, username: profile.username, userRole: profile.userRole },
-        this.JWT_SECRET_KEY,
+        config.login.jwtKey!,
         { expiresIn: '1h' }
       );
 
