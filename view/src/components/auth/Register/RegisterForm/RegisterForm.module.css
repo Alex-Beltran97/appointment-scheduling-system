@@ -1,0 +1,12 @@
+.form__container {
+  display: grid;
+  grid-template-columns: repeat(2,24rem);
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.form__rolPicker,
+.form__button {
+  grid-column: 1/3;
+}
