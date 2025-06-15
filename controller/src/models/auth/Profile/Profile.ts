@@ -29,7 +29,10 @@ export class Profile {
   @Column()
   countryCode!: string;
 
-  @Column()
+  @Column({nullable: true})
+  departmentCode!: string;
+  
+  @Column({nullable: true})
   cityCode!: string;
 
   @Column({unique: true})
