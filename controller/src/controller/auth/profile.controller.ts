@@ -183,7 +183,7 @@ class ProfileController {
         { expiresIn: '1h' }
       );
 
-      res.cookie('acces_token', token, {
+      res.cookie('access_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',

@@ -3,7 +3,10 @@ envConfig();
 
 export const config = {
   server: {
-    port: process.env.PORT
+    port: process.env.PORT,
+    cors: {
+      frontUrl: process.env.FRONTEND_HOST || 'http://localhost:3000',
+    }
   },
   database: {
     host: process.env.PG_DB_HOST,

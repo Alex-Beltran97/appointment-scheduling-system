@@ -1,11 +1,18 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import * as Yup from 'yup';
 
 import styles from './RegisterForm.module.css';
+import { cities, countries, departments } from "../../../../service/externalService";
+import type { CityItem, CountryItem, DepartmentItem, DocType, Profile, UserRole } from "../../../../types";
+import { userRoles } from "../../../../service/userRoleService";
+import { docTypes } from "../../../../service/docTypeService";
+import { register } from "../../../../service/authService";
+import moment, { type Moment } from "moment";
+import { useNavigate } from "react-router-dom";
 
 
 const validationSchema = Yup.object().shape({
@@ -13,51 +20,143 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required('Este campo es obligatorio'),
   lastName: Yup.string().required('Este campo es obligatorio'),
   secondLastName: Yup.string().required('Este campo es obligatorio'),
-  birthDate: Yup.date().nullable().required('Este campo es obligatorio'),
+  birthDate: Yup.date().nullable().required('Este campo es obligatorio').test(
+    'age',
+    'Debes ser mayor de 18 años',
+    function (value) {
+      if (!value) return false;
+      const today = new Date();
+      const birth = new Date(value);
+      const age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      return age > 18 || (age === 18 && m >= 0);
+    }
+  ),
   phone: Yup.string().matches(/^\d+$/, 'Solo números').required('Este campo es obligatorio'),
-  country: Yup.string().required('Este campo es obligatorio'),
-  department: Yup.string().required('Este campo es obligatorio'),
-  city: Yup.string().required('Este campo es obligatorio'),
+  countryCode: Yup.string().required('Este campo es obligatorio'),
+  departmentCode: Yup.string(),
+  cityCode: Yup.string(),
   email: Yup.string().email('Correo inválido').required('Este campo es obligatorio'),
   docType: Yup.string().required('Este campo es obligatorio'),
   docNum: Yup.string().matches(/^\d+$/, 'Solo números').required('Este campo es obligatorio'),
   nitCode: Yup.string().matches(/^\d+$/, 'Solo números').required('Este campo es obligatorio'),
   employeeCode: Yup.string().required('Este campo es obligatorio'),
   username: Yup.string().required('Este campo es obligatorio'),
-  password: Yup.string().required('Este campo es obligatorio'),
+  password: Yup.string().required('Este campo es obligatorio').min(8, 'Debe tener al menos 8 caracteres')
+  .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
+  .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
+  .matches(/[0-9]/, 'Debe contener al menos un número')
+  .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener al menos un carácter especial'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Las contraseñas no coinciden')
     .required('Este campo es obligatorio'),
 });
 
 const RegisterForm = () => {
-  const [initialValues] = useState({
+  const [countriesData, setCountriesData] = useState<CountryItem[]>([]);
+  const [departmentsData, setDepartmentsData] = useState<DepartmentItem[]>([]);
+  const [citiesData, setCitiesData] = useState<CityItem[]>([]);
+  const [userRolesData, setUserRolesData] = useState<UserRole[]>([]);
+  const [docTypesData, setDocTypesData] = useState<DocType[]>([]);
+  const [isForeigner, setIsForeigner] = useState<boolean>(true);
+  const [initialValues] = useState<Profile>({
     userRole: "",
     name: "",
     lastName: "",
     secondLastName: "",
-    birthDate: null,
+    birthDate: moment(),
+    dialCountry: "",
     phone: "",
-    country: "",
-    department: "",
-    city: "",
+    countryCode: "",
+    departmentCode: "",
+    cityCode: "",
     email: "",
-    docNum: "",
+    docNum: 0,
     docType: "",
     nitCode: "",
     employeeCode: "",
     username: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
 
+  const navigate = useNavigate();
+
+  const handleCountriesData = async () => {
+    try {
+      const data = await countries();
+      setCountriesData((data as unknown) as SetStateAction<CountryItem[]>);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDepartmentsData = async () => {
+    try {
+      const data = await departments();
+      setDepartmentsData((data as unknown) as SetStateAction<DepartmentItem[]>);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const handleCitiesData = async (id: string | undefined) => {
+    try {
+      const data = await cities(id);
+      setCitiesData((data as unknown) as SetStateAction<CityItem[]>);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserRolesData = async () => {
+    try {
+      const data = await userRoles();
+      setUserRolesData((data as unknown) as SetStateAction<UserRole[]>);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const handleDocTypesData = async () => {
+    try {
+      const data = await docTypes();
+      setDocTypesData((data as unknown) as SetStateAction<DocType[]>);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (values: Profile) => {
+    try {
+      const {dialCountry, phone, ...rest} = values;
+      const payload: Profile = {
+        ...rest,
+        phone: `${dialCountry} ${phone}`,
+        birthDate: (values.birthDate.toISOString() as unknown) as Moment,
+      };
+      await register(payload);
+      alert('Usuario registrado exitosamente');
+      navigate('/login');
+    } catch (error) {
+      console.error("Error al registrar el usuario:", error);
+    };
+  }
+
+  useEffect(() => {
+    handleCountriesData();
+    handleDepartmentsData();
+    handleUserRolesData();    
+    handleDocTypesData();    
+  }, [])
+  
   return (<>
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+        handleSubmit(values);
         setSubmitting(false);
       }}
     >
@@ -74,8 +173,9 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             >
-              <MenuItem value="1">Adminsitrador</MenuItem>
-              <MenuItem value="2">Usuario</MenuItem>
+              {userRolesData.map(role => (
+                <MenuItem key={role.id} value={role.id}>{role.role}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField
@@ -117,14 +217,41 @@ const RegisterForm = () => {
                 textField: {
                   name: 'birthDate',
                   error: touched.birthDate && Boolean(errors.birthDate),
-                  helperText: touched.birthDate && errors.birthDate,
+                  helperText: touched.birthDate && typeof errors.birthDate === 'string' ? errors.birthDate : '',
+                  onBlur: handleBlur,
                 },
               }}
             />
           </LocalizationProvider>
+          <Autocomplete
+            disablePortal
+            options={countriesData}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, newValue) => {
+              setFieldValue('dialCountry', newValue?.dial_code || "");
+            }}
+            renderOption={(props, option) => {
+              const { key, ...rest } = props;
+              return (
+                  <Box key={key} component="li" {...rest} display="flex" alignItems="center">
+                    <img
+                      loading="lazy"
+                      width={20}
+                      src={option.flag}
+                      alt={option.code}
+                      style={{ marginRight: 10 }}
+                    />
+                    {option.name}
+                  </Box>
+                )
+              }
+            }
+            renderInput={(params) => <TextField {...params}  label="Indicativo de pais" />}
+          />
           <TextField            
             id="phone"
             name="phone"
+            type="tel"
             label="Teléfono"
             value={values.phone}
             onChange={handleChange}
@@ -132,54 +259,36 @@ const RegisterForm = () => {
             error={touched.phone && Boolean(errors.phone)}
             helperText={touched.phone && errors.phone ? errors.phone : ""}
           />
-          <FormControl>
-            <InputLabel id="select-country-label">Pais</InputLabel>
-            <Select
-              id="select-country"
-              name="country"
-              labelId="select-country-label"
-              value={values.country}
-              label="Pais"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            >
-              <MenuItem value="COL">Colombia</MenuItem>
-              <MenuItem value="ARG">Argentina</MenuItem>
-              <MenuItem value="MX">Mexico</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <InputLabel id="select-department-label">Departamento</InputLabel>
-            <Select
-              id="select-department"
-              name="department"
-              labelId="select-department-label"
-              value={values.department}
-              label="Departamento"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            >
-              <MenuItem value={1001}>Cundinamarca</MenuItem>
-              <MenuItem value={1002}>Meta</MenuItem>
-              <MenuItem value={1003}>Valle del Cauca</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <InputLabel id="select-city-label">Ciudad</InputLabel>
-            <Select
-              id="select-city"
-              name="city"
-              labelId="select-city-label"
-              value={values.city}
-              label="Ciudad"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            >
-              <MenuItem value={2001}>Bogota D.C.</MenuItem>
-              <MenuItem value={2002}>Villavicencio</MenuItem>
-              <MenuItem value={2003}>Cali</MenuItem>
-            </Select>
-          </FormControl>          
+          <Autocomplete
+            disablePortal
+            options={countriesData}
+            onChange={(e, newValue) => {
+              setFieldValue('countryCode', newValue?.code || "");
+              setIsForeigner(newValue?.code !== 'CO');
+            }}
+            renderInput={(params) => <TextField {...params}  label="Pais" />}
+          />
+          <Autocomplete
+            disablePortal
+            disabled={isForeigner}
+            options={departmentsData}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, newValue) => {
+              setFieldValue('departmentCode', newValue?.id || "");
+              handleCitiesData(newValue?.id);              
+            }}
+            renderInput={(params) => <TextField {...params}  label="Departamento" />}
+          />
+          <Autocomplete
+            disablePortal
+            disabled={isForeigner}
+            options={citiesData}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, newValue) => {
+              setFieldValue('cityCode', newValue?.id || "");              
+            }}
+            renderInput={(params) => <TextField {...params}  label="Ciudad" />}
+          />
           <TextField
             id="email"
             name="email"
@@ -202,10 +311,9 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             >
-              <MenuItem value="1">Pasaporte</MenuItem>
-              <MenuItem value="2">Permiso especial de permanencia</MenuItem>
-              <MenuItem value="3">Cedula de ciudadania</MenuItem>
-              <MenuItem value="4">Cedula de extranjeria</MenuItem>
+              {docTypesData.map(doc => (
+                <MenuItem key={doc.id} value={doc.id}>{doc.docType}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField

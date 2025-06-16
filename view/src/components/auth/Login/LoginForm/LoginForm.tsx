@@ -4,10 +4,12 @@ import * as Yup from 'yup';
 
 import styles from './LoginForm.module.css';
 import { useState } from "react";
+import { login } from "../../../../service/authService";
+import type { Login } from "../../../../types";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email('Correo inválido')
+  username: Yup.string()
     .required('Requerido'),
   password: Yup.string()
     .min(6, 'Mínimo 6 caracteres')
@@ -15,10 +17,22 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const [initialValues] = useState({
-    email: "",
+  const [initialValues] = useState<Login>({
+    username: "",
     password: ""
   });
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (values: Login) => {
+    try {
+      await login(values);
+      alert("Inicio de sesión exitoso");
+      navigate("/");
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
 
   return (<>
     <Formik
@@ -27,7 +41,7 @@ const LoginForm = () => {
       enableReinitialize
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
-          alert('Datos enviados:\n' + JSON.stringify(values, null, 2));
+          handleLogin(values);
           setSubmitting(false);
         }, 500);
       }}
@@ -35,13 +49,13 @@ const LoginForm = () => {
       {({values, errors, touched, handleChange, handleBlur, isSubmitting}) => (
         <Form className={styles.form_container}>
           <TextField
-            id="email"
-            label="Correo Electrónico"
-            value={values.email}
+            id="username"
+            label="Nombre de usuario"
+            value={values.username}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email ? errors.email : ""}
+            error={touched.username && Boolean(errors.username)}
+            helperText={touched.username && errors.username ? errors.username : ""}
           />
           <TextField
             id="password"

@@ -27,7 +27,10 @@ class Server {
     this.express.use(express.json());
     this.express.use(express.urlencoded({ extended: true }));
     this.express.use(morgan('dev'));
-    this.express.use(cors());
+    this.express.use(cors({
+      origin: config.server.cors.frontUrl,
+      credentials: true,
+    }));
     this.express.use(cookieParser());
   }
 
