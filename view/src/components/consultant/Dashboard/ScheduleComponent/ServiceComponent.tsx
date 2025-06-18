@@ -1,7 +1,7 @@
 import { Badge, Box, Button, Card, CardContent, ListItem, styled, Typography, type BadgeProps } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 
-import styles from './ScheduleComponent.module.css';
+import styles from './ServiceComponent.module.css';
 
 const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   '& .MuiBadge-badge': {
@@ -10,7 +10,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   },
 }));
 
-const ScheduleComponent = () => {
+const ServiceComponent = () => {
   return (<ListItem>
     <Card>
       <CardContent>
@@ -90,4 +90,4 @@ const ScheduleComponent = () => {
   </ListItem>);
 };
 
-export default ScheduleComponent;
+export default ServiceComponent;

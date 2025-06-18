@@ -11,6 +11,11 @@ import PlansPage from "./pages/auth/PlansPage/PlansPage";
 import SuscribePlanPage from "./pages/auth/SuscribePlanPage/SuscribePlanPage";
 import DashboardPage from "./pages/consultant/DashboardPage/DashboardPage";
 import ServiceDetailPage from "./pages/consultant/ServiceDetailPage/ServiceDetailPage";
+import MySchedulesPage from "./pages/consultant/MySchedulesPage/MySchedulesPage";
+import ScheduleDetailPage from "./pages/consultant/ScheduleDetailPage/ScheduleDetailPage";
+import SearchPage from "./pages/customer/SearchPage/SearchPage";
+import SearchResultPage from "./pages/customer/SearchResultPage/SearchResultPage";
+import MyCustomerSchedules from "./pages/customer/MyCustomerSchedules/MyCustomerSchedules";
 
 const App = () => {
   return (<>
@@ -27,6 +32,11 @@ const App = () => {
           <Route path="/suscribe-plan" element={<SuscribePlanPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/service-detail" element={<ServiceDetailPage />} />
+          <Route path="/my-schedules" element={<MySchedulesPage />} />
+          <Route path="/schedule-detail" element={<ScheduleDetailPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/search-result" element={<SearchResultPage />} />
+          <Route path="/customer-schedules" element={<MyCustomerSchedules />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>

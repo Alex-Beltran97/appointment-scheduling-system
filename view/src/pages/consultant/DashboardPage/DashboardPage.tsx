@@ -1,7 +1,7 @@
 import { Button, Divider, Grid, List, Typography } from "@mui/material";
 
 import styles from './DashboardPage.module.css';
-import ScheduleComponent from "../../../components/consultant/Dashboard/ScheduleComponent/ScheduleComponent";
+import ServiceComponent from "../../../components/consultant/Dashboard/ScheduleComponent/ServiceComponent";
 
 const DashboardPage = () => {
   return (<main className={styles.container}>
@@ -19,13 +19,13 @@ const DashboardPage = () => {
     <List>
       <Grid container spacing={2}>
         <Grid size={6}>
-          <ScheduleComponent />
+          <ServiceComponent />
         </Grid>
         <Grid size={6}>
-          <ScheduleComponent />
+          <ServiceComponent />
         </Grid>
         <Grid size={6}>
-          <ScheduleComponent />
+          <ServiceComponent />
         </Grid>
       </Grid>
     </List>
