@@ -1,5 +1,5 @@
 import { Divider, Typography } from "@mui/material";
-import RegisterForm from "../../components/auth/Register/RegisterForm/RegisterForm";
+import RegisterForm from "../../../components/auth/Register/RegisterForm/RegisterForm";
 
 const RegisterPage = () => {
   return (<>

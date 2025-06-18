@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { City, Country, CountryItem, Department, DepartmentItem } from '../types';
+import type { City, Country, CountryItem, Department, DepartmentItem } from '../types/auth/Register';
 
 export const countries = () : Promise<CountryItem> => {
   const url = 'https://restcountries.com/v3.1/all?fields=name,cca2,flags,idd';

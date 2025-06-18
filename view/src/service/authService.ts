@@ -1,4 +1,4 @@
-import type { Login, Profile } from '../types';
+import type { Login, Profile } from '../types/auth/Register';
 import api from './api';
 
 export const register = (payload: Profile) => {

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import LoginForm from "../../components/auth/Login/LoginForm/LoginForm";
+import LoginForm from "../../../components/auth/Login/LoginForm/LoginForm";
 
 import styles from './LoginPage.module.css';
 

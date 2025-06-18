@@ -1,4 +1,4 @@
-import type { UserRole } from '../types';
+import type { UserRole } from '../types/auth/Register';
 import api from './api';
 
 export const userRoles = () : Promise<UserRole> => {

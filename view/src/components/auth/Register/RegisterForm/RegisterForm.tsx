@@ -1,19 +1,14 @@
 import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Form, Formik } from "formik";
-import { useEffect, useState, type SetStateAction } from "react";
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import * as Yup from 'yup';
 
-import styles from './RegisterForm.module.css';
-import { cities, countries, departments } from "../../../../service/externalService";
-import type { CityItem, CountryItem, DepartmentItem, DocType, Profile, UserRole } from "../../../../types";
-import { userRoles } from "../../../../service/userRoleService";
-import { docTypes } from "../../../../service/docTypeService";
-import { register } from "../../../../service/authService";
-import moment, { type Moment } from "moment";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from './hooks/useLocation';
+import { useEnums } from './hooks/useEnums';
+import { useLogin } from './hooks/useRegister';
 
+import styles from './RegisterForm.module.css';
 
 const validationSchema = Yup.object().shape({
   userRole: Yup.string().required('Este campo es obligatorio'),
@@ -53,102 +48,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const RegisterForm = () => {
-  const [countriesData, setCountriesData] = useState<CountryItem[]>([]);
-  const [departmentsData, setDepartmentsData] = useState<DepartmentItem[]>([]);
-  const [citiesData, setCitiesData] = useState<CityItem[]>([]);
-  const [userRolesData, setUserRolesData] = useState<UserRole[]>([]);
-  const [docTypesData, setDocTypesData] = useState<DocType[]>([]);
-  const [isForeigner, setIsForeigner] = useState<boolean>(true);
-  const [initialValues] = useState<Profile>({
-    userRole: "",
-    name: "",
-    lastName: "",
-    secondLastName: "",
-    birthDate: moment(),
-    dialCountry: "",
-    phone: "",
-    countryCode: "",
-    departmentCode: "",
-    cityCode: "",
-    email: "",
-    docNum: 0,
-    docType: "",
-    nitCode: "",
-    employeeCode: "",
-    username: "",
-    password: "",
-    confirmPassword: ""
-  });
 
-  const navigate = useNavigate();
-
-  const handleCountriesData = async () => {
-    try {
-      const data = await countries();
-      setCountriesData((data as unknown) as SetStateAction<CountryItem[]>);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDepartmentsData = async () => {
-    try {
-      const data = await departments();
-      setDepartmentsData((data as unknown) as SetStateAction<DepartmentItem[]>);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  const handleCitiesData = async (id: string | undefined) => {
-    try {
-      const data = await cities(id);
-      setCitiesData((data as unknown) as SetStateAction<CityItem[]>);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleUserRolesData = async () => {
-    try {
-      const data = await userRoles();
-      setUserRolesData((data as unknown) as SetStateAction<UserRole[]>);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  const handleDocTypesData = async () => {
-    try {
-      const data = await docTypes();
-      setDocTypesData((data as unknown) as SetStateAction<DocType[]>);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleSubmit = async (values: Profile) => {
-    try {
-      const {dialCountry, phone, ...rest} = values;
-      const payload: Profile = {
-        ...rest,
-        phone: `${dialCountry} ${phone}`,
-        birthDate: (values.birthDate.toISOString() as unknown) as Moment,
-      };
-      await register(payload);
-      alert('Usuario registrado exitosamente');
-      navigate('/login');
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
-    };
-  }
-
-  useEffect(() => {
-    handleCountriesData();
-    handleDepartmentsData();
-    handleUserRolesData();    
-    handleDocTypesData();    
-  }, [])
+  const {
+    citiesData, countriesData, departmentsData,
+    handleCitiesData, isForeigner, setIsForeigner
+  } = useLocation();
+  const {docTypesData, userRolesData} = useEnums();
+  const {handleSubmit, initialValues} = useLogin();
   
   return (<>
     <Formik
@@ -379,6 +285,7 @@ const RegisterForm = () => {
             helperText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : ""}
           />
           <Button
+            color="secondary"
             className={styles.form__button}
             variant="contained"
             type="submit"

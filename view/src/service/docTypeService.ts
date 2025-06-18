@@ -1,4 +1,4 @@
-import type { DocType } from '../types';
+import type { DocType } from '../types/auth/Register';
 import api from './api';
 
 export const docTypes = () : Promise<DocType> => {

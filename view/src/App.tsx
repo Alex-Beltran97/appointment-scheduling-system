@@ -2,11 +2,13 @@ import Header from "./layout/Header/Header";
 // import Main from "./layout/Main/Main";
 import Footer from "./layout/Footer/Footer";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
+import LoginPage from "./pages/auth/LoginPage/LoginPage";
 // import ProtectedRoute from "./routes/ProtectedRoute";
-import HomePage from "./pages/HomePage/HomePage";
-import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import HomePage from "./pages/auth/HomePage/HomePage";
+import RegisterPage from "./pages/auth/RegisterPage/RegisterPage";
+import PageNotFound from "./pages/auth/PageNotFound/PageNotFound";
+import PlansPage from "./pages/auth/PlansPage/PlansPage";
+import SuscribePlanPage from "./pages/auth/SuscribePlanPage/SuscribePlanPage";
 
 const App = () => {
   return (<>
@@ -19,6 +21,8 @@ const App = () => {
           ))}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/suscribe-plan" element={<SuscribePlanPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>

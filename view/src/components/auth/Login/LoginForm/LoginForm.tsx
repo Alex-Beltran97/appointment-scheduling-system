@@ -3,10 +3,8 @@ import { Form, Formik } from "formik";
 import * as Yup from 'yup';
 
 import styles from './LoginForm.module.css';
-import { useState } from "react";
-import { login } from "../../../../service/authService";
-import type { Login } from "../../../../types";
-import { useNavigate } from "react-router-dom";
+
+import { useLogin } from './hooks/useLogin';
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -17,22 +15,8 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  const [initialValues] = useState<Login>({
-    username: "",
-    password: ""
-  });
-
-  const navigate = useNavigate();
-
-  const handleLogin = async (values: Login) => {
-    try {
-      await login(values);
-      alert("Inicio de sesión exitoso");
-      navigate("/");
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
+  
+  const { initialValues, handleLogin } = useLogin();
 
   return (<>
     <Formik
@@ -68,6 +52,7 @@ const LoginForm = () => {
             helperText={touched.password && errors.password ? errors.password : ""}
           />
           <Button
+            color="secondary"
             variant="contained"
             type="submit"
             disabled={isSubmitting}

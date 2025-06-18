@@ -5,7 +5,7 @@ import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 const FooterBar = () => {
   return (<>
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="relative">
+      <AppBar position="relative" color='secondary'>
         <Toolbar>
           <Typography variant='body2' component='p' sx={{flexGrow:1}} align='center'>
             Desarrollador por: Monica Julieth Beltran Hernandez
