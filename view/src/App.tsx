@@ -10,6 +10,7 @@ import PageNotFound from "./pages/auth/PageNotFound/PageNotFound";
 import PlansPage from "./pages/auth/PlansPage/PlansPage";
 import SuscribePlanPage from "./pages/auth/SuscribePlanPage/SuscribePlanPage";
 import DashboardPage from "./pages/consultant/DashboardPage/DashboardPage";
+import ServiceDetailPage from "./pages/consultant/ServiceDetailPage/ServiceDetailPage";
 
 const App = () => {
   return (<>
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/plans" element={<PlansPage />} />
           <Route path="/suscribe-plan" element={<SuscribePlanPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/service-detail" element={<ServiceDetailPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
