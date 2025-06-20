@@ -46,7 +46,7 @@ export function useLocation() {
       setCitiesData([]);
       setIsForeigner(true);
     }
-  });
+  }, []);
 
   return {
     countriesData,
