@@ -8,6 +8,8 @@ import './index.css'
 import App from './App.tsx'
 import theme from './styles/theme.ts';
 
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

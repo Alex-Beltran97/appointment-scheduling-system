@@ -16,6 +16,8 @@ import ScheduleDetailPage from "./pages/consultant/ScheduleDetailPage/ScheduleDe
 import SearchPage from "./pages/customer/SearchPage/SearchPage";
 import SearchResultPage from "./pages/customer/SearchResultPage/SearchResultPage";
 import MyCustomerSchedules from "./pages/customer/MyCustomerSchedules/MyCustomerSchedules";
+import SchedulingPage from "./pages/share/SchedulingPage/SchedulingPage";
+import ProfilePage from "./pages/share/ProfilePage/ProfilePage";
 
 const App = () => {
   return (<>
@@ -37,6 +39,8 @@ const App = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search-result" element={<SearchResultPage />} />
           <Route path="/customer-schedules" element={<MyCustomerSchedules />} />
+          <Route path="/scheduling" element={<SchedulingPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
