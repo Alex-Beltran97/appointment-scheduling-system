@@ -10,7 +10,7 @@ import {
   employeeRoleRouter, paymentStatusRouter, planRouter, suscriptionRouter,
   paymentRouter
 } from '../routers/core';
-import { profileRouter, userRoleRouter } from '../routers/auth';
+import { profileRouter, userRoleRouter, loginRouter } from '../routers/auth';
 import { config } from '../config';
 
 class Server {
@@ -50,6 +50,7 @@ class Server {
     this.express.use(`${this.API_PATH}/plan`, planRouter);
     this.express.use(`${this.API_PATH}/suscription`, suscriptionRouter);
     this.express.use(`${this.API_PATH}/payment`, paymentRouter);
+    this.express.use(`${this.API_PATH}/login`, loginRouter);
   }
 
   private _dbInitializer() : Promise<DataSource>{

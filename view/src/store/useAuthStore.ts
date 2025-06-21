@@ -11,12 +11,12 @@ type AuthState = {
 
 export const useAuthStore = create<AuthState>(set => ({
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   checkSession: async () => {
     try {
       set({ loading: true });
-      const response = await loginVerify();
-      set({ isAuthenticated: response.data.isAuthenticated, loading: false });
+      const {data} = await loginVerify();
+      set({ isAuthenticated: data?.user, loading: false });
     } catch (error) {
       set({ isAuthenticated: false, loading: false });
       console.error('Session check failed:', error);

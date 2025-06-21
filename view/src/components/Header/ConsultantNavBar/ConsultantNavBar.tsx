@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Divider, IconButton, Menu, MenuItem, Toolbar } from "@mui/material";
 
 import styles from './ConsultantNavBar.module.css';
 import { useNavigate } from "react-router-dom";
@@ -27,10 +27,6 @@ const ConsultantNavBar = () => {
               color="inherit"
               onClick={() => handleNavigate('my-schedules')}
             >Mis agendas</Button>
-            <Button
-              color="inherit"
-              onClick={() => handleNavigate('profile')}
-            >Perfil</Button>
             <AvatarButton />
           </Box>
         </Toolbar>
@@ -50,6 +46,10 @@ const AvatarButton = () => {
     setAnchorEl(null);
   };
 
+  const navigate = useNavigate();
+
+  const handleNavigate = (path = '') => navigate(`/${path}`);
+
   const handleLogout = useAuthStore(state => state.logout);
 
   return (<>
@@ -62,6 +62,8 @@ const AvatarButton = () => {
       open={open}
       onClose={handleClose}
     >
+      <MenuItem onClick={() => handleNavigate('profile')}>Perfil</MenuItem>
+      <Divider />
       <MenuItem onClick={handleLogout}>Cerrar Session</MenuItem>
     </Menu>
   </>

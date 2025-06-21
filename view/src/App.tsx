@@ -21,8 +21,16 @@ import ProfilePage from "./pages/share/ProfilePage/ProfilePage";
 import NotificationManager from "./components/shared/NotificationManager/NotificationManager";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute";
 import PrivateRoute from "./routes/PrivateRoute";
+import { useAuthStore } from "./store/useAuthStore";
+import { useEffect } from "react";
 
 const App = () => {
+  const { checkSession } = useAuthStore();
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
+
   return (<>
     <div className="app-container">
       <Header />

@@ -6,13 +6,13 @@ export const register = (payload: Profile) => {
 };
 
 export const login = (payload: Login) => {
-  return api.post('/profile/login', payload, {withCredentials: true});
+  return api.post('/login', payload, {withCredentials: true});
 };
 
 export const loginVerify = () => {
-  return api.get('/profile/login', {withCredentials: true});
+  return api.get('/login', {withCredentials: true});
 };
 
 export const logout = () => {
-  return api.post('/profile/logout', {}, {withCredentials: true});
+  return api.post('/login/logout', {}, {withCredentials: true});
 };
