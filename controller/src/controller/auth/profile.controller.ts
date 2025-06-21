@@ -3,7 +3,7 @@ import { AppSource } from '../../data';
 import { DocType } from '../../models/core';
 import { Profile, UserRole, ProfileDTO } from '../../models/auth';
 import bcrypt from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { config } from '../../config';
 
 class ProfileController {
@@ -88,7 +88,7 @@ class ProfileController {
         where: [
           { docNum },
           { email },
-          { username }
+          { username },
         ]
       });
 
@@ -198,6 +198,36 @@ class ProfileController {
       console.error(`Error fetching Profile data:`, error);
       res.status(500).json({ message: 'Internal Server Error' });    
     };
+  }
+
+  public async logoutProfile(req: Request, res: Response): Promise<void> {
+    try {
+      res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+      });
+      res.status(200).json({ message: 'Logout exitoso' });
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      res.status(500).json({ message: 'Error interno al cerrar sesión' });
+    }
+  }
+
+  public async verifySession(req: Request, res: Response): Promise<void> {
+    try {
+      const token = req.cookies.access_token;
+
+      if (!token) {
+        res.status(401).json({ message: 'No autenticado' });
+        return;
+      }
+
+      const decoded = verify(token, config.login.jwtKey!);
+      res.status(200).json({ message: 'Sesión válida', user: decoded });
+    } catch (error) {
+      res.status(401).json({ message: 'Token inválido o expirado' });
+    }
   }
   
   public async updateProfile(req: Request, res: Response) : Promise<void> {

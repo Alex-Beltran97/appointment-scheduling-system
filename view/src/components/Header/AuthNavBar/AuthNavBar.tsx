@@ -1,10 +1,10 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 
-import styles from './NavBar.module.css';
+import styles from './AuthNavBar.module.css';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const AuthNavBar = () => {
   const navigate = useNavigate();
 
   const handleNavigate = (path = '') => navigate(`/${path}`, { replace: true });
@@ -40,4 +40,4 @@ const NavBar = () => {
   </>);
 };
 
-export default NavBar;
+export default AuthNavBar;

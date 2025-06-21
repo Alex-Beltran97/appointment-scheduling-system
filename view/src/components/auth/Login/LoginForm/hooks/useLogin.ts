@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import type { Login } from "../../../../../types/auth/Register";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../../../../service/authService";
+import { useNotificationStore } from "../../../../../store/useNotificationStore";
+import { useAuthStore } from "../../../../../store/useAuthStore";
+import { type AxiosError } from 'axios';
 
 export function useLogin() {
   const [initialValues, setInitialValues] = useState<Login>({
@@ -9,16 +10,21 @@ export function useLogin() {
     password: ""
   });
 
-  const navigate = useNavigate();
+  const {showNotification} = useNotificationStore();
+  const {login} = useAuthStore();
 
   const handleLogin = async (values: Login) => {
     try {
       await login(values);
-      alert("Inicio de sesión exitoso");
-      navigate("/");
+      showNotification("Inicio de sesión exitoso", "success");
     } catch (error) {
+      if ((error as AxiosError).response?.status === 401) {
+        showNotification("Error al iniciar sesión. Por favor, verifica tus credenciales.", "error");
+        return;
+      }
+      showNotification("Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.", "error");
       console.error("Error al iniciar sesión:", error);
-    }
+    };
   };
 
   useEffect(() => {
@@ -32,6 +38,6 @@ export function useLogin() {
 
   return {
     initialValues,
-    handleLogin
+    handleLogin,
   };
 };

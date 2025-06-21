@@ -1,8 +1,15 @@
-import NavBar from "../../components/Header/NavBar/NavBar";
+import AuthNavBar from "../../components/Header/AuthNavBar/AuthNavBar";
+import ConsultantNavBar from "../../components/Header/ConsultantNavBar/ConsultantNavBar";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const Header = () => {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
   return (<header>
-    <NavBar />
+    {isAuthenticated
+      ? <ConsultantNavBar />
+      : <AuthNavBar />
+    }
   </header>)
 };
 

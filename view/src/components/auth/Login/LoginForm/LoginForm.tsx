@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import styles from './LoginForm.module.css';
 
 import { useLogin } from './hooks/useLogin';
+import Spinner from "../../../shared/Spinner/Spinner";
+import { useAuthStore } from "../../../../store/useAuthStore";
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -15,10 +17,12 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = () => {
-  
+
   const { initialValues, handleLogin } = useLogin();
+  const isLoading = useAuthStore((state) => state.loading);
 
   return (<>
+    <Spinner isOpen={isLoading}/>
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}

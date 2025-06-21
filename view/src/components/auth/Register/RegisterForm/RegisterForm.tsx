@@ -121,6 +121,7 @@ const RegisterForm = () => {
               onChange={(value) => setFieldValue('birthDate', value)}
               slotProps={{
                 textField: {
+                  id: "birthDate",   
                   name: 'birthDate',
                   error: touched.birthDate && Boolean(errors.birthDate),
                   helperText: touched.birthDate && typeof errors.birthDate === 'string' ? errors.birthDate : '',

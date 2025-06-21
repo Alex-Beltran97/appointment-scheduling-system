@@ -18,6 +18,9 @@ import SearchResultPage from "./pages/customer/SearchResultPage/SearchResultPage
 import MyCustomerSchedules from "./pages/customer/MyCustomerSchedules/MyCustomerSchedules";
 import SchedulingPage from "./pages/share/SchedulingPage/SchedulingPage";
 import ProfilePage from "./pages/share/ProfilePage/ProfilePage";
+import NotificationManager from "./components/shared/NotificationManager/NotificationManager";
+import PublicOnlyRoute from "./routes/PublicOnlyRoute";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
   return (<>
@@ -25,26 +28,57 @@ const App = () => {
       <Header />
       <main>
         <Routes>
+          {/* Public Routes */}
           {['/', '/home'].map((path) => (
             <Route key={path} path={path} element={<HomePage />} />
           ))}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/plans" element={<PlansPage />} />
           <Route path="/suscribe-plan" element={<SuscribePlanPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/service-detail" element={<ServiceDetailPage />} />
-          <Route path="/my-schedules" element={<MySchedulesPage />} />
-          <Route path="/schedule-detail" element={<ScheduleDetailPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/search-result" element={<SearchResultPage />} />
-          <Route path="/customer-schedules" element={<MyCustomerSchedules />} />
-          <Route path="/scheduling" element={<SchedulingPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          {/* Auth Routes */}
+          <Route path="/login" element={<PublicOnlyRoute>
+            <LoginPage />
+          </PublicOnlyRoute>} />
+          <Route path="/register" element={
+            <PublicOnlyRoute>
+              <RegisterPage />
+            </PublicOnlyRoute>
+          } />
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={<PrivateRoute>
+            <DashboardPage />
+          </PrivateRoute>} />
+          <Route path="/service-detail/:id" element={<PrivateRoute>
+            <ServiceDetailPage />
+          </PrivateRoute>} />
+          <Route path="/my-services" element={<PrivateRoute>
+            <DashboardPage />
+          </PrivateRoute>} />
+          <Route path="/my-schedules" element={<PrivateRoute>
+            <MySchedulesPage />
+          </PrivateRoute>} />
+          <Route path="/my-schedule-detail/:id" element={<PrivateRoute>
+            <ScheduleDetailPage />
+          </PrivateRoute>} />
+          <Route path="/search" element={<PrivateRoute>
+            <SearchPage />
+          </PrivateRoute>} />
+          <Route path="/search-result" element={<PrivateRoute>
+            <SearchResultPage />
+          </PrivateRoute>} />
+          <Route path="/customer-schedules" element={<PrivateRoute>
+            <MyCustomerSchedules />
+          </PrivateRoute>} />
+          <Route path="/scheduling" element={<PrivateRoute>
+            <SchedulingPage />
+          </PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
       <Footer />
+      <NotificationManager />
     </div>
   </>)
 };

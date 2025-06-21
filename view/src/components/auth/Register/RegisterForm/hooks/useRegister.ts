@@ -3,9 +3,10 @@ import type { Profile } from "../../../../../types/auth/Register";
 import moment, { type Moment } from "moment";
 import { register } from "../../../../../service/authService";
 import { useNavigate } from "react-router-dom";
+import { useNotificationStore } from "../../../../../store/useNotificationStore";
 
 export function useLogin() {
-   const [initialValues, setInitialValues] = useState<Profile>({
+  const [initialValues, setInitialValues] = useState<Profile>({
     userRole: "",
     name: "",
     lastName: "",
@@ -26,8 +27,9 @@ export function useLogin() {
     confirmPassword: ""
   });
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  const {showNotification} = useNotificationStore();
 
   const handleSubmit = async (values: Profile) => {
     try {
@@ -38,9 +40,10 @@ export function useLogin() {
         birthDate: (values.birthDate.toISOString() as unknown) as Moment,
       };
       await register(payload);
-      alert('Usuario registrado exitosamente');
+      showNotification("Usuario registrado correctamente", "success");
       navigate('/login');
     } catch (error) {
+      showNotification("Error al registrar el usuario", "error");
       console.error("Error al registrar el usuario:", error);
     };
   }
