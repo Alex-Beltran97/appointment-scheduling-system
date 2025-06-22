@@ -2,6 +2,7 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+
 CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
@@ -149,6 +150,86 @@ CREATE TABLE IF NOT EXISTS auth.user_role
     CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS consultant.service
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    name character varying(225) NOT NULL,
+    description text NOT NULL,
+    duration_minutes integer NOT NULL,
+    price numeric(10, 2) NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_service PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.consultant_availability
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    weekday integer NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_service_consultant_availability PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.appointments
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    service_id bigint NOT NULL,
+    client_full_name character varying(225) NOT NULL,
+    client_email character varying[] NOT NULL,
+    client_phone character varying[] NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    notes text,
+    status_id bigint NOT NULL DEFAULT 1,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_appointment PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.consultant_exceptions
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone,
+    end_time time with time zone,
+    reason text,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_consultant_exceptions PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.appointment_status
+(
+    id bigserial NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_appointment_status PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.available_slots
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    service_id bigint NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    is_booked boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_available_slots PRIMARY KEY (id)
+);
+
 ALTER TABLE IF EXISTS core.contract
     ADD CONSTRAINT "FK_1dbf9a5c77120410dfac83b817c" FOREIGN KEY (company_id)
     REFERENCES core.company (id) MATCH SIMPLE
@@ -219,6 +300,70 @@ ALTER TABLE IF EXISTS auth.profile
 ALTER TABLE IF EXISTS core.suscription
     ADD CONSTRAINT "FK_plan_id" FOREIGN KEY (id_payment)
     REFERENCES core.payments (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.service
+    ADD CONSTRAINT fk_profile FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.consultant_availability
+    ADD CONSTRAINT fk_profile FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id)
+    REFERENCES consultant.appointment_status (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.consultant_exceptions
+    ADD CONSTRAINT fk_consultant_id FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.available_slots
+    ADD CONSTRAINT fk_consultant_id FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.available_slots
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;

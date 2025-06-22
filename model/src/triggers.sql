@@ -1,5 +1,7 @@
 BEGIN;
 
+-- This file contains triggers that automatically update the `updated_at` column
+
 -- Company
 CREATE OR REPLACE TRIGGER set_updated_at_company AFTER UPDATE ON core.company
 FOR EACH ROW
@@ -61,6 +63,47 @@ EXECUTE FUNCTION core.update_updated_at_column();
 -- User Role
 CREATE TRIGGER set_updated_at_user_role
 AFTER UPDATE ON auth.user_role
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+CREATE OR REPLACE TRIGGER set_updated_at_services
+AFTER UPDATE ON consultant.service
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.consultant_availability
+CREATE OR REPLACE TRIGGER set_updated_at_consultant_availability
+AFTER UPDATE ON consultant.consultant_availability
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.appointments
+CREATE OR REPLACE TRIGGER set_updated_at_appointments
+AFTER UPDATE ON consultant.appointments
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.appointment_status
+CREATE OR REPLACE TRIGGER set_updated_at_appointment_status
+AFTER UPDATE ON consultant.appointment_status
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.available_slots
+CREATE OR REPLACE TRIGGER set_updated_at_available_slots
+AFTER UPDATE ON consultant.available_slots
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.consultant_exceptions
+CREATE OR REPLACE TRIGGER set_updated_at_consultant_exceptions
+AFTER UPDATE ON consultant.consultant_exceptions
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();

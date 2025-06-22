@@ -82,4 +82,15 @@ INSERT INTO core.payment_status (status) VALUES ('Fallido'::character varying)
 
 -----------------------------------------------------------------------------
 
+-- Insert data for Contract Status table
+
+INSERT INTO consultant.appointment_status (status) VALUES 
+('Pendiente'),
+('Confirmada'),
+('Cancelada'),
+('Finalizada')
+RETURNING id;
+
+-- SELECT * FROM consultant.appointment_status;
+
 COMMIT;

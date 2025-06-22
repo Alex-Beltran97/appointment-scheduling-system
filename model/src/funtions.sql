@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE OR REPLACE FUNCTION core.update_updated_at_column() RETURNS TRIGGER
 AS $$
 DECLARE
@@ -10,4 +12,6 @@ BEGIN
 	RETURN NULL;
 END
 $$
-LANGUAGE plpgsql
+LANGUAGE plpgsql;
+
+COMMIT;

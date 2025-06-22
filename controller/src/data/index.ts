@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Company, Contract, Employee, DocType, EmployeeRole, PaymentStatus, Plan, Suscription, Payment } from '../models/core';
+import { Appointment, AppointmentStatus, AvailableSlot, ConsultantAvailability, ConsultantException, Service } from '../models/consultants';
 import { Profile, UserRole } from '../models/auth';
 import { config } from '../config';
 
@@ -21,6 +22,15 @@ const authEntities = [
   Profile
 ];
 
+const consultantEntities = [
+  Appointment,
+  AppointmentStatus,
+  AvailableSlot,
+  ConsultantAvailability,
+  ConsultantException,
+  Service
+];
+
 export const AppSource = new DataSource({
   type: 'postgres',
   host: config.database.host,
@@ -32,7 +42,8 @@ export const AppSource = new DataSource({
   logging: false,
   entities: [
     ...coreEntities,
-    ...authEntities
+    ...authEntities,
+    ...consultantEntities
   ],
   migrations: [],
   subscribers: [],
