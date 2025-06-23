@@ -8,7 +8,7 @@ import { AvailableSlot } from '../AvailableSlot/AvailableSlot';
 import { Appointment } from '../Appointment/Appointment';
 
 @Entity({ name: 'service', schema: 'consultant' })
-export class Service {
+export class ConsultantService {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 

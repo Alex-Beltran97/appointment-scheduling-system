@@ -4,7 +4,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Profile } from '../../auth';
-import { Service } from '../Service/Service';
+import { ConsultantService } from '../ConsultantService/ConsultantService';
 
 @Entity({ name: 'available_slots', schema: 'consultant' })
 export class AvailableSlot {
@@ -15,11 +15,11 @@ export class AvailableSlot {
   @JoinColumn({ name: 'consultant_id' })
   consultant!: Profile;
 
-  @ManyToOne(() => Service, service => service.availableSlots)
+  @ManyToOne(() => ConsultantService, service => service.availableSlots)
   @JoinColumn({ name: 'service_id' })
-  service!: Service;
+  service!: ConsultantService;
 
-  @Column()
+  @Column({ type: 'date' })
   date!: Date;
 
   @Column({ type: 'time with time zone' })

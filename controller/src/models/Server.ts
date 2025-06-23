@@ -12,6 +12,7 @@ import {
 } from '../routers/core';
 import { profileRouter, userRoleRouter, loginRouter } from '../routers/auth';
 import { config } from '../config';
+import { appointmentRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantServiceRoute, slotGeneratorRoute } from '../routers/consultant';
 
 class Server {
   private readonly express : Application = express();
@@ -51,6 +52,12 @@ class Server {
     this.express.use(`${this.API_PATH}/suscription`, suscriptionRouter);
     this.express.use(`${this.API_PATH}/payment`, paymentRouter);
     this.express.use(`${this.API_PATH}/login`, loginRouter);
+    this.express.use(`${this.API_PATH}/services`, consultantServiceRoute);
+    this.express.use(`${this.API_PATH}/generate-slots`, slotGeneratorRoute);
+    this.express.use(`${this.API_PATH}/availabilities`, consultantAvailabilityRoute);
+    this.express.use(`${this.API_PATH}/exceptions`, consultantExceptionRoute);
+    this.express.use(`${this.API_PATH}/appointment`, appointmentRoute);
+    this.express.use(`${this.API_PATH}/available-slots`, availableSlotRoute);
   }
 
   private _dbInitializer() : Promise<DataSource>{

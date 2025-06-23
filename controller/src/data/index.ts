@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Company, Contract, Employee, DocType, EmployeeRole, PaymentStatus, Plan, Suscription, Payment } from '../models/core';
-import { Appointment, AppointmentStatus, AvailableSlot, ConsultantAvailability, ConsultantException, Service } from '../models/consultants';
+import { Appointment, AppointmentStatus, AvailableSlot, ConsultantAvailability, ConsultantException, ConsultantService } from '../models/consultants';
 import { Profile, UserRole } from '../models/auth';
 import { config } from '../config';
 
@@ -28,7 +28,7 @@ const consultantEntities = [
   AvailableSlot,
   ConsultantAvailability,
   ConsultantException,
-  Service
+  ConsultantService
 ];
 
 export const AppSource = new DataSource({

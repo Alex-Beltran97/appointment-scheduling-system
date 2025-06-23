@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { UserRole } from '../UserRole/UserRole';
 import { DocType } from '../../core/DocType/DocType';
-import { Service } from '../../consultants/Service/Service';
+import { ConsultantService } from '../../consultants/ConsultantService/ConsultantService';
 import { ConsultantAvailability } from '../../consultants/ConsultantAvailability/ConsultantAvailability';
 import { ConsultantException } from '../../consultants/ConsultantException/ConsultantException';
 import { AvailableSlot } from '../../consultants/AvailableSlot/AvailableSlot';
@@ -65,10 +65,10 @@ export class Profile {
   @Column({ type: 'boolean', default: true })
   is_active!: boolean;
 
-  @OneToMany(() => Service, service => service.consultant)
-  services!: Service[];
+  @OneToMany(() => ConsultantService, service => service.consultant)
+  services!: ConsultantService[];
 
-  @OneToMany(() => Service, service => service.consultant)
+  @OneToMany(() => ConsultantService, service => service.consultant)
   consultantAvailabilities!: ConsultantAvailability[];
 
   @OneToMany(() => ConsultantException, consultantException => consultantException.consultant)

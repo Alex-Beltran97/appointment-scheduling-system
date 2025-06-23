@@ -2,7 +2,6 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-
 CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
@@ -189,6 +188,7 @@ CREATE TABLE IF NOT EXISTS consultant.appointments
     end_time time with time zone NOT NULL,
     notes text,
     status_id bigint NOT NULL DEFAULT 1,
+    is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT pk_appointment PRIMARY KEY (id)

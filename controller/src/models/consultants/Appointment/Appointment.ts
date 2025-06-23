@@ -4,7 +4,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Profile } from '../../auth';
-import { Service } from '../Service/Service';
+import { ConsultantService } from '../ConsultantService/ConsultantService';
 import { AppointmentStatus } from '../AppointmentStatus/AppointmentStatus';
 
 @Entity({ name: 'appointments', schema: 'consultant' })
@@ -16,9 +16,9 @@ export class Appointment {
   @JoinColumn({ name: 'consultant_id' })
   consultant!: Profile;
 
-  @ManyToOne(() => Service, service => service.appointments)
+  @ManyToOne(() => ConsultantService, service => service.appointments)
   @JoinColumn({ name: 'service_id' })
-  service!: Service;
+  service!: ConsultantService;
 
   @Column({ name: 'client_full_name', length: 225 })
   clientFullName!: string;
@@ -44,6 +44,9 @@ export class Appointment {
   @ManyToOne(() => AppointmentStatus, status => status.appointments)
   @JoinColumn({ name: 'status_id' })
   status!: AppointmentStatus;
+
+  @Column({ type: 'boolean', default: true })
+  is_active!: boolean;
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
