@@ -3,16 +3,16 @@ import {
   Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { Profile } from '../../auth/Profile/Profile';
+import { ConsultantService } from '../ConsultantService/ConsultantService';
 
 @Entity({ name: 'consultant_availability', schema: 'consultant' })
 export class ConsultantAvailability {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => Profile, profile => profile.consultantAvailabilities)
-  @JoinColumn({ name: 'consultant_id' })
-  consultant!: Profile;
+  @ManyToOne(() => ConsultantService, service => service.consultantAvailabilities)
+  @JoinColumn({ name: 'service_id' })
+  service!: ConsultantService;
 
   @Column()
   weekday!: number;

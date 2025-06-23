@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { login, logout, loginVerify } from '../service/authService';
 
 type AuthState = {
+  idUser: string | number;
   isAuthenticated: boolean;
   loading: boolean;
   checkSession: () => Promise<void>;
@@ -10,13 +11,14 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>(set => ({
+  idUser: 0,
   isAuthenticated: false,
   loading: true,
   checkSession: async () => {
     try {
       set({ loading: true });
       const {data} = await loginVerify();
-      set({ isAuthenticated: data?.user, loading: false });
+      set({ isAuthenticated: data?.user, loading: false, idUser: data?.user?.id || null });
     } catch (error) {
       set({ isAuthenticated: false, loading: false });
       console.error('Session check failed:', error);

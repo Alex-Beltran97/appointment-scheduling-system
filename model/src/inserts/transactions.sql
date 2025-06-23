@@ -75,7 +75,7 @@ INSERT INTO auth.profile
   '900428042-2'::character varying,
   'T12345'::character varying,
   'pepito-perez90'::character varying,
-  'User1234*'::character varying,
+  '$2b$10$g1Q9WYzGaTB0JgrsDXe.fuC2FLG/mani0cNe8sbCDI2AObvcUH14O'::character varying,
   '2'::bigint,
   '3'::bigint
   ) returning id;

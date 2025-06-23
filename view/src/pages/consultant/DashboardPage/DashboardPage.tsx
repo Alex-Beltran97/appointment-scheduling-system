@@ -1,34 +1,31 @@
-import { Button, Divider, Grid, List, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 
 import styles from './DashboardPage.module.css';
-import ServiceComponent from "../../../components/consultant/Dashboard/ScheduleComponent/ServiceComponent";
+import ScheduleContainer from "../../../components/consultant/Dashboard/ScheduleContainer/ScheduleContainer";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
+
   return (<main className={styles.container}>
     <Typography variant="h4" component="h1" textAlign='center' gutterBottom>
       Mis servicios
     </Typography>
     <Divider sx={{ marginBottom: 2 }} />
-    <Button variant="contained" color="secondary" fullWidth sx={{ marginBottom: 2 }}>
+    <Button
+      variant="contained"
+      color="secondary"
+      fullWidth
+      sx={{ marginBottom: 2 }}
+      onClick={() => navigate('/create-service')}
+    >
       Crear nuevo servicio
     </Button>
     <Divider sx={{ marginBottom: 2 }} />
     <Typography variant="h5" component="h2" textAlign='center' gutterBottom>
       Lista de servicios
     </Typography>
-    <List>
-      <Grid container spacing={2}>
-        <Grid size={6}>
-          <ServiceComponent />
-        </Grid>
-        <Grid size={6}>
-          <ServiceComponent />
-        </Grid>
-        <Grid size={6}>
-          <ServiceComponent />
-        </Grid>
-      </Grid>
-    </List>
+    <ScheduleContainer />
   </main>);
 };
 

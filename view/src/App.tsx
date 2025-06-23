@@ -23,6 +23,7 @@ import PublicOnlyRoute from "./routes/PublicOnlyRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
+import CreateServicePage from "./pages/consultant/CreateServicePage/CreateServicePage";
 
 const App = () => {
   const { checkSession } = useAuthStore();
@@ -54,6 +55,12 @@ const App = () => {
           {/* Protected Routes */}
           <Route path="/dashboard" element={<PrivateRoute>
             <DashboardPage />
+          </PrivateRoute>} />
+          <Route path="/create-service" element={<PrivateRoute>
+            <CreateServicePage />
+          </PrivateRoute>} />
+          <Route path="/create-service/:id" element={<PrivateRoute>
+            <CreateServicePage />
           </PrivateRoute>} />
           <Route path="/service-detail/:id" element={<PrivateRoute>
             <ServiceDetailPage />

@@ -6,6 +6,8 @@ import {
 import { Profile } from '../../auth/Profile/Profile';
 import { AvailableSlot } from '../AvailableSlot/AvailableSlot';
 import { Appointment } from '../Appointment/Appointment';
+import { ConsultantAvailability } from '../ConsultantAvailability/ConsultantAvailability';
+import { ConsultantException } from '../ConsultantException/ConsultantException';
 
 @Entity({ name: 'service', schema: 'consultant' })
 export class ConsultantService {
@@ -36,6 +38,12 @@ export class ConsultantService {
 
   @OneToMany(() => Appointment, appointment => appointment.service)
   appointments!: Appointment[];
+
+  @OneToMany(() => ConsultantAvailability, consultantAvailability => consultantAvailability.service)
+  consultantAvailabilities!: ConsultantAvailability[];
+
+  @OneToMany(() => ConsultantException, consultantException => consultantException.service)
+  consultantExceptions!: ConsultantException[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

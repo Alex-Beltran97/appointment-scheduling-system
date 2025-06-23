@@ -1,18 +1,13 @@
 import { Request, Response } from 'express';
-import { generateAvailableSlotsForConsultant } from '../../Services/generateAvailableSlotsForConsultant';
+import { generateAvailableSlotsForServices } from '../../Services/generateAvailableSlotsForServices';
 
 class SlotGeneratorController {
   public async generateSlots(req: Request, res: Response): Promise<void> {
-    const { consultantId } = req.body;
-
-    if (!consultantId) {
-      res.status(400).json({ error: 'El campo consultantId es obligatorio.' });
-      return;
-    }
-
     try {
-      await generateAvailableSlotsForConsultant(consultantId);
-      res.status(200).json({ message: `Slots generados para el consultor con ID ${consultantId}.` });
+      await generateAvailableSlotsForServices();
+      res.status(200).json({
+        message: 'Slots generados exitosamente.'
+      });
     } catch (error) {
       console.error('Error generando slots:', error);
       res.status(500).json({ error: 'Ocurrió un error generando los slots.', details: error });

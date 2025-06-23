@@ -1,33 +1,30 @@
 import { Request, Response } from "express";
 import { AvailableSlot } from "../../models/consultants";
 import { AppSource } from "../../data";
+import { Between, IsNull } from "typeorm";
 
 class AvailableSlotController {
   public async getAvailableSlots(req: Request, res: Response): Promise<void> {
     try {
-      const { consultant_id, date, service_id } = req.query;
+      const { date, service_id } = req.query;
 
       const slotRepo = AppSource.getRepository(AvailableSlot);
 
       const filters: any = {
-        is_booked: false
+        is_booked: false,
       };
 
-      if (consultant_id) {
-        filters.consultant = { id: +consultant_id };
-      }
-
-      if (service_id) {
+      if (service_id && service_id !== 'null' && service_id !== 'undefined') {
         filters.service = { id: +service_id };
-      }
+      };
 
-      if (date) {
-        filters.date = new Date(date as string);
-      }
+      if (date && date !== 'null' && date !== 'undefined') {
+        filters.date = date;
+      };
 
       const slots = await slotRepo.find({
-        where: filters,
-        relations: ['consultant', 'service'],
+        where: { ...filters },
+        relations: ['service'],
         order: {
           date: 'ASC',
           start_time: 'ASC'

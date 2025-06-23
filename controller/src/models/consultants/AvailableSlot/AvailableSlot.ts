@@ -11,10 +11,6 @@ export class AvailableSlot {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => Profile, profile => profile.availableSlots)
-  @JoinColumn({ name: 'consultant_id' })
-  consultant!: Profile;
-
   @ManyToOne(() => ConsultantService, service => service.availableSlots)
   @JoinColumn({ name: 'service_id' })
   service!: ConsultantService;

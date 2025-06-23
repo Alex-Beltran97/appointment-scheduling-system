@@ -1,15 +1,27 @@
 import { Request, Response } from "express";
 import { AppSource } from "../../data";
-import { ConsultantAvailability } from "../../models/consultants";
+import { ConsultantAvailability, ConsultantService } from "../../models/consultants";
 import { Profile } from "../../models/auth";
-import { generateAvailableSlotsForConsultant } from "../../Services/generateAvailableSlotsForConsultant";
+import { generateAvailableSlotsForServices } from "../../Services/generateAvailableSlotsForServices";
 
 class ConsultantAvailabilityController {
   public async getAvailabilities(req: Request, res: Response): Promise<void> {
+    const {service_id} = req.query;
+
     try {
+
+      const filters: any = {};
+
       const repo = AppSource.getRepository(ConsultantAvailability);
+
+      if (service_id && service_id !== 'null' && service_id !== 'undefined') {
+        filters.service = { id: +service_id };
+      }
+
       const availabilities = await repo.find({
-        relations: ['consultant']
+        where: {...filters},
+        relations: ['service'],
+        order: { weekday: 'ASC', start_time: 'ASC' }
       });
 
       res.status(200).json({
@@ -33,7 +45,7 @@ class ConsultantAvailabilityController {
       const repo = AppSource.getRepository(ConsultantAvailability);
       const availability = await repo.findOne({
         where: { id },
-        relations: ['consultant']
+        relations: ['service']
       });
 
       if (!availability) {
@@ -53,19 +65,23 @@ class ConsultantAvailabilityController {
 
   public async createAvailability(req: Request, res: Response): Promise<void> {
     try {
-      const { consultant_id, weekday, start_time, end_time } = req.body;
+      const { service_id, weekday, start_time, end_time } = req.body;
 
-      const profileRepo = AppSource.getRepository(Profile);
+      const serviceRepo = AppSource.getRepository(ConsultantService);
       const availabilityRepo = AppSource.getRepository(ConsultantAvailability);
 
-      const consultant = await profileRepo.findOneBy({ id: consultant_id });
-      if (!consultant) {
-        res.status(404).json({ message: `Consultant with ID ${consultant_id} not found` });
+      const service = await serviceRepo.findOne({
+        where: { id: service_id },
+        relations: ['consultant']
+      });
+
+      if (!service) {
+        res.status(404).json({ message: 'Service not found' });
         return;
       }
 
       const newAvailability = availabilityRepo.create({
-        consultant,
+        service,
         weekday,
         start_time,
         end_time
@@ -73,7 +89,7 @@ class ConsultantAvailabilityController {
 
       await availabilityRepo.save(newAvailability);
 
-      await generateAvailableSlotsForConsultant(consultant.id);
+      await generateAvailableSlotsForServices()
 
       res.status(201).json({
         message: 'Availability created and slots generated successfully'
@@ -105,7 +121,7 @@ class ConsultantAvailabilityController {
       repo.merge(availability, { weekday, start_time, end_time });
       await repo.save(availability);
 
-      await generateAvailableSlotsForConsultant(availability.consultant.id);
+      await generateAvailableSlotsForServices();
 
       res.status(200).json({
         message: 'Availability updated and slots regenerated successfully'

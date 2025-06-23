@@ -2,9 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { UserRole } from '../UserRole/UserRole';
 import { DocType } from '../../core/DocType/DocType';
 import { ConsultantService } from '../../consultants/ConsultantService/ConsultantService';
-import { ConsultantAvailability } from '../../consultants/ConsultantAvailability/ConsultantAvailability';
-import { ConsultantException } from '../../consultants/ConsultantException/ConsultantException';
-import { AvailableSlot } from '../../consultants/AvailableSlot/AvailableSlot';
 import { Appointment } from '../../consultants/Appointment/Appointment';
 
 @Entity({ schema: 'auth', name: 'profile' })
@@ -68,15 +65,6 @@ export class Profile {
   @OneToMany(() => ConsultantService, service => service.consultant)
   services!: ConsultantService[];
 
-  @OneToMany(() => ConsultantService, service => service.consultant)
-  consultantAvailabilities!: ConsultantAvailability[];
-
-  @OneToMany(() => ConsultantException, consultantException => consultantException.consultant)
-  consultantExceptions!: ConsultantException[];
-
-  @OneToMany(() => AvailableSlot, availableSlot => availableSlot.consultant)
-  availableSlots!: AvailableSlot[];
-  
   @OneToMany(() => Appointment, appointment => appointment.consultant)
   appointments!: Appointment[];
 

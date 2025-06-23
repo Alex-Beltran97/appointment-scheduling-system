@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { AppSource } from '../../data';
 import { ConsultantService } from '../../models/consultants/ConsultantService/ConsultantService';
 import { Profile } from '../../models/auth/Profile/Profile';
-import { generateAvailableSlotsForConsultant } from '../../Services/generateAvailableSlotsForConsultant';
+import { generateAvailableSlotsForServices } from '../../Services/generateAvailableSlotsForServices';
 
 class ServiceController {
   public async getServices(req: Request, res: Response): Promise<void> {
@@ -35,7 +35,7 @@ class ServiceController {
       const repo = AppSource.getRepository(ConsultantService);
       const service = await repo.findOne({
         where: { id, is_active: true },
-        relations: ['consultant']
+        relations: ['consultant', "consultantAvailabilities"]
       });
 
       if (!service) {
@@ -83,9 +83,10 @@ class ServiceController {
 
       await serviceRepo.save(newService);
 
-      await generateAvailableSlotsForConsultant(consultant.id);
+      await generateAvailableSlotsForServices()
 
       res.status(201).json({
+        response: newService,
         message: 'Service created and available slots generated successfully'
       });
     } catch (error) {
@@ -111,7 +112,10 @@ class ServiceController {
       } = req.body;
 
       const repo = AppSource.getRepository(ConsultantService);
-      const service = await repo.findOneBy({ id });
+      const service = await repo.findOne({
+        where: { id, is_active: true },
+        relations: ['consultant', 'consultantAvailabilities']
+      });
 
       if (!service) {
         res.status(404).json({ message: 'Service not found' });
@@ -127,9 +131,10 @@ class ServiceController {
 
       await repo.save(service);
 
-      await generateAvailableSlotsForConsultant(service.consultant.id);
+      await generateAvailableSlotsForServices();
 
       res.status(200).json({
+        response: service,
         message: 'Service updated successfully'
       });
     } catch (error) {

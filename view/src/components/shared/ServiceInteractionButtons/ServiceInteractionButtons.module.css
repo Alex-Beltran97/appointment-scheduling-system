@@ -1,0 +1,13 @@
+.container {
+  width: 100%;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.edit {
+  justify-content: space-between;
+}
+
+.create {
+  justify-content: end;
+}

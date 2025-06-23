@@ -103,14 +103,13 @@ class AppointmentController {
 
       const slot = await slotRepo.findOne({
         where: {
-          consultant: { id: consultant_id },
           service: { id: service_id },
           date,
           start_time,
           end_time,
           is_booked: false
         },
-        relations: ['consultant', 'service']
+        relations: ['service']
       });
 
       if (!slot) {
@@ -159,7 +158,6 @@ class AppointmentController {
 
       const slot = await slotRepo.findOne({
         where: {
-          consultant: { id: appointment.consultant.id },
           service: { id: appointment.service.id },
           date: appointment.date,
           start_time: appointment.start_time,

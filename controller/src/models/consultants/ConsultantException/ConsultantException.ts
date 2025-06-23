@@ -5,16 +5,17 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Profile } from '../../auth';
+import { ConsultantService } from '../ConsultantService/ConsultantService';
 
 @Entity({ name: 'consultant_exceptions', schema: 'consultant' })
 export class ConsultantException {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => Profile, profile => profile.consultantExceptions)
-  @JoinColumn({ name: 'consultant_id' })
-  consultant!: Profile;
-  
+  @ManyToOne(() => ConsultantService, service => service.consultantExceptions)
+  @JoinColumn({ name: 'service_id' })
+  service!: ConsultantService;
+
   @Column()
   date!: Date;
 

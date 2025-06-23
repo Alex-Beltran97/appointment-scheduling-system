@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS consultant.service
 CREATE TABLE IF NOT EXISTS consultant.consultant_availability
 (
     id bigserial NOT NULL,
-    consultant_id bigint NOT NULL,
+    service_id bigint NOT NULL,
     weekday integer NOT NULL,
     start_time time with time zone NOT NULL,
     end_time time with time zone NOT NULL,
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS consultant.appointments
 CREATE TABLE IF NOT EXISTS consultant.consultant_exceptions
 (
     id bigserial NOT NULL,
-    consultant_id bigint NOT NULL,
+    service_id bigint NOT NULL,
     date date NOT NULL,
     start_time time with time zone,
     end_time time with time zone,
@@ -219,7 +219,6 @@ CREATE TABLE IF NOT EXISTS consultant.appointment_status
 CREATE TABLE IF NOT EXISTS consultant.available_slots
 (
     id bigserial NOT NULL,
-    consultant_id bigint NOT NULL,
     service_id bigint NOT NULL,
     date date NOT NULL,
     start_time time with time zone NOT NULL,
@@ -314,8 +313,8 @@ ALTER TABLE IF EXISTS consultant.service
 
 
 ALTER TABLE IF EXISTS consultant.consultant_availability
-    ADD CONSTRAINT fk_profile FOREIGN KEY (consultant_id)
-    REFERENCES auth.profile (id) MATCH SIMPLE
+    ADD CONSTRAINT fk_service FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -346,16 +345,8 @@ ALTER TABLE IF EXISTS consultant.appointments
 
 
 ALTER TABLE IF EXISTS consultant.consultant_exceptions
-    ADD CONSTRAINT fk_consultant_id FOREIGN KEY (consultant_id)
-    REFERENCES auth.profile (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-
-ALTER TABLE IF EXISTS consultant.available_slots
-    ADD CONSTRAINT fk_consultant_id FOREIGN KEY (consultant_id)
-    REFERENCES auth.profile (id) MATCH SIMPLE
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;

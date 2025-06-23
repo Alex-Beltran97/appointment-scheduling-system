@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { AppSource } from "../../data";
-import { ConsultantException } from "../../models/consultants";
+import { ConsultantException, ConsultantService } from "../../models/consultants";
 import { Profile } from "../../models/auth";
 
 class ConsultantExceptionController {
   public async getExceptions(req: Request, res: Response): Promise<void> {
     try {
       const repo = AppSource.getRepository(ConsultantException);
-      const exceptions = await repo.find({ relations: ['consultant'] });
+      const exceptions = await repo.find({ relations: ['service'] });
 
       res.status(200).json({
         response: exceptions,
@@ -31,7 +31,7 @@ class ConsultantExceptionController {
       const repo = AppSource.getRepository(ConsultantException);
       const exception = await repo.findOne({
         where: { id },
-        relations: ['consultant']
+        relations: ['service']
       });
 
       if (!exception) {
@@ -51,19 +51,20 @@ class ConsultantExceptionController {
 
   public async createException(req: Request, res: Response): Promise<void> {
     try {
-      const { consultant_id, date, start_time, end_time, reason } = req.body;
+      const { service_id, date, start_time, end_time, reason } = req.body;
 
-      const profileRepo = AppSource.getRepository(Profile);
+      const serviceRepo = AppSource.getRepository(ConsultantService);
       const exceptionRepo = AppSource.getRepository(ConsultantException);
 
-      const consultant = await profileRepo.findOneBy({ id: consultant_id });
-      if (!consultant) {
-        res.status(404).json({ message: `Consultant with ID ${consultant_id} not found` });
+      const service = await serviceRepo.findOneBy({ id: service_id });
+      
+      if (!service) {
+        res.status(404).json({ message: 'Service not found' });
         return;
       }
 
       const newException = exceptionRepo.create({
-        consultant,
+        service,
         date,
         start_time,
         end_time,
