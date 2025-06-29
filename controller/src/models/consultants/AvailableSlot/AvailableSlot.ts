@@ -11,7 +11,9 @@ export class AvailableSlot {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => ConsultantService, service => service.availableSlots)
+  @ManyToOne(() => ConsultantService, service => service.availableSlots, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'service_id' })
   service!: ConsultantService;
 

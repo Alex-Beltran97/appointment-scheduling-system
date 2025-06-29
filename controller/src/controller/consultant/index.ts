@@ -4,3 +4,4 @@ export { default as consultantAvailabilityController } from './consultantAvailab
 export { default as consultantExceptionController } from './consultantException.controller';
 export { default as appointmentController } from './appointment.controller';
 export { default as availableSlotController } from './availableSlot.controller';
+export { default as appointmentStatusController } from './appointmentStatus.controller';

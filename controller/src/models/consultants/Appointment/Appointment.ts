@@ -12,11 +12,15 @@ export class Appointment {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => Profile, profile => profile.appointments)
+  @ManyToOne(() => Profile, profile => profile.appointments, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'consultant_id' })
   consultant!: Profile;
 
-  @ManyToOne(() => ConsultantService, service => service.appointments)
+  @ManyToOne(() => ConsultantService, service => service.appointments, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'service_id' })
   service!: ConsultantService;
 
@@ -41,12 +45,17 @@ export class Appointment {
   @Column({ type: 'text', nullable: true })
   notes!: string;
 
-  @ManyToOne(() => AppointmentStatus, status => status.appointments)
+  @ManyToOne(() => AppointmentStatus, status => status.appointments, {
+    onDelete: 'RESTRICT'
+  })
   @JoinColumn({ name: 'status_id' })
   status!: AppointmentStatus;
 
   @Column({ type: 'boolean', default: true })
   is_active!: boolean;
+
+  @Column()
+  appoinment_id!: string;
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

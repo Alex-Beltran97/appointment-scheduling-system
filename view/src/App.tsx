@@ -74,16 +74,19 @@ const App = () => {
           <Route path="/my-schedule-detail/:id" element={<PrivateRoute>
             <ScheduleDetailPage />
           </PrivateRoute>} />
-          <Route path="/search" element={<PrivateRoute>
+          <Route path="/search" element={<PublicOnlyRoute>
             <SearchPage />
-          </PrivateRoute>} />
-          <Route path="/search-result" element={<PrivateRoute>
+          </PublicOnlyRoute>} />
+          <Route path="/search-result" element={<PublicOnlyRoute>
             <SearchResultPage />
-          </PrivateRoute>} />
+          </PublicOnlyRoute>} />
+          <Route path="/scheduling" element={<PublicOnlyRoute>
+            <SchedulingPage />
+          </PublicOnlyRoute>} />
           <Route path="/customer-schedules" element={<PrivateRoute>
             <MyCustomerSchedules />
           </PrivateRoute>} />
-          <Route path="/scheduling" element={<PrivateRoute>
+          <Route path="/consultant-scheduling" element={<PrivateRoute>
             <SchedulingPage />
           </PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute>

@@ -11,11 +11,11 @@ export function useLogin() {
   });
 
   const {showNotification} = useNotificationStore();
-  const {login} = useAuthStore();
+  const {login: loginStore} = useAuthStore();
 
   const handleLogin = async (values: Login) => {
     try {
-      await login(values);
+      await loginStore(values);
       showNotification("Inicio de sesión exitoso", "success");
     } catch (error) {
       if ((error as AxiosError).response?.status === 401) {

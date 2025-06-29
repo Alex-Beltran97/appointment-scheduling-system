@@ -2,17 +2,15 @@ import { Box, Grid, List, Typography } from "@mui/material";
 import ServiceComponent from "../ScheduleComponent/ServiceComponent";
 import { useEffect } from "react";
 import { useServiceStore } from "../../../../store/useServiceStore";
+import { useAuthStore } from "../../../../store/useAuthStore";
 
 const ScheduleContainer = () => {
   const {services, getServices} = useServiceStore();
+  const {idUser} = useAuthStore();
 
   useEffect(() => {
-    getServices();
-  }, [getServices]);
-
-  useEffect(() => {
-    console.log(services);
-  }, [services])
+    getServices(idUser);
+  }, [getServices, idUser]);
 
   return (<List>
     <Grid container spacing={2} columns={12}>

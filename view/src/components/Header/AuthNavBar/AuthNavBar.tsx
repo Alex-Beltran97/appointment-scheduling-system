@@ -1,8 +1,9 @@
-import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import { AppBar, Box, Button, IconButton, Toolbar } from "@mui/material";
 
 import styles from './AuthNavBar.module.css';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import SearchIcon from '@mui/icons-material/Search';
 
 const AuthNavBar = () => {
   const navigate = useNavigate();
@@ -17,6 +18,12 @@ const AuthNavBar = () => {
             <img src="/img/logo.svg" alt="logo" />
           </Link>
           <Box>
+            <IconButton color="inherit">
+              <SearchIcon
+                className={styles.searchIcon}
+                onClick={() => handleNavigate('search')}
+              />
+            </IconButton>
             <Button
               color="inherit"
               onClick={() => handleNavigate('home')}

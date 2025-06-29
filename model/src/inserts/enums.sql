@@ -86,7 +86,6 @@ INSERT INTO core.payment_status (status) VALUES ('Fallido'::character varying)
 
 INSERT INTO consultant.appointment_status (status) VALUES 
 ('Pendiente'),
-('Confirmada'),
 ('Cancelada'),
 ('Finalizada')
 RETURNING id;

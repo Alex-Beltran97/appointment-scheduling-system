@@ -84,14 +84,4 @@ INSERT INTO auth.profile
 
 -----------------------------------------------------------------------------
 
--- Inserts initial appointment statuses into the consultant.appointment_status table.
--- Statuses: Pendiente, Confirmada, Cancelada, Reprogramada, Finalizada.
-INSERT INTO consultant.appointment_status (status)
-VALUES 
-('Pendiente'),
-('Confirmada'),
-('Cancelada'),
-('Reprogramada'),
-('Finalizada');
-
 COMMIT;

@@ -14,7 +14,9 @@ export class ConsultantService {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => Profile, profile => profile.services)
+  @ManyToOne(() => Profile, profile => profile.services, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'consultant_id' })
   consultant!: Profile;
 

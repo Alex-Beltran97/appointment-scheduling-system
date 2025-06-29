@@ -2,19 +2,39 @@ import { Request, Response } from "express";
 import { AppSource } from "../../data";
 import { Appointment, AppointmentStatus, AvailableSlot, ConsultantService } from "../../models/consultants";
 import { Profile } from "../../models/auth";
-import { normalizeDateToMidnight } from "../../utils";
 
 class AppointmentController {
   public async getAppointments(req: Request, res: Response): Promise<void> {
+    const { consultant_id, status_id, service_id, date } = req.query;
+
+    const isValidDate = (d: string): boolean => {
+      const parsedDate = new Date(d);
+      return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
+    };
+
     try {
       const repo = AppSource.getRepository(Appointment);
       const appointments = await repo.find({
-        where: { is_active: true },
-        relations: ['consultant', 'service', 'status']
+        where: {
+          ...(consultant_id  && !isNaN(+consultant_id) ? { consultant: { id: +consultant_id } } : {}),
+          ...(status_id  && !isNaN(+status_id) ? { status: { id: +status_id } } : {}),
+          ...(service_id  && !isNaN(+service_id) ? { service: { id: +service_id } } : {}),
+          ...(isValidDate(date as string) ? { date: (date as unknown) as Date } : {}),
+        },
+        relations: ['consultant', 'service', 'status'],
+        order: {
+          date: 'ASC',
+          start_time: 'ASC'
+        }
       });
 
+      const filtered = appointments.filter(app => 
+        app.consultant?.is_active && 
+        app.service?.is_active
+      );
+
       res.status(200).json({
-        response: appointments,
+        response: filtered,
         message: 'Appointments fetched successfully'
       });
     } catch (error) {
@@ -34,7 +54,7 @@ class AppointmentController {
     try {
       const repo = AppSource.getRepository(Appointment);
       const appointment = await repo.findOne({
-        where: { id, is_active: true },
+        where: { id },
         relations: ['consultant', 'service', 'status']
       });
 
@@ -65,7 +85,8 @@ class AppointmentController {
         start_time,
         end_time,
         notes,
-        status_id = 1
+        status_id = 1,
+        appoinment_id
       } = req.body;
 
       const appointmentRepo = AppSource.getRepository(Appointment);
@@ -96,10 +117,10 @@ class AppointmentController {
         end_time,
         notes,
         status,
+        appoinment_id,
         is_active: true
       });
 
-      await appointmentRepo.save(newAppointment);
 
       const slot = await slotRepo.findOne({
         where: {
@@ -117,9 +138,10 @@ class AppointmentController {
           message: 'No available slot found for the given date and time'
         });
         return;
-      }
+      };
 
       slot.is_booked = true;
+      await appointmentRepo.save(newAppointment);
       await slotRepo.save(slot);
 
       res.status(201).json({
@@ -127,6 +149,51 @@ class AppointmentController {
       });
     } catch (error) {
       console.error('Error creating appointment:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+
+  public async completeAppointment(req: Request, res: Response): Promise<void> {
+    const id = +req.params.id;
+
+    if (isNaN(id)) {
+      res.status(400).json({ error: 'Invalid ID' });
+      return;
+    };
+
+    try {
+      const repo = AppSource.getRepository(Appointment);
+      const statusRepo = AppSource.getRepository(AppointmentStatus);
+
+      const appointment = await repo.findOne({
+        where: { id },
+        relations: ['consultant', 'service']
+      });
+
+      if (!appointment) {
+        res.status(404).json({ message: 'Appointment not found' });
+        return;
+      }
+
+      const newStatus = await statusRepo.findOneBy({ id: 3 });
+
+      if (!newStatus) {
+        res.status(404).json({ message: 'Status not found' });
+        return;
+      }
+
+      repo.merge(appointment, {
+        is_active: false,
+        status: newStatus
+      });
+
+      await repo.save(appointment);
+
+      res.status(200).json({
+        message: 'Appointment completed successfully'
+      });
+    } catch (error) {
+      console.error('Error completing appointment:', error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
@@ -142,6 +209,7 @@ class AppointmentController {
     try {
       const repo = AppSource.getRepository(Appointment);
       const slotRepo = AppSource.getRepository(AvailableSlot);
+      const statusRepo = AppSource.getRepository(AppointmentStatus);
 
       const appointment = await repo.findOne({
         where: { id },
@@ -153,7 +221,18 @@ class AppointmentController {
         return;
       }
 
-      appointment.is_active = false;
+      const newStatus = await statusRepo.findOneBy({ id: 2 });
+    
+      if (!newStatus) {
+        res.status(404).json({ message: 'Status not found' });
+        return;
+      };
+
+      repo.merge(appointment, {
+        is_active: false,
+        status: newStatus
+      });
+
       await repo.save(appointment);
 
       const slot = await slotRepo.findOne({

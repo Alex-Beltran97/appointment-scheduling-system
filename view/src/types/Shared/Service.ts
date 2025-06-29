@@ -44,3 +44,47 @@ export interface Availability {
     updated_at: Date;
     service:    Service;
 }
+
+
+export interface Slot {
+    id:         number;
+    date:       Date;
+    start_time: string;
+    end_time:   string;
+    is_booked:  boolean;
+    created_at: Date;
+    updated_at: Date;
+    service:    Service;
+}
+
+export interface Appointment {
+    id:  number;
+    consultant_id:  number;
+    service_id:     number;
+    clientFullName: string;
+    client_email:   string[];
+    client_phone:   string[];
+    date:           Date | string;
+    start_time:     string;
+    end_time:       string;
+    notes:          string;
+    status_id:      number;
+    appoinment_id:  string;
+    is_active?:     boolean;
+    service?:      Service;
+    status?:       AppointmentStatus;
+}
+
+export interface AppointmentPayload {
+    clientFullName: string;
+    client_email:   string;
+    client_phone:   string;
+    notes:          string;
+}
+
+export interface AppointmentStatus {
+    id:         number;
+    status:     string;
+    created_at: Date;
+    updated_at: Date;
+}

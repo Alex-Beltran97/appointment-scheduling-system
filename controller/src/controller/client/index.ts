@@ -1,0 +1,1 @@
+export { default as consultantServiceSearchController } from './consultantServiceSearch.controller';

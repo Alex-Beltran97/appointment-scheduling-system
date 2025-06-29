@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import type { JSX } from 'react';
+import { useEffect, type JSX } from 'react';
 import Spinner from '../components/shared/Spinner/Spinner';
 
 interface PrivateRouteProps {
@@ -8,7 +8,12 @@ interface PrivateRouteProps {
 };
 
 const PrivateRoute = ({children}: PrivateRouteProps) => {
-  const {isAuthenticated, loading} = useAuthStore();
+  const {isAuthenticated, loading, checkSession} = useAuthStore();
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
+
 
   if (loading) return <Spinner />;
 

@@ -2,6 +2,7 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+
 CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
@@ -188,6 +189,7 @@ CREATE TABLE IF NOT EXISTS consultant.appointments
     end_time time with time zone NOT NULL,
     notes text,
     status_id bigint NOT NULL DEFAULT 1,
+    appoinment_id character varying NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -286,14 +288,14 @@ ALTER TABLE IF EXISTS auth.profile
     ADD CONSTRAINT "FK_522e0554d4633909962c220e968" FOREIGN KEY ("userRole_id")
     REFERENCES auth.user_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 
 ALTER TABLE IF EXISTS auth.profile
     ADD CONSTRAINT "FK_ffdae762f604317dca306710abe" FOREIGN KEY ("docType_id")
     REFERENCES core."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS core.suscription
@@ -305,34 +307,34 @@ ALTER TABLE IF EXISTS core.suscription
 
 
 ALTER TABLE IF EXISTS consultant.service
-    ADD CONSTRAINT fk_profile FOREIGN KEY (consultant_id)
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (consultant_id)
     REFERENCES auth.profile (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS consultant.consultant_availability
-    ADD CONSTRAINT fk_service FOREIGN KEY (service_id)
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
     REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS consultant.appointments
-    ADD CONSTRAINT fk_service_id FOREIGN KEY (consultant_id)
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (consultant_id)
     REFERENCES auth.profile (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS consultant.appointments
-    ADD CONSTRAINT service_id FOREIGN KEY (service_id)
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
     REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 
@@ -340,7 +342,7 @@ ALTER TABLE IF EXISTS consultant.appointments
     ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id)
     REFERENCES consultant.appointment_status (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE RESTRICT
     NOT VALID;
 
 
@@ -348,7 +350,7 @@ ALTER TABLE IF EXISTS consultant.consultant_exceptions
     ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
     REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 
@@ -356,7 +358,7 @@ ALTER TABLE IF EXISTS consultant.available_slots
     ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
     REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     NOT VALID;
 
 END;

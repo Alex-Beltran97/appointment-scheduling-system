@@ -12,7 +12,9 @@ export class ConsultantException {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @ManyToOne(() => ConsultantService, service => service.consultantExceptions)
+  @ManyToOne(() => ConsultantService, service => service.consultantExceptions, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({ name: 'service_id' })
   service!: ConsultantService;
 

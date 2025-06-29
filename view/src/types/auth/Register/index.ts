@@ -6,6 +6,7 @@ export interface Login {
 };
 
 export interface Profile {
+    id:             number;
     name:           string;
     lastName:       string;
     secondLastName: string;

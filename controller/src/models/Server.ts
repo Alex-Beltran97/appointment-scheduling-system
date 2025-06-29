@@ -12,7 +12,8 @@ import {
 } from '../routers/core';
 import { profileRouter, userRoleRouter, loginRouter } from '../routers/auth';
 import { config } from '../config';
-import { appointmentRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantServiceRoute, slotGeneratorRoute } from '../routers/consultant';
+import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantServiceRoute, slotGeneratorRoute } from '../routers/consultant';
+import { searchControllerRoute } from '../routers/client';
 
 class Server {
   private readonly express : Application = express();
@@ -58,6 +59,8 @@ class Server {
     this.express.use(`${this.API_PATH}/exceptions`, consultantExceptionRoute);
     this.express.use(`${this.API_PATH}/appointment`, appointmentRoute);
     this.express.use(`${this.API_PATH}/available-slots`, availableSlotRoute);
+    this.express.use(`${this.API_PATH}/search`, searchControllerRoute);
+    this.express.use(`${this.API_PATH}/appointment-status`, appointmentStatusRoute);
   }
 
   private _dbInitializer() : Promise<DataSource>{

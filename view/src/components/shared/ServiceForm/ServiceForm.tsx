@@ -124,7 +124,7 @@ const ServiceForm = ({serviceId}: Props) => {
     }
   };
 
-  const handleCreateAvailabilities = (serviceId: string | number, schedules: ScheduleItem[], consultantAvailabilities?: Availability[]): Promise<void> => {
+  const handleCreateAvailabilities = (serviceId: string | number, schedules: ScheduleItem[], consultantAvailabilities: Availability[] = []): Promise<void> => {
     for (const schedule in schedules) {
       const payload: AvailabilityPayload = {
         service_id: +serviceId,

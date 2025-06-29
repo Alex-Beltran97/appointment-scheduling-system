@@ -1,21 +1,31 @@
 import { Box, Button, Card, CardContent, ListItem, Typography } from "@mui/material";
 
 import styles from './ResultComponent.module.css';
+import type { Service } from "../../../../types/Shared/Service";
+import { getHourFormat, getWeekDayName } from "../../../../utils";
+import { useNavigate } from "react-router-dom";
 
-const ResultComponent = () => {
+interface Props {
+  service: Service;
+};
+
+const ResultComponent = ({service}: Props) => {
+
+  const navigate = useNavigate();
+
   return (
     <ListItem>
-      <Card>
+      <Card sx={{ width: '100%' }}>
         <CardContent>
           <Typography variant="h5" component="div">
-            Servicio de ejemplo #1
+            {service.name}
           </Typography>
           <Box className={styles.service__item}>
             <Typography variant="body2" component="p">
               Creado por:
             </Typography>
             <Typography variant="body2" component="p">
-              Pepito Jaimito Perez Prieto - Abogado
+              {service.consultant.name} {service.consultant.lastName}
             </Typography>
           </Box>
           <Box sx={{ marginBottom: 2 }}>
@@ -23,15 +33,7 @@ const ResultComponent = () => {
               Descripción:
             </Typography>
             <Typography variant="body2" component="p">
-              Lorem ipsum dolor sit amet consectetur. In nec vitae semper ac. Nullam scelerisque odio vel ornare in eleifend felis. Arcu ornare aliquet vitae dictum non natoque amet egestas. Vitae molestie lorem pharetra sit nisl pharetra. Amet vitae amet libero ultrices mollis. Interdum porttitor congue augue eu. Phasellus leo maecenas massa varius enim habitant aliquam.
-            </Typography>
-          </Box>
-          <Box className={styles.service__item}>
-            <Typography variant="body2" component="p">
-              Modalidad:
-            </Typography>
-            <Typography variant="body2" component="p">
-              Presencial
+              {service.description}
             </Typography>
           </Box>
           <Box className={styles.service__item}>
@@ -39,29 +41,41 @@ const ResultComponent = () => {
               Tarifa:
             </Typography>
             <Typography variant="body2" component="p">
-              $50.000 COP
+              ${service.price} COP
             </Typography>
           </Box>
           <Box className={styles.service__item}>
             <Typography variant="body2" component="p">
-              Tipo de duración:
+              Duración:
             </Typography>
             <Typography variant="body2" component="p">
-              Por sesión
+              {service.durationMinutes} minutos
             </Typography>
           </Box>
           <Typography variant="body1" component="h3" textAlign="center" gutterBottom>
             Horarios
           </Typography>
-          <Box className={styles.service__item}>
+          { service.consultantAvailabilities && service.consultantAvailabilities.length > 0 ?
+            service.consultantAvailabilities.map((schedule) => (
+              <Box key={schedule.id} className={styles.service__item}>
+                <Typography variant="body2" component="p">
+                  {getWeekDayName(schedule.weekday)}
+                </Typography>
+                <Typography variant="body2" component="p">
+                  {getHourFormat(schedule.start_time)} - {getHourFormat(schedule.end_time)}
+                </Typography>
+              </Box>
+            )) :
             <Typography variant="body2" component="p">
-              Lunes a viernes
+              No hay horarios disponibles
             </Typography>
-            <Typography variant="body2" component="p">
-              De 8:00 a.m. a 05:00 p.m.
-            </Typography>
-          </Box>
-          <Button variant="contained" color="secondary" fullWidth>Solicitar consulta</Button>
+          }
+          <Button
+            onClick={() => navigate(`/scheduling?service-id=${service.id}`)}
+            variant="contained"
+            color="secondary"
+            fullWidth
+          >Solicitar consulta</Button>
         </CardContent>
       </Card>
     </ListItem>

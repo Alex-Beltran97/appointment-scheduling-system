@@ -6,10 +6,15 @@ import { generateAvailableSlotsForServices } from '../../Services/generateAvaila
 
 class ServiceController {
   public async getServices(req: Request, res: Response): Promise<void> {
+    const { consultant_id } = req.query;
+
     try {
       const repo = AppSource.getRepository(ConsultantService);
       const services = await repo.find({
-        where: { is_active: true },
+        where: { 
+          is_active: true,
+          ...(consultant_id && !isNaN(+consultant_id) ? { consultant: { id: +consultant_id } } : {})
+        },
         relations: ['consultant']
       });
 

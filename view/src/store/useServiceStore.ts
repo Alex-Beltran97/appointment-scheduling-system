@@ -6,8 +6,9 @@ import { createAvailability, getServiceAvailability, updateAvailability } from '
 
 type ServiceState = {
   services: Service[];
+  service: Service | null;
   createService: (service: ServicePayload) => void;
-  getServices: () => void;
+  getServices: (consultantId: string | number | undefined) => void;
   getServiceById: (id: string | number | undefined) => void;
   updateServiceById: (id: string | number | undefined, payload: Partial<ServicePayload>) => void;
   getAvailabilitySlots: (serviceId?: param, date?: param) => void;
@@ -19,9 +20,10 @@ type ServiceState = {
 
 export const useServiceStore = create<ServiceState>(set => ({
   services: [],
-  getServices: async () => {
+  service: null,
+  getServices: async (consultantId: string | number | undefined) => {
     try {
-      const {data} = await getServices();
+      const {data} = await getServices(consultantId);
       set({ services: data?.response || [] });
     } catch (error) {
       console.error('Error fetching services:', error);
@@ -31,6 +33,10 @@ export const useServiceStore = create<ServiceState>(set => ({
   getServiceById: async (id: string | number | undefined) => {
     try {
       const {data} = await getServiceById(id);
+      if (!data || !data.response) {
+        throw new Error('Service not found');
+      };
+      set({ service: data.response });
       return data?.response || null;
     } catch (error) {
       console.error('Error fetching services:', error);

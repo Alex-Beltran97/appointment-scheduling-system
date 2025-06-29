@@ -2,11 +2,13 @@ import { Badge, Box, Button, Card, CardContent, ListItem, styled, Typography, ty
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 import styles from './ServiceComponent.module.css';
-import type { Availability, Service } from "../../../../types/Shared/Service";
+import type { Appointment, Availability, Service } from "../../../../types/Shared/Service";
 import { useCallback, useEffect, useState } from "react";
 import { useServiceStore } from "../../../../store/useServiceStore";
 import { getHourFormat, getWeekDayName } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
+import { useAppointmentStore } from "../../../../store/useAppointment";
+import { useNotificationStore } from "../../../../store/useNotificationStore";
 
 const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   '& .MuiBadge-badge': {
@@ -24,21 +26,50 @@ const ServiceComponent = ({service}: Props) => {
 
   const {getAvailability} = useServiceStore();
 
+  const {appointments, getAppointments} = useAppointmentStore();
+  const {showNotification} = useNotificationStore();
+
   const handleGetAvailability = useCallback( async () => {
     try {
       const result = await (getAvailability(service.id) as unknown) as Availability[];
       setAvailabilities(result);
+      if (result.length === 0) {
+        showNotification('No hay disponibilidades para este servicio.', 'info');
+      } else {
+        // Optionally, you can fetch appointments for the service here
+        await getAppointments({id_service: service.id});
+      }
     } catch (error) {
+      showNotification('No se pudieron obtener las disponibilidades del servicio. Inténtalo más tarde.', 'error');
       console.error('Error fetching availability:', error);
-      throw error;
     }
-  }, [service.id, getAvailability]);
+  }, [getAvailability, getAppointments, service.id, showNotification]);
 
   const novigate = useNavigate();
 
   useEffect(() => {
     handleGetAvailability();
   }, [handleGetAvailability]);
+
+  const [appointmentsCounter, setAppointmentsCounter] = useState(0);
+
+  const handleGetAppointments = useCallback(async () => {
+    try {
+      const result = await (getAppointments({
+        id_service: service.id,
+        id_consultant: service.consultant.id
+      }) as unknown) as Appointment[];
+      const filteredAppointments = result?.filter((item: Appointment) => item.is_active);
+      setAppointmentsCounter(filteredAppointments.length);
+    } catch (error) {
+      showNotification('No se pudieron obtener las citas. Inténtalo más tarde.', 'error');
+      console.error('Error fetching appointments:', error);      
+    }
+  }, [getAppointments, service.consultant.id, service.id, showNotification]);
+
+  useEffect(() => {
+    handleGetAppointments();
+  }, [handleGetAppointments]);
 
   return (<ListItem>
     <Card sx={{ width: '100%' }}>
@@ -74,12 +105,13 @@ const ServiceComponent = ({service}: Props) => {
           </Box>
         ))}
         <Button
+          onClick={() => novigate(`/my-schedules?service-id=${service.id}`)}
           variant="contained"
           color="primary"
           fullWidth
           sx={{ marginTop: 2 }}
         >
-          <StyledBadge badgeContent={12} color="error">
+          <StyledBadge badgeContent={appointmentsCounter} color="error">
             Gestionar agenda
           </StyledBadge>
         </Button>

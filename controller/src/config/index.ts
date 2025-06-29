@@ -16,5 +16,8 @@ export const config = {
   login: {
     saltRounds: process.env.SALT_ROUNDS,
     jwtKey: process.env.JWT_SECRET_KEY,
-  }
+  },
+  email: {
+    resendApiKey: process.env.RESEND_API_KEY,
+  },
 };

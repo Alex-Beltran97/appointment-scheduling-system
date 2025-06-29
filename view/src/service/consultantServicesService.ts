@@ -1,8 +1,8 @@
 import type { ServicePayload } from '../types/Shared/Service';
 import api from './api';
 
-export const getServices = () => {
-  return api.get('/services'); 
+export const getServices = (consultantId: string | number | undefined) => {
+  return api.get(`/services?consultant_id=${consultantId}`);
 };
 
 export const getServiceById = (id: string | number | undefined) => {

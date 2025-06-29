@@ -9,7 +9,9 @@ export class Profile {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => UserRole, userRole => userRole.profiles)
+  @ManyToOne(() => UserRole, userRole => userRole.profiles, {
+    onDelete: 'RESTRICT'
+  })
   @JoinColumn({name: 'userRole_id'})
   userRole!: UserRole;
 
@@ -40,7 +42,9 @@ export class Profile {
   @Column({unique: true})
   email!: string;
 
-  @ManyToOne(() => DocType, docType => docType.profiles)
+  @ManyToOne(() => DocType, docType => docType.profiles, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({name: 'docType_id'})
   docType!: DocType;
 
