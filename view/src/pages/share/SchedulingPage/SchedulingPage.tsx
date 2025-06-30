@@ -92,7 +92,7 @@ const SchedulingPage = () => {
       <ReplyOutlinedIcon />
     </IconButton>
     <Typography variant="h4" component="h1" gutterBottom>
-      Servicio de ejemplo #1
+      Fechas disponibles para el servicio
     </Typography>
     <Divider sx={{ marginBottom: 2 }} />
     <Typography variant="h6" component="h2" textAlign='center' gutterBottom>

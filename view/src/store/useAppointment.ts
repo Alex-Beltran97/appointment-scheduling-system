@@ -6,6 +6,7 @@ type appointmentParams = {
   id_consultant?: string | number | undefined;
   id_status?: string | number | undefined;
   id_service?: string | number | undefined;
+  id_appointment?: string | number | undefined;
   date?: string | number | undefined;
 };
 
@@ -29,13 +30,14 @@ export const useAppointmentStore = create<AppointmentStore>(set => ({
       throw error;
     }
   },
-  getAppointments: async ({id_status, id_consultant, id_service, date}:appointmentParams) : Promise<void> => {
+  getAppointments: async ({id_status, id_consultant, id_service, date, id_appointment}:appointmentParams) : Promise<void> => {
     try {
       const { data } = await getAppointments({
         id_status,
         id_consultant,
         id_service,
-        date
+        date,
+        id_appointment
       });
       set({ appointments: data.response });
       return Promise.resolve(data.response);

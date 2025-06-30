@@ -24,6 +24,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import CreateServicePage from "./pages/consultant/CreateServicePage/CreateServicePage";
+import ChangeAppointment from "./pages/customer/ChangeAppointment/ChangeAppointment";
 
 const App = () => {
   const { checkSession } = useAuthStore();
@@ -82,6 +83,9 @@ const App = () => {
           </PublicOnlyRoute>} />
           <Route path="/scheduling" element={<PublicOnlyRoute>
             <SchedulingPage />
+          </PublicOnlyRoute>} />
+          <Route path="/change-appointement" element={<PublicOnlyRoute>
+            <ChangeAppointment />
           </PublicOnlyRoute>} />
           <Route path="/customer-schedules" element={<PrivateRoute>
             <MyCustomerSchedules />

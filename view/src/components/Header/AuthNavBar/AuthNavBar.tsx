@@ -40,6 +40,10 @@ const AuthNavBar = () => {
               color="inherit"
               onClick={() => handleNavigate('register')}
             >Registrarse</Button>
+            <Button
+              color="inherit"
+              onClick={() => handleNavigate('change-appointement')}
+            >Modificar citas</Button>
           </Box>
         </Toolbar>
       </AppBar>

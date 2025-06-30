@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { AppSource } from "../../data";
 import { Appointment, AppointmentStatus, AvailableSlot, ConsultantService } from "../../models/consultants";
 import { Profile } from "../../models/auth";
+import { sendMail } from "../../Services/email/sendEmailService";
 
 class AppointmentController {
   public async getAppointments(req: Request, res: Response): Promise<void> {
-    const { consultant_id, status_id, service_id, date } = req.query;
+    const { consultant_id, status_id, service_id, date, appointment_id } = req.query;
 
     const isValidDate = (d: string): boolean => {
       const parsedDate = new Date(d);
@@ -20,6 +21,7 @@ class AppointmentController {
           ...(status_id  && !isNaN(+status_id) ? { status: { id: +status_id } } : {}),
           ...(service_id  && !isNaN(+service_id) ? { service: { id: +service_id } } : {}),
           ...(isValidDate(date as string) ? { date: (date as unknown) as Date } : {}),
+          appoinment_id: appointment_id ? appointment_id.toString() : undefined
         },
         relations: ['consultant', 'service', 'status'],
         order: {
@@ -144,6 +146,8 @@ class AppointmentController {
       await appointmentRepo.save(newAppointment);
       await slotRepo.save(slot);
 
+      sendMail(client_email, 'Date Fixer - Confirmacion de agenda', newAppointment);
+
       res.status(201).json({
         message: 'Appointment created and slot marked as booked successfully'
       });
@@ -247,7 +251,9 @@ class AppointmentController {
       if (slot && slot.is_booked) {
         slot.is_booked = false;
         await slotRepo.save(slot);
-      }
+      };
+
+      sendMail(appointment.client_email[0], 'Date Fixer - Cancelacion de agenda', appointment, false);
 
       res.status(200).json({
         message: 'Appointment canceled and slot released successfully'

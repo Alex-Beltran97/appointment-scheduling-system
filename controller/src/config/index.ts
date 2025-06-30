@@ -18,6 +18,7 @@ export const config = {
     jwtKey: process.env.JWT_SECRET_KEY,
   },
   email: {
-    resendApiKey: process.env.RESEND_API_KEY,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 };
