@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAuthStore } from "../../../store/useAuthStore";
+import NotificationComponent from "../NotificationComponent/NotificationComponent";
 
 const ConsultantNavBar = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const ConsultantNavBar = () => {
             <img src="/img/logo.svg" alt="logo" />
           </Link>
           <Box className={styles.navbar}>
+            <NotificationComponent />            
             <Button
               color="inherit"
               onClick={() => handleNavigate('dashboard')}

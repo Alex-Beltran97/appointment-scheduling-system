@@ -1,16 +1,36 @@
 import { Box, Grid, List, Typography } from "@mui/material";
 import ServiceComponent from "../ScheduleComponent/ServiceComponent";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useServiceStore } from "../../../../store/useServiceStore";
 import { useAuthStore } from "../../../../store/useAuthStore";
+import socket from "../../../../service/socket";
+import { useNotificationStore } from "../../../../store/useNotificationStore";
 
 const ScheduleContainer = () => {
   const {services, getServices} = useServiceStore();
   const {idUser} = useAuthStore();
 
+  const {showNotification} = useNotificationStore();
+
+  const handleGetServices = useCallback(async () => {
+    try {
+      await getServices(idUser);
+      showNotification('Servicios actualizados', 'success');      
+    } catch (error) {
+      showNotification('Error al obtener los servicios', 'error');
+      console.error('Error fetching services:', error);
+    }
+  },[getServices, idUser, showNotification]);
+
   useEffect(() => {
-    getServices(idUser);
-  }, [getServices, idUser]);
+    handleGetServices();
+
+    socket.on('new_notification', handleGetServices);
+
+    return () => {
+      socket.off('new_notification', handleGetServices);
+    };
+  }, [handleGetServices]);
 
   return (<List>
     <Grid container spacing={2} columns={12}>

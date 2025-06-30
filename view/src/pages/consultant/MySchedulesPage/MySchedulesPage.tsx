@@ -13,6 +13,8 @@ import { useNotificationStore } from "../../../store/useNotificationStore";
 
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNotification } from "../../../store/useNotification";
+import socket from "../../../service/socket";
 
 type appointmentParams = {
   id_consultant?: string | number | undefined;
@@ -54,10 +56,22 @@ const MySchedulesPage = () => {
 
   const [searchParams] = useSearchParams();
 
+  const {notifications} = useNotification();
+
   useEffect(() => {
     const serviceId = searchParams.get('service-id');
     handleGetAppointments({id_consultant: idUser, id_status: appointmentStatus, id_service: serviceId ? Number(serviceId) : undefined});
-  }, [handleGetAppointments, idUser, appointmentStatus, searchParams]);
+    
+    socket.on('new_notification', () => {
+      handleGetAppointments({id_consultant: idUser, id_status: appointmentStatus, id_service: serviceId ? Number(serviceId) : undefined});
+    });
+    
+    return () => {
+      socket.off('new_notification', () => {
+        handleGetAppointments({id_consultant: idUser, id_status: appointmentStatus, id_service: serviceId ? Number(serviceId) : undefined});
+      });
+    };
+  }, [handleGetAppointments, idUser, appointmentStatus, searchParams, notifications]);
 
   const navigate = useNavigate();
 

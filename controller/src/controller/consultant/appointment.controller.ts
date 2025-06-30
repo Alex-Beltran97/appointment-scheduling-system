@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import { AppSource } from "../../data";
-import { Appointment, AppointmentStatus, AvailableSlot, ConsultantService } from "../../models/consultants";
+import { Appointment, AppointmentStatus, AvailableSlot, ConsultantNotification, ConsultantService, NotificationType } from "../../models/consultants";
 import { Profile } from "../../models/auth";
 import { sendMail } from "../../Services/email/sendEmailService";
+import { getIO } from "../../Services/socket";
+
+import moment from 'moment';
+moment.locale();
 
 class AppointmentController {
   public async getAppointments(req: Request, res: Response): Promise<void> {
@@ -96,14 +100,17 @@ class AppointmentController {
       const profileRepo = AppSource.getRepository(Profile);
       const statusRepo = AppSource.getRepository(AppointmentStatus);
       const slotRepo = AppSource.getRepository(AvailableSlot);
+      const notificationRepo = AppSource.getRepository(ConsultantNotification);
+      const notificationTypeRepo = AppSource.getRepository(NotificationType);
 
       const consultant = await profileRepo.findOneBy({ id: consultant_id });
       const service = await serviceRepo.findOneBy({ id: service_id });
       const status = await statusRepo.findOneBy({ id: status_id });
+      const notificationType = await notificationTypeRepo.findOneBy({ id: 1 });
 
-      if (!consultant || !service || !status) {
+      if (!consultant || !service || !status || !notificationType) {
         res.status(404).json({
-          message: 'Invalid consultant, service, or status'
+          message: 'Invalid consultant, service, status, or notification type'
         });
         return;
       }
@@ -147,6 +154,21 @@ class AppointmentController {
       await slotRepo.save(slot);
 
       sendMail(client_email, 'Date Fixer - Confirmacion de agenda', newAppointment);
+
+      const notification = notificationRepo.create({
+        consultant,
+        notificationType,
+        message: `Se ha creado una nueva cita con el cliente ${clientFullName} para el servicio ${service.name} el ${moment(date).format('LLLL')} de ${start_time} a ${end_time}.`,
+      });
+      await notificationRepo.save(notification);
+
+      const io = getIO();
+
+      io.emit('new_notification', {
+        id: notification.id,
+        message: notification.message,
+        created_at: notification.created_at
+      });
 
       res.status(201).json({
         message: 'Appointment created and slot marked as booked successfully'
@@ -214,6 +236,9 @@ class AppointmentController {
       const repo = AppSource.getRepository(Appointment);
       const slotRepo = AppSource.getRepository(AvailableSlot);
       const statusRepo = AppSource.getRepository(AppointmentStatus);
+      const notificationRepo = AppSource.getRepository(ConsultantNotification);
+      const notificationTypeRepo = AppSource.getRepository(NotificationType);
+      const profileRepo = AppSource.getRepository(Profile);
 
       const appointment = await repo.findOne({
         where: { id },
@@ -229,6 +254,20 @@ class AppointmentController {
     
       if (!newStatus) {
         res.status(404).json({ message: 'Status not found' });
+        return;
+      };
+
+      const consultant = await profileRepo.findOneBy({ id: appointment.consultant.id });
+
+      if (!consultant) {
+        res.status(404).json({ message: 'Consultant not found' });
+        return;
+      };
+
+      const notificationType = await notificationTypeRepo.findOneBy({ id: 3 });
+
+      if (!notificationType) {
+        res.status(404).json({ message: 'Notification type not found' });
         return;
       };
 
@@ -254,6 +293,21 @@ class AppointmentController {
       };
 
       sendMail(appointment.client_email[0], 'Date Fixer - Cancelacion de agenda', appointment, false);
+
+      const notification = notificationRepo.create({
+        consultant,
+        notificationType,
+        message: `La cita con el cliente ${appointment.clientFullName} para el servicio ${appointment.service.name} del ${moment(appointment.date).format('LLLL')} de ${appointment.start_time} a ${appointment.end_time} ha sido cancelada.`,
+      });
+      await notificationRepo.save(notification);
+
+      const io = getIO();
+
+      io.emit('new_notification', {
+        id: notification.id,
+        message: notification.message,
+        created_at: notification.created_at
+      });
 
       res.status(200).json({
         message: 'Appointment canceled and slot released successfully'

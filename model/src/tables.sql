@@ -2,7 +2,6 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-
 CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
@@ -231,6 +230,27 @@ CREATE TABLE IF NOT EXISTS consultant.available_slots
     CONSTRAINT pk_available_slots PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS consultant.notification
+(
+    id bigserial NOT NULL,
+    profile_id bigint NOT NULL,
+    notification_type_id bigint NOT NULL,
+    message text NOT NULL,
+    is_readed boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_notification PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.notification_type
+(
+    id bigserial NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);
+
 ALTER TABLE IF EXISTS core.contract
     ADD CONSTRAINT "FK_1dbf9a5c77120410dfac83b817c" FOREIGN KEY (company_id)
     REFERENCES core.company (id) MATCH SIMPLE
@@ -359,6 +379,22 @@ ALTER TABLE IF EXISTS consultant.available_slots
     REFERENCES consultant.service (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.notification
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (profile_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.notification
+    ADD CONSTRAINT fk_notification_type_id FOREIGN KEY (notification_type_id)
+    REFERENCES consultant.notification_type (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE RESTRICT
     NOT VALID;
 
 END;

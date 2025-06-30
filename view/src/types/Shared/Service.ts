@@ -88,3 +88,14 @@ export interface AppointmentStatus {
     created_at: Date;
     updated_at: Date;
 }
+export interface NotificationPayload {
+  consultantId:        number;
+  notificationTypeId:  number;
+  message:             string;
+}
+
+export interface NotificationMsg {
+  id:          number;
+  message:     string;
+  created_at:  Date;
+}

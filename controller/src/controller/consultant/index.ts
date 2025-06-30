@@ -5,3 +5,5 @@ export { default as consultantExceptionController } from './consultantException.
 export { default as appointmentController } from './appointment.controller';
 export { default as availableSlotController } from './availableSlot.controller';
 export { default as appointmentStatusController } from './appointmentStatus.controller';
+export { default as consultantNotificationController } from './consultantNotification.controller';
+export { default as notificationTypeController } from './notificationType.controller';

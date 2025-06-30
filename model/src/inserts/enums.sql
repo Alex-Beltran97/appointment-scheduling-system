@@ -92,4 +92,15 @@ RETURNING id;
 
 -- SELECT * FROM consultant.appointment_status;
 
+-----------------------------------------------------------------------------
+
+-- Insert data for Notification Type table
+
+INSERT INTO consultant.notification_type (status) VALUES
+	('AGENDAMIENTO'),
+	('REPROGRAMACION'),
+	('CANCELACION');
+
+-- SELECT * FROM consultant.notification_type;
+
 COMMIT;

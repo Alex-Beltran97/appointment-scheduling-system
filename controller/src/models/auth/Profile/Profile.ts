@@ -3,6 +3,7 @@ import { UserRole } from '../UserRole/UserRole';
 import { DocType } from '../../core/DocType/DocType';
 import { ConsultantService } from '../../consultants/ConsultantService/ConsultantService';
 import { Appointment } from '../../consultants/Appointment/Appointment';
+import { ConsultantNotification } from '../../consultants';
 
 @Entity({ schema: 'auth', name: 'profile' })
 export class Profile {
@@ -71,6 +72,9 @@ export class Profile {
 
   @OneToMany(() => Appointment, appointment => appointment.consultant)
   appointments!: Appointment[];
+  
+  @OneToMany(() => ConsultantNotification, consultantNotification => consultantNotification.consultant)
+  notifications!: ConsultantNotification[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

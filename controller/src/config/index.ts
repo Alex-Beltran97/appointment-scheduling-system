@@ -5,7 +5,7 @@ export const config = {
   server: {
     port: process.env.PORT,
     cors: {
-      frontUrl: process.env.FRONTEND_HOST || 'http://localhost:3000',
+      frontUrl: 'http://localhost:5173',
     }
   },
   database: {

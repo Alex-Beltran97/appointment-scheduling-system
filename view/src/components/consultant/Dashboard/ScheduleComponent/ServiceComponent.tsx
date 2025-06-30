@@ -9,6 +9,7 @@ import { getHourFormat, getWeekDayName } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import { useAppointmentStore } from "../../../../store/useAppointment";
 import { useNotificationStore } from "../../../../store/useNotificationStore";
+import socket from "../../../../service/socket";
 
 const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   '& .MuiBadge-badge': {
@@ -26,7 +27,7 @@ const ServiceComponent = ({service}: Props) => {
 
   const {getAvailability} = useServiceStore();
 
-  const {appointments, getAppointments} = useAppointmentStore();
+  const {getAppointments} = useAppointmentStore();
   const {showNotification} = useNotificationStore();
 
   const handleGetAvailability = useCallback( async () => {
@@ -36,7 +37,6 @@ const ServiceComponent = ({service}: Props) => {
       if (result.length === 0) {
         showNotification('No hay disponibilidades para este servicio.', 'info');
       } else {
-        // Optionally, you can fetch appointments for the service here
         await getAppointments({id_service: service.id});
       }
     } catch (error) {
@@ -45,7 +45,7 @@ const ServiceComponent = ({service}: Props) => {
     }
   }, [getAvailability, getAppointments, service.id, showNotification]);
 
-  const novigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetAvailability();
@@ -69,6 +69,12 @@ const ServiceComponent = ({service}: Props) => {
 
   useEffect(() => {
     handleGetAppointments();
+
+    socket.on('new_notification', handleGetAppointments);
+
+    return () => {
+      socket.off('new_notification', handleGetAppointments);
+    };
   }, [handleGetAppointments]);
 
   return (<ListItem>
@@ -105,7 +111,7 @@ const ServiceComponent = ({service}: Props) => {
           </Box>
         ))}
         <Button
-          onClick={() => novigate(`/my-schedules?service-id=${service.id}`)}
+          onClick={() => navigate(`/my-schedules?service-id=${service.id}`)}
           variant="contained"
           color="primary"
           fullWidth
@@ -116,7 +122,7 @@ const ServiceComponent = ({service}: Props) => {
           </StyledBadge>
         </Button>
         <Button
-          onClick={() => novigate(`/create-service/${service.id}`)}
+          onClick={() => navigate(`/create-service/${service.id}`)}
           variant="contained"
           color="secondary"
           fullWidth sx={{

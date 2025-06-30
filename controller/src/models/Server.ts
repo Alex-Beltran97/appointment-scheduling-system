@@ -4,6 +4,8 @@ import cors from 'cors';
 import { AppSource } from '../data';
 import { DataSource } from 'typeorm';
 import cookieParser from 'cookie-parser';
+import {createServer} from 'http';
+import { Server as IOServer } from 'socket.io';
 
 import { 
   companyRouter, contractRouter, employeeRouter, docTypeRouter,
@@ -12,17 +14,27 @@ import {
 } from '../routers/core';
 import { profileRouter, userRoleRouter, loginRouter } from '../routers/auth';
 import { config } from '../config';
-import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantServiceRoute, slotGeneratorRoute } from '../routers/consultant';
+import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantNotificationRoute, consultantServiceRoute, notificationTypeRoute, slotGeneratorRoute } from '../routers/consultant';
 import { searchControllerRoute } from '../routers/client';
+import { setIO } from '../Services/socket';
 
 class Server {
   private readonly app : Application = express();
+  private readonly server = createServer(this.app);
+  public io = new IOServer(this.server, {
+    cors:{
+      origin: config.server.cors.frontUrl,
+      credentials: true,
+    }
+  });
   private readonly PORT : String = config.server.port || '3001';
   private readonly API_PATH : String = '/api/v1';
 
   constructor() {
     this._middlewares();
     this._routes();
+    this._socketInitializer();
+    setIO(this.io);
   };
 
   private _middlewares() {
@@ -30,7 +42,7 @@ class Server {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(morgan('dev'));
     this.app.use(cors({
-      origin: 'http://localhost:5173',
+      origin: config.server.cors.frontUrl,
       credentials: true
     }));
     this.app.use(cookieParser());
@@ -61,6 +73,8 @@ class Server {
     this.app.use(`${this.API_PATH}/available-slots`, availableSlotRoute);
     this.app.use(`${this.API_PATH}/search`, searchControllerRoute);
     this.app.use(`${this.API_PATH}/appointment-status`, appointmentStatusRoute);
+    this.app.use(`${this.API_PATH}/notifications`, consultantNotificationRoute);
+    this.app.use(`${this.API_PATH}/notification-type`, notificationTypeRoute);
   }
 
   private _dbInitializer() : Promise<DataSource>{
@@ -68,10 +82,18 @@ class Server {
     return AppSource.initialize();
   }
 
+  private _socketInitializer() {
+    this.io.on('connection', (socket) => {
+      socket.on('message', msg => {
+        this.io.emit('result', msg);
+      });
+    });
+  }
+
   public async listen() {
     try {
       await this._dbInitializer();
-      this.app.listen(this.PORT, () => {
+      this.server.listen(this.PORT, () => {
         console.log(`Server is running on port http://localhost:${this.PORT}`);
       });      
     } catch (error) {

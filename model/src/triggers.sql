@@ -108,4 +108,18 @@ FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();
 
+-- consultant.notification
+CREATE OR REPLACE TRIGGER set_updated_at_consultant_notification
+AFTER UPDATE ON consultant.notification
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
+-- consultant.notification_type
+CREATE OR REPLACE TRIGGER set_updated_at_notification_type
+AFTER UPDATE ON consultant.notification_type
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
 COMMIT;

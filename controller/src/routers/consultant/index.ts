@@ -5,3 +5,5 @@ export { default as consultantExceptionRoute } from './consultantException.route
 export { default as appointmentRoute } from './appointment.route';
 export { default as availableSlotRoute } from './availableSlot.route';
 export { default as appointmentStatusRoute } from './appointmentStatus.route';
+export { default as consultantNotificationRoute } from './consultantNotification.route';
+export { default as notificationTypeRoute } from './notificationType.route';
