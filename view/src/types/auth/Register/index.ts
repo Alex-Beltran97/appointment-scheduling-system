@@ -6,26 +6,41 @@ export interface Login {
 };
 
 export interface Profile {
-    id:             number;
-    name:           string;
-    lastName:       string;
-    secondLastName: string;
-    birthDate:     Moment;
-    dialCountry?:     string;
-    phone:          string;
-    countryCode:    string;
-    departmentCode: string;
-    cityCode:       string;
-    email:          string;
-    docNum:         number;
-    nitCode:        string;
-    employeeCode:   string;
-    username:       string;
-    password:       string;
-    confirmPassword?: string;
-    userRole:       string;
-    docType:        string;
+  id:               number;
+  name:             string;
+  lastName:         string;
+  secondLastName:   string;
+  birthDate:        Moment;
+  dialCountry?:     string;
+  phone:            string;
+  countryCode:      string;
+  departmentCode:   string;
+  cityCode:         string;
+  email:            string;
+  docNum:           number;
+  nitCode:          string;
+  employeeCode:     string;
+  username:         string;
+  password:         string;
+  confirmPassword?: string;
+  userRole:         string;
+  docType:          string;
+  photo?:           ProfileImg;
 }
+
+export interface ProfileImg {
+    id:         number;
+    mime:       string;
+    data:       Data;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Data {
+    type: string;
+    data: number[];
+}
+
 
 export interface DepartmentItem {
   id: string;

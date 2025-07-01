@@ -17,7 +17,7 @@ class ProfileController {
       const repo = AppSource.getRepository(Profile);
       const response = await repo.find({
         where: { is_active: !deletedParsed },
-        relations: ['userRole', 'docType']
+        relations: ['userRole', 'docType', 'profileImg']
       });
 
       const profiles = response.map(ProfileDTO.fromEntity);
@@ -44,7 +44,7 @@ class ProfileController {
       const repo = AppSource.getRepository(Profile);
       const response = await repo.findOne({
         where: { id, is_active: true },
-        relations: ['userRole', 'docType']
+        relations: ['userRole', 'docType', 'profileImg']
       });
 
       if (!response) {

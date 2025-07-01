@@ -4,6 +4,7 @@ import { DocType } from '../../core/DocType/DocType';
 import { ConsultantService } from '../../consultants/ConsultantService/ConsultantService';
 import { Appointment } from '../../consultants/Appointment/Appointment';
 import { ConsultantNotification } from '../../consultants';
+import { ProfileImg } from '../ProfileImg/ProfileImg';
 
 @Entity({ schema: 'auth', name: 'profile' })
 export class Profile {
@@ -15,6 +16,13 @@ export class Profile {
   })
   @JoinColumn({name: 'userRole_id'})
   userRole!: UserRole;
+  
+  @ManyToOne(() => ProfileImg, profileImg => profileImg.profiles, {
+    onDelete: 'CASCADE',
+    nullable: true
+  })
+  @JoinColumn({name: 'profile_img_id'})
+  profileImg!: ProfileImg;
 
   @Column()
   name!: string;

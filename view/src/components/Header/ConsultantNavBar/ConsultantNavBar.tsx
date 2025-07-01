@@ -3,14 +3,17 @@ import { AppBar, Avatar, Box, Button, Divider, IconButton, Menu, MenuItem, Toolb
 import styles from './ConsultantNavBar.module.css';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "../../../store/useAuthStore";
 import NotificationComponent from "../NotificationComponent/NotificationComponent";
+import { useProfileStore } from "../../../store/useProfileStore";
+import { useNotificationStore } from "../../../store/useNotificationStore";
+import type { Profile } from "../../../types/auth/Register";
 
 const ConsultantNavBar = () => {
   const navigate = useNavigate();
 
-  const handleNavigate = (path = '') => navigate(`/${path}`, { replace: true });
+  const handleNavigate = (path = '') => navigate(`/${path}`, { replace: true });  
 
   return (<>
     <Box sx={{ flexGrow: 1 }}>
@@ -54,9 +57,54 @@ const AvatarButton = () => {
 
   const handleLogout = useAuthStore(state => state.logout);
 
+  const {idUser} = useAuthStore();
+  const {profile, getProfile, getProfileImg} = useProfileStore();
+  const {showNotification} = useNotificationStore();
+
+  const [img, setImg] = useState('');
+
+  const handleGetProfileImg = useCallback(async (id: number) => {
+    try {
+      const imgUrl = await getProfileImg(id);
+      setImg(imgUrl);
+    } catch (error) {
+      showNotification('Error fetching profile image','error');
+      console.error('Error fetching profile image:', error);
+    }
+  }, [getProfileImg, showNotification]);
+
+  const handleGetProfileData = useCallback(async () => {
+    try {
+      const _profile = await getProfile(idUser) as unknown as Profile;
+      handleGetProfileImg(_profile?.photo?.id || 0);
+      showNotification('Perfil cargado correctamente', 'success');
+    } catch (error) {
+      showNotification('Error al cargar el perfil', 'error');
+      console.error('Error fetching profile data:', error);
+    }
+  }, [getProfile, idUser, showNotification, handleGetProfileImg]);
+
+  useEffect(() => {
+    if (idUser) {
+      handleGetProfileData();
+    } else {
+      showNotification('Usuario no encontrado', 'error');
+    }
+  }, [idUser, handleGetProfileData, showNotification]);
+
+  const truncateName = () => {
+    const _name = profile?.name.slice(0, 1) || '';
+    const _lastname = profile?.lastName.slice(0, 1) || '';
+    return `${_name}${_lastname}`.toUpperCase();
+  };  
+
   return (<>
     <IconButton onClick={handleClick}>
-      <Avatar alt="Pepito Jaimito Perez Prieto" src="https://www.shutterstock.com/image-illustration/porto-portugal-11072023-yellowhead-lego-260nw-2330445597.jpg" />
+      <Avatar
+        alt={`${profile?.name} ${profile?.lastName}`}
+        src={img}
+        sx={{ width: 40, height: 40, backgroundColor: '#6A96AD' }}
+      >{truncateName()}</Avatar>
     </IconButton>
     <Menu
       id="basic-menu"

@@ -12,7 +12,7 @@ import {
   employeeRoleRouter, paymentStatusRouter, planRouter, suscriptionRouter,
   paymentRouter
 } from '../routers/core';
-import { profileRouter, userRoleRouter, loginRouter } from '../routers/auth';
+import { profileRouter, userRoleRouter, loginRouter, profileImgRouter } from '../routers/auth';
 import { config } from '../config';
 import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantNotificationRoute, consultantServiceRoute, notificationTypeRoute, slotGeneratorRoute } from '../routers/consultant';
 import { searchControllerRoute } from '../routers/client';
@@ -75,6 +75,7 @@ class Server {
     this.app.use(`${this.API_PATH}/appointment-status`, appointmentStatusRoute);
     this.app.use(`${this.API_PATH}/notifications`, consultantNotificationRoute);
     this.app.use(`${this.API_PATH}/notification-type`, notificationTypeRoute);
+    this.app.use(`${this.API_PATH}/profile-img`, profileImgRouter);
   }
 
   private _dbInitializer() : Promise<DataSource>{

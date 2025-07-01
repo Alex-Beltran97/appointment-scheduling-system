@@ -122,4 +122,11 @@ FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION core.update_updated_at_column();
 
+-- auth.profile_img
+CREATE OR REPLACE TRIGGER set_updated_at_profile_img
+AFTER UPDATE ON auth.profile_img
+FOR EACH ROW
+WHEN (OLD IS DISTINCT FROM NEW)
+EXECUTE FUNCTION core.update_updated_at_column();
+
 COMMIT;
