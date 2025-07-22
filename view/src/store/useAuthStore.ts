@@ -5,6 +5,7 @@ type AuthState = {
   idUser: string | number;
   isAuthenticated: boolean;
   loading: boolean;
+  role: string | null;
   checkSession: () => Promise<void>;
   login: (credentials: {username: string, password: string}) => Promise<void>;
   logout: () => Promise<void>;
@@ -13,14 +14,15 @@ type AuthState = {
 export const useAuthStore = create<AuthState>(set => ({
   idUser: 0,
   isAuthenticated: false,
+  role: null,
   loading: true,
   checkSession: async () => {
     try {
       set({ loading: true });
       const {data} = await loginVerify();
-      set({ isAuthenticated: data?.user, loading: false, idUser: data?.user?.id || null });
+      set({ isAuthenticated: data?.user, role: data?.user?.userRole, loading: false, idUser: data?.user?.id || null });
     } catch (error) {
-      set({ isAuthenticated: false, loading: false });
+      set({ isAuthenticated: false, role: null, loading: false });
       console.error('Session check failed:', error);
       throw error;
     }
@@ -28,9 +30,10 @@ export const useAuthStore = create<AuthState>(set => ({
   login: async ({username, password}) => {
     try {
       await login({username, password});
-      set({ isAuthenticated: true, loading: false });
+      const {data} = await loginVerify();
+      set({ isAuthenticated: true, role: data?.user?.userRole, loading: false });
     } catch (error) {
-      set({ isAuthenticated: false, loading: false });
+      set({ isAuthenticated: false, role: null, loading: false });
       console.error('Login failed:', error);
       throw error;
     }
@@ -38,7 +41,7 @@ export const useAuthStore = create<AuthState>(set => ({
   logout: async () => {
     try {
       await logout();
-      set({ isAuthenticated: false, loading: false });
+      set({ isAuthenticated: false, role: null, loading: false });
     } catch (error) {
       console.error('Logout failed:', error);
       throw error;

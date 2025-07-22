@@ -14,7 +14,6 @@ const PrivateRoute = ({children}: PrivateRouteProps) => {
     checkSession();
   }, [checkSession]);
 
-
   if (loading) return <Spinner />;
 
   return isAuthenticated ? children : <Navigate to="/login" />;

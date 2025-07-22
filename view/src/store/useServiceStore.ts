@@ -24,7 +24,6 @@ export const useServiceStore = create<ServiceState>(set => ({
   getServices: async (consultantId: string | number | undefined) => {
     try {
       const {data} = await getServices(consultantId);
-      console.log(data?.response);
       set({ services: data?.response || [] });
       return Promise.resolve(data?.response || []);
     } catch (error) {

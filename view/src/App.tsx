@@ -9,7 +9,6 @@ import RegisterPage from "./pages/auth/RegisterPage/RegisterPage";
 import PageNotFound from "./pages/auth/PageNotFound/PageNotFound";
 import PlansPage from "./pages/auth/PlansPage/PlansPage";
 import SuscribePlanPage from "./pages/auth/SuscribePlanPage/SuscribePlanPage";
-import DashboardPage from "./pages/consultant/DashboardPage/DashboardPage";
 import ServiceDetailPage from "./pages/consultant/ServiceDetailPage/ServiceDetailPage";
 import MySchedulesPage from "./pages/consultant/MySchedulesPage/MySchedulesPage";
 import ScheduleDetailPage from "./pages/consultant/ScheduleDetailPage/ScheduleDetailPage";
@@ -25,6 +24,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import CreateServicePage from "./pages/consultant/CreateServicePage/CreateServicePage";
 import ChangeAppointment from "./pages/customer/ChangeAppointment/ChangeAppointment";
+import DashboardPage from "./pages/share/DashboardPage/DashboardPage";
 
 const App = () => {
   const { checkSession } = useAuthStore();

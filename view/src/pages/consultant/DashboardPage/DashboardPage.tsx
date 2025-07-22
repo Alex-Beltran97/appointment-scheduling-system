@@ -4,7 +4,7 @@ import styles from './DashboardPage.module.css';
 import ScheduleContainer from "../../../components/consultant/Dashboard/ScheduleContainer/ScheduleContainer";
 import { useNavigate } from "react-router-dom";
 
-const DashboardPage = () => {
+const UserDashboardPage = () => {
   const navigate = useNavigate();
 
   return (<main className={styles.container}>
@@ -29,4 +29,4 @@ const DashboardPage = () => {
   </main>);
 };
 
-export default DashboardPage;
+export default UserDashboardPage;
