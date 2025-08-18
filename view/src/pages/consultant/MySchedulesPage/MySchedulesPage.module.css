@@ -1,0 +1,11 @@
+.container {
+  padding: 1rem;
+}
+
+.nav__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+

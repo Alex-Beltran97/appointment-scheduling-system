@@ -1,3 +1,4 @@
+import { ProfileImg } from "../ProfileImg/ProfileImg";
 import { Profile } from "./Profile";
 
 class ProfileDTO {
@@ -9,6 +10,7 @@ class ProfileDTO {
     public birth_date: Date,
     public phone: string,
     public countryCode: string,
+    public departmentCode: string,
     public cityCode: string,
     public email: string,
     public docNum: number,
@@ -19,7 +21,8 @@ class ProfileDTO {
     public created_at: Date,
     public updated_at: Date,
     public userRole: string,
-    public docType: string
+    public docType: string,
+    public photo: ProfileImg
   ) {}
 
   static fromEntity(profile: Profile): ProfileDTO {
@@ -31,6 +34,7 @@ class ProfileDTO {
       profile.birthDate,
       profile.phone,
       profile.countryCode,
+      profile.departmentCode,
       profile.cityCode,
       profile.email,
       profile.docNum,
@@ -41,7 +45,8 @@ class ProfileDTO {
       profile.created_at,
       profile.updated_at,
       profile.userRole.role,
-      profile.docType.docType
+      profile.docType.docType,
+      profile.profileImg
     );
   }
 };

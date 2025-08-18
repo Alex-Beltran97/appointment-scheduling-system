@@ -1,0 +1,1 @@
+export { default as searchControllerRoute } from './searchController.route';

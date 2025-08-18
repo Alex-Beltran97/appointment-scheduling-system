@@ -5,10 +5,10 @@ const {getRolesTypes, getRoleType, createRoleType, updateRoleType, deleteRoleTyp
 
 const router = Router();
 
-router.get('/', getRolesTypes);
-router.get('/:id', getRoleType);
-router.post('/', createRoleType);
-router.patch('/:id', updateRoleType);
-router.delete('/:id', deleteRoleType);
+router.get('/', getRolesTypes.bind(userRoleController));
+router.get('/:id', getRoleType.bind(userRoleController));
+router.post('/', createRoleType.bind(userRoleController));
+router.patch('/:id', updateRoleType.bind(userRoleController));
+router.delete('/:id', deleteRoleType.bind(userRoleController));
 
 export default router;

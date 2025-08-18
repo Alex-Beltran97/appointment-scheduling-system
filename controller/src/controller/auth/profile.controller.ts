@@ -3,10 +3,11 @@ import { AppSource } from '../../data';
 import { DocType } from '../../models/core';
 import { Profile, UserRole, ProfileDTO } from '../../models/auth';
 import bcrypt from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
+import { config } from '../../config';
 
 class ProfileController {
-  private readonly saltRounds: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
+  private readonly saltRounds: number = config.login.saltRounds ? parseInt(config.login.saltRounds) : 10;
   private readonly JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY!;
 
   public async getProfiles(req: Request, res: Response) : Promise<void> {
@@ -16,7 +17,7 @@ class ProfileController {
       const repo = AppSource.getRepository(Profile);
       const response = await repo.find({
         where: { is_active: !deletedParsed },
-        relations: ['userRole', 'docType']
+        relations: ['userRole', 'docType', 'profileImg']
       });
 
       const profiles = response.map(ProfileDTO.fromEntity);
@@ -43,7 +44,7 @@ class ProfileController {
       const repo = AppSource.getRepository(Profile);
       const response = await repo.findOne({
         where: { id, is_active: true },
-        relations: ['userRole', 'docType']
+        relations: ['userRole', 'docType', 'profileImg']
       });
 
       if (!response) {
@@ -87,7 +88,7 @@ class ProfileController {
         where: [
           { docNum },
           { email },
-          { username }
+          { username },
         ]
       });
 
@@ -147,57 +148,7 @@ class ProfileController {
     };
   }
 
-  public async loginProfile(req: Request, res: Response) : Promise<void> {
-    try {
-
-      const {
-        username,
-        password,
-      } = req.body;
-
-      const repo = AppSource.getRepository(Profile);
-
-      const existingProfile = await repo.findOne({
-        where: { username, is_active: true },
-        relations: ['userRole', 'docType']
-      });
-
-      if (!existingProfile) {
-        res.status(404).json({ message: "Profile was not found" });
-        return;
-      };
-
-      const isPasswordValid = await bcrypt.compare(password, existingProfile.password);
-
-      if (!isPasswordValid) {
-        res.status(401).json({ message: "Invalid credentials" });
-        return;
-      };
-    
-      const profile = ProfileDTO.fromEntity(existingProfile);
-
-      const token = sign(
-        { id: profile.id, username: profile.username, userRole: profile.userRole },
-        this.JWT_SECRET_KEY,
-        { expiresIn: '1h' }
-      );
-
-      res.cookie('acces_token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 3600000
-      });
-
-      res.status(200).json({
-        message: `Profile logged in successfully`,
-        token,
-      });    
-    } catch (error) {
-      console.error(`Error fetching Profile data:`, error);
-      res.status(500).json({ message: 'Internal Server Error' });    
-    };
-  }
+  
   
   public async updateProfile(req: Request, res: Response) : Promise<void> {
     const id = +req.params.id;

@@ -5,10 +5,10 @@ const {getContracts, getContract, createContract, updateContract, deleteContract
 
 const router = Router();
 
-router.get('/', getContracts);
-router.get('/:id', getContract);
-router.post('/', createContract);
-router.patch('/:id', updateContract);
-router.delete('/:id', deleteContract);
+router.get('/', getContracts.bind(contractController));
+router.get('/:id', getContract.bind(contractController));
+router.post('/', createContract.bind(contractController));
+router.patch('/:id', updateContract.bind(contractController));
+router.delete('/:id', deleteContract.bind(contractController));
 
 export default router;

@@ -41,7 +41,7 @@ RETURNING id;
 
 -----------------------------------------------------------------------------
 
--- Insert data for profile table
+-- Insert user data for profile table
 
 INSERT INTO auth.profile
 (
@@ -51,6 +51,7 @@ INSERT INTO auth.profile
   birth_date,
   phone,
   "countryCode",
+  "departmentCode",
   "cityCode",
   email,
   "docNum",
@@ -68,13 +69,57 @@ INSERT INTO auth.profile
   '+573135553333'::character varying,
   'COL'::character varying,
   'BOG'::character varying,
+  'BOG'::character varying,
   'pepito.perez@example.com'::character varying,
   1033888333::numeric,
   '900428042-2'::character varying,
   'T12345'::character varying,
   'pepito-perez90'::character varying,
-  'User1234*'::character varying,
+  '$2b$10$g1Q9WYzGaTB0JgrsDXe.fuC2FLG/mani0cNe8sbCDI2AObvcUH14O'::character varying,
   '2'::bigint,
+  '3'::bigint
+  ) returning id;
+
+-- SELECT * FROM auth.profile;
+
+-----------------------------------------------------------------------------
+
+-- Insert admin data for profile table
+
+INSERT INTO auth.profile
+(
+  name,
+  "lastName",
+  "secondLastName",
+  birth_date,
+  phone,
+  "countryCode",
+  "departmentCode",
+  "cityCode",
+  email,
+  "docNum",
+  "nitCode",
+  "employeeCode",
+  username,
+  password,
+  "userRole_id",
+  "docType_id"
+  ) VALUES (
+  'Arturo'::character varying,
+  'Rojas' ::character varying,
+  'Gomez' ::character varying,
+  '1990-01-01T05:00:00.000Z'::timestamp with time zone,
+  '+573135553333'::character varying,
+  'COL'::character varying,
+  'BOG'::character varying,
+  'BOG'::character varying,
+  'arturo.rojas@example.com'::character varying,
+  1033888555::numeric,
+  '900428555-2'::character varying,
+  'T67890'::character varying,
+  'arturo-rojas97'::character varying,
+  '$2b$10$g1Q9WYzGaTB0JgrsDXe.fuC2FLG/mani0cNe8sbCDI2AObvcUH14O'::character varying,
+  '1'::bigint,
   '3'::bigint
   ) returning id;
 

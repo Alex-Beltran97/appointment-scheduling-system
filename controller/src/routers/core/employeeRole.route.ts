@@ -5,10 +5,10 @@ const {getEmployeesRoles, getEmployeeRole, createEmployeeRole, updateEmployeeRol
 
 const router = Router();
 
-router.get('/', getEmployeesRoles);
-router.get('/:id', getEmployeeRole);
-router.post('/', createEmployeeRole);
-router.patch('/:id', updateEmployeeRole);
-router.delete('/:id', deleteEmployeeRole);
+router.get('/', getEmployeesRoles.bind(employeeRoleController));
+router.get('/:id', getEmployeeRole.bind(employeeRoleController));
+router.post('/', createEmployeeRole.bind(employeeRoleController));
+router.patch('/:id', updateEmployeeRole.bind(employeeRoleController));
+router.delete('/:id', deleteEmployeeRole.bind(employeeRoleController));
 
 export default router;

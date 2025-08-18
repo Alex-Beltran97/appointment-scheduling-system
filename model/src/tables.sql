@@ -108,7 +108,8 @@ CREATE TABLE IF NOT EXISTS auth.profile
     birth_date timestamp with time zone NOT NULL,
     phone character varying COLLATE pg_catalog."default" NOT NULL,
     "countryCode" character varying COLLATE pg_catalog."default" NOT NULL,
-    "cityCode" character varying COLLATE pg_catalog."default" NOT NULL,
+    "departmentCode" character varying,
+    "cityCode" character varying COLLATE pg_catalog."default",
     email character varying COLLATE pg_catalog."default" NOT NULL,
     "docNum" integer NOT NULL,
     "nitCode" character varying COLLATE pg_catalog."default" NOT NULL,
@@ -120,7 +121,8 @@ CREATE TABLE IF NOT EXISTS auth.profile
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     "userRole_id" integer NOT NULL,
     "docType_id" integer NOT NULL,
-    CONSTRAINT "PK_3dd8bfc97e4a77c70971591bdcb" PRIMARY KEY (id),
+    profile_img_id bigint,
+    CONSTRAINT pk_profile_img_id PRIMARY KEY (id),
     CONSTRAINT "UQ_3825121222d5c17741373d8ad13" UNIQUE (email),
     CONSTRAINT "UQ_docNum" UNIQUE ("docNum"),
     CONSTRAINT "UQ_username" UNIQUE (username)
@@ -146,6 +148,118 @@ CREATE TABLE IF NOT EXISTS auth.user_role
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.service
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    name character varying(225) NOT NULL,
+    description text NOT NULL,
+    duration_minutes integer NOT NULL,
+    price numeric(10, 2) NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_service PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.consultant_availability
+(
+    id bigserial NOT NULL,
+    service_id bigint NOT NULL,
+    weekday integer NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_service_consultant_availability PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.appointments
+(
+    id bigserial NOT NULL,
+    consultant_id bigint NOT NULL,
+    service_id bigint NOT NULL,
+    client_full_name character varying(225) NOT NULL,
+    client_email character varying[] NOT NULL,
+    client_phone character varying[] NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    notes text,
+    status_id bigint NOT NULL DEFAULT 1,
+    appoinment_id character varying NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_appointment PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.consultant_exceptions
+(
+    id bigserial NOT NULL,
+    service_id bigint NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone,
+    end_time time with time zone,
+    reason text,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_consultant_exceptions PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.appointment_status
+(
+    id bigserial NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_appointment_status PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.available_slots
+(
+    id bigserial NOT NULL,
+    service_id bigint NOT NULL,
+    date date NOT NULL,
+    start_time time with time zone NOT NULL,
+    end_time time with time zone NOT NULL,
+    is_booked boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_available_slots PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.notification
+(
+    id bigserial NOT NULL,
+    profile_id bigint NOT NULL,
+    notification_type_id bigint NOT NULL,
+    message text NOT NULL,
+    is_readed boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT pk_notification PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS consultant.notification_type
+(
+    id bigserial NOT NULL,
+    status character varying NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS auth.profile_img
+(
+    id bigserial NOT NULL,
+    mime character varying NOT NULL,
+    data bytea NOT NULL,
+    created_at timestamp with time zone[] NOT NULL DEFAULT now(),
+    updated_at timestamp with time zone[] DEFAULT now(),
+    PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS core.contract
@@ -202,17 +316,25 @@ ALTER TABLE IF EXISTS core.payments
 
 
 ALTER TABLE IF EXISTS auth.profile
-    ADD CONSTRAINT "FK_522e0554d4633909962c220e968" FOREIGN KEY ("userRole_id")
+    ADD CONSTRAINT fk_user_role_id FOREIGN KEY ("userRole_id")
     REFERENCES auth.user_role (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 
 ALTER TABLE IF EXISTS auth.profile
-    ADD CONSTRAINT "FK_ffdae762f604317dca306710abe" FOREIGN KEY ("docType_id")
+    ADD CONSTRAINT fk_doc_type_id FOREIGN KEY ("docType_id")
     REFERENCES core."docType" (id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS auth.profile
+    ADD CONSTRAINT fk_profile_img_id FOREIGN KEY (profile_img_id)
+    REFERENCES auth.profile_img (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
 
 
 ALTER TABLE IF EXISTS core.suscription
@@ -220,6 +342,78 @@ ALTER TABLE IF EXISTS core.suscription
     REFERENCES core.payments (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.service
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.consultant_availability
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (consultant_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.appointments
+    ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id)
+    REFERENCES consultant.appointment_status (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE RESTRICT
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.consultant_exceptions
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.available_slots
+    ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id)
+    REFERENCES consultant.service (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.notification
+    ADD CONSTRAINT fk_profile_id FOREIGN KEY (profile_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS consultant.notification
+    ADD CONSTRAINT fk_notification_type_id FOREIGN KEY (notification_type_id)
+    REFERENCES consultant.notification_type (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE RESTRICT
     NOT VALID;
 
 END;

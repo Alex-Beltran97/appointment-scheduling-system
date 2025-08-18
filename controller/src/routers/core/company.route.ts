@@ -5,10 +5,10 @@ const {getCompanies, getCompany, createCompany, updateCompany, deleteCompany} = 
 
 const router = Router();
 
-router.get('/', getCompanies);
-router.get('/:id', getCompany);
-router.post('/', createCompany);
-router.patch('/:id', updateCompany);
-router.delete('/:id', deleteCompany);
+router.get('/', getCompanies.bind(companyController));
+router.get('/:id', getCompany.bind(companyController));
+router.post('/', createCompany.bind(companyController));
+router.patch('/:id', updateCompany.bind(companyController));
+router.delete('/:id', deleteCompany.bind(companyController));
 
 export default router;

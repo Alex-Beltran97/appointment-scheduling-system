@@ -5,9 +5,9 @@ const {getSuscriptions, getSuscription, createSuscription, deleteSuscription} = 
 
 const router = Router();
 
-router.get('/', getSuscriptions);
-router.get('/:id', getSuscription);
-router.post('/', createSuscription);
-router.delete('/:id', deleteSuscription);
+router.get('/', getSuscriptions.bind(suscriptionController));
+router.get('/:id', getSuscription.bind(suscriptionController));
+router.post('/', createSuscription.bind(suscriptionController));
+router.delete('/:id', deleteSuscription.bind(suscriptionController));
 
 export default router;

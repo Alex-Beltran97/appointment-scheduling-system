@@ -5,8 +5,8 @@ const {getPayments, getPayment, createPayment} = paymentController;
 
 const router = Router();
 
-router.get('/', getPayments);
-router.get('/:id', getPayment);
-router.post('/', createPayment);
+router.get('/', getPayments.bind(paymentController));
+router.get('/:id', getPayment.bind(paymentController));
+router.post('/', createPayment.bind(paymentController));
 
 export default router;

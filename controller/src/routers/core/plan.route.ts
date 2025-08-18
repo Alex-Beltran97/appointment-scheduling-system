@@ -5,10 +5,10 @@ const {getPlans, getPlan, createPlan, updatePlan, deletePlan} = planController;
 
 const router = Router();
 
-router.get('/', getPlans);
-router.get('/:id', getPlan);
-router.post('/', createPlan);
-router.patch('/:id', updatePlan);
-router.delete('/:id', deletePlan);
+router.get('/', getPlans.bind(planController));
+router.get('/:id', getPlan.bind(planController));
+router.post('/', createPlan.bind(planController));
+router.patch('/:id', updatePlan.bind(planController));
+router.delete('/:id', deletePlan.bind(planController));
 
 export default router;
