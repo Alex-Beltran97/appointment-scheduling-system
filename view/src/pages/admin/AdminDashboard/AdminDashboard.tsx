@@ -2,6 +2,9 @@ import { Typography, Divider, Tabs, Tab, Box } from "@mui/material";
 
 import styles from './AdminDashboard.module.css';
 import { useState } from "react";
+import SchedulesTab from "../../../components/admin/SchedulesTab/SchedulesTab";
+import ServicesTab from "../../../components/admin/ServicesTab/ServicesTab";
+import ConsultantsTab from "../../../components/admin/ConsultantsTab/ConsultantsTab";
 
 const AdminDashboard = () => {
   const [value, setValue] = useState(0);
@@ -15,14 +18,14 @@ const AdminDashboard = () => {
     <Divider className={styles.div} />
     <section className={styles.metrics}>
       <Tabs value={value} onChange={handleChange}>
-        <Tab label="Queso 1" />
-        <Tab label="Queso 2" />
-        <Tab label="Queso 3" />
+        <Tab label="Agendas" />
+        <Tab label="Servicios" />
+        <Tab label="Consultores" />
       </Tabs>
       <Box sx={{padding: "1rem"}}>
-        {value === 0 && <h2>Queso 1</h2>}
-        {value === 1 && <h2>Queso 2</h2>}
-        {value === 2 && <h2>Queso 3</h2>}
+        {value === 0 && <SchedulesTab />}
+        {value === 1 && <ServicesTab />}
+        {value === 2 && <ConsultantsTab />}
       </Box>
     </section>
   </main>);
