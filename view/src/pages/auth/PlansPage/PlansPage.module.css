@@ -1,0 +1,16 @@
+.plans__container {
+  padding: 1rem;
+}
+
+.plan__container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.benefit__container {
+  min-width: 22rem;
+}
+

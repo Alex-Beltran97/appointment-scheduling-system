@@ -1,0 +1,4 @@
+-- Creating auth schema
+CREATE SCHEMA IF NOT EXISTS core;
+CREATE SCHEMA IF NOT EXISTS auth;
+CREATE SCHEMA IF NOT EXISTS consultant;

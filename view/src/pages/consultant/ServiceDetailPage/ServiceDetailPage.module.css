@@ -1,0 +1,9 @@
+.container {
+  padding: 1rem;
+}
+
+.options__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
