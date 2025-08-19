@@ -6,15 +6,28 @@ import { sendMail } from "../../Services/email/sendEmailService";
 import { getIO } from "../../Services/socket";
 
 import moment from 'moment';
+import { Between } from "typeorm";
 moment.locale();
 
 class AppointmentController {
   public async getAppointments(req: Request, res: Response): Promise<void> {
-    const { consultant_id, status_id, service_id, date, appointment_id } = req.query;
+    const { consultant_id, status_id, service_id, date, appointment_id, year, month } = req.query;
 
     const isValidDate = (d: string): boolean => {
       const parsedDate = new Date(d);
       return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
+    };
+
+    const formattedYear = +year!; 
+    const startYear = `${formattedYear}-01-01`;
+    const endYear = `${formattedYear+1}-01-01`;
+
+    let dateCondition = {};
+
+    if (isValidDate(date as string)) {
+      dateCondition = { date: (date as unknown) as Date };
+    } else if (year && !isNaN(new Date(String(year)).getFullYear())) {
+      dateCondition = { date: Between(startYear, endYear) };
     };
 
     try {
@@ -24,7 +37,7 @@ class AppointmentController {
           ...(consultant_id  && !isNaN(+consultant_id) ? { consultant: { id: +consultant_id } } : {}),
           ...(status_id  && !isNaN(+status_id) ? { status: { id: +status_id } } : {}),
           ...(service_id  && !isNaN(+service_id) ? { service: { id: +service_id } } : {}),
-          ...(isValidDate(date as string) ? { date: (date as unknown) as Date } : {}),
+          ...dateCondition,
           appoinment_id: appointment_id ? appointment_id.toString() : undefined
         },
         relations: ['consultant', 'service', 'status'],
@@ -34,10 +47,18 @@ class AppointmentController {
         }
       });
 
-      const filtered = appointments.filter(app => 
-        app.consultant?.is_active && 
-        app.service?.is_active
-      );
+      const filtered = appointments.filter(app => {
+        const _dateMonth = (+app.date.getMonth()) + 1;
+
+        if (month && !isNaN(+month)) {
+          return app.consultant?.is_active && 
+            app.service?.is_active &&
+            _dateMonth === +month
+        };
+        
+        return app.consultant?.is_active && 
+          app.service?.is_active;
+      });
 
       res.status(200).json({
         response: filtered,

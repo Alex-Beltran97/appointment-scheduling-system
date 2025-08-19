@@ -77,7 +77,6 @@ const data = [
 
 const SchedulesTab = () => {
   return (<>
-    <h1>SchedulesTab</h1>
     <BarChart
       width={1000}
       height={400}
