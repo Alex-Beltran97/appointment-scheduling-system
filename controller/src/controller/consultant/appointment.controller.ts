@@ -5,7 +5,7 @@ import { Profile } from "../../models/auth";
 import { sendMail } from "../../Services/email/sendEmailService";
 import { getIO } from "../../Services/socket";
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Between } from "typeorm";
 moment.locale();
 
@@ -19,9 +19,9 @@ class AppointmentController {
     };
 
     const formattedYear = +year!; 
-    const startYear = `${formattedYear}-01-01`;
-    const endYear = `${formattedYear+1}-01-01`;
-
+    const startYear = moment.utc(`${formattedYear}-01-01`).toDate();
+    const endYear = moment.utc(`${formattedYear + 1}-01-01`).toDate();
+    
     let dateCondition = {};
 
     if (isValidDate(date as string)) {
@@ -61,9 +61,10 @@ class AppointmentController {
       });
 
       res.status(200).json({
+        length: filtered?.length,
         response: filtered,
         message: 'Appointments fetched successfully'
-      });
+      });   
     } catch (error) {
       console.error('Error fetching appointments:', error);
       res.status(500).json({ message: 'Internal Server Error' });
