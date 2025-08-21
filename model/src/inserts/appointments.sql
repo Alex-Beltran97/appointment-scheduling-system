@@ -4,6 +4,1256 @@ BEGIN;
 
 -- Insert admin data for appointments table
 
+-- 2024
+
+    -- NOVIEMBRE
+
+        -- PENDIENTES
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-172',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-173',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-174',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-175',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-176',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-177',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-178',                 
+                true                    
+            );
+
+        -- COMPLETADAS
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-180',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-181',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-182',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-183',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-184',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-185',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-186',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-187',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-188',                 
+                true                    
+            );
+            
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-189',                 
+                true                    
+            );
+
+        -- CANCELADAS
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-190',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-191',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-192',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-193',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-11-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-194',                 
+                true                    
+            );
+            
+    -- DICIEMBRE
+
+        -- PENDIENTES
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-195',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-196',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-197',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-198',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-199',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-200',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-201',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-202',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-203',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                1,                          
+                'APT-20250621-204',                 
+                true                    
+            );
+
+        -- COMPLETADAS
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-205',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-206',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-207',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-208',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                3,                          
+                'APT-20250621-209',                 
+                true                    
+            );
+
+        -- CANCELADAS
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-210',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-211',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-212',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-213',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-214',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-215',                 
+                true                    
+            );
+
+            INSERT INTO consultant.appointments (
+                consultant_id,
+                service_id,
+                client_full_name,
+                client_email,
+                client_phone,
+                date,
+                start_time,
+                end_time,
+                notes,
+                status_id,
+                appoinment_id,
+                is_active
+            ) VALUES (
+                1,
+                1,
+                'Juan Pérez',
+                ARRAY['juan.perez@email.com'],
+                ARRAY['+56912345678'],        
+                '2024-12-01',                 
+                '10:00:00+00',                
+                '11:00:00+00',                
+                'Consulta inicial sobre planificación financiera.',
+                2,                          
+                'APT-20250621-216',                 
+                true                    
+            );
+
 -- 2025
 
   -- ENERO

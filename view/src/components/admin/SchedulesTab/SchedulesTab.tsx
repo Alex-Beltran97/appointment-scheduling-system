@@ -1,82 +1,31 @@
+import { useState, type SetStateAction } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, Rectangle, Tooltip, XAxis, YAxis } from 'recharts';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-const data = [
-  {
-    month: 'Enero',
-    pendientes: 10,
-    completadas: 10,
-    canceladas: 10,
-  },
-  {
-    month: 'Febrero',
-    pendientes: 20,
-    completadas: 20,
-    canceladas: 20,
-  },
-  {
-    month: 'Marzo',
-    pendientes: 30,
-    completadas: 30,
-    canceladas: 30,
-  },
-  {
-    month: 'Abril',
-    pendientes: 40,
-    completadas: 40,
-    canceladas: 40,
-  },
-  {
-    month: 'Mayo',
-    pendientes: 50,
-    completadas: 50,
-    canceladas: 50,
-  },
-  {
-    month: 'Junio',
-    pendientes: 60,
-    completadas: 60,
-    canceladas: 60,
-  },
-  {
-    month: 'Julio',
-    pendientes: 70,
-    completadas: 70,
-    canceladas: 70,
-  },
-  {
-    month: 'Agosto',
-    pendientes: 80,
-    completadas: 80,
-    canceladas: 80,
-  },
-  {
-    month: 'Septiembre',
-    pendientes: 90,
-    completadas: 90,
-    canceladas: 90,
-  },
-  {
-    month: 'Octubre',
-    pendientes: 100,
-    completadas: 100,
-    canceladas: 100,
-  },
-  {
-    month: 'Noviembre',
-    pendientes: 90,
-    completadas: 90,
-    canceladas: 90,
-  },
-  {
-    month: 'Diciembre',
-    pendientes: 80,
-    completadas: 80,
-    canceladas: 80,
-  }
-];
+import { useAppointmentsFetcher } from './hooks/useAppointmentsFetcher';
+import { useMonthlyReports } from './hooks/useMonthlyReports';
+import type { Moment } from 'moment';
+import moment from 'moment';
 
 const SchedulesTab = () => {
+  const [value, setValue] = useState<Moment>(moment());
+  
+  const {appointments} = useAppointmentsFetcher(value.get("year"));
+  
+  const {data} = useMonthlyReports(appointments); 
+
   return (<>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <DatePicker
+        views={['year']}
+        openTo="year"
+        label="Año"
+        value={value}
+        onChange={(newValue) => setValue(newValue as SetStateAction<Moment>)}
+        slotProps={{ textField: { variant: 'outlined' } }}
+      />
+    </LocalizationProvider>
     <BarChart
       width={1000}
       height={400}
