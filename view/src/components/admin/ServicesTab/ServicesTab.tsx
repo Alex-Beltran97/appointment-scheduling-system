@@ -1,3 +1,8 @@
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import type { Moment } from 'moment';
+import moment from 'moment';
+import { useState, type SetStateAction } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, Rectangle, Tooltip, XAxis, YAxis } from 'recharts';
 
 const data = [
@@ -24,12 +29,47 @@ const data = [
   {
     service: 'Junio',
     agendas: 60,
-  }
+  },
+  {
+    service: 'Julio',
+    agendas: 70,
+  },
+  {
+    service: 'Agosto',
+    agendas: 80,
+  },
+  {
+    service: 'Septiembre',
+    agendas: 0,
+  },
+  {
+    service: 'Octubre',
+    agendas: 0,
+  },
+  {
+    service: 'Noviembre',
+    agendas: 0,
+  },
+  {
+    service: 'Diciembre',
+    agendas: 0,
+  },
 ];
 
 const ServicesTab = () => {
+  const [value, setValue] = useState<Moment>(moment());
+
   return (<>
-    <h1>ServicesTab</h1>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <DatePicker
+        views={['year']}
+        openTo="year"
+        label="Año"
+        value={value}
+        onChange={(newValue) => setValue(newValue as SetStateAction<Moment>)}
+        slotProps={{ textField: { variant: 'outlined' } }}
+      />
+    </LocalizationProvider>
     <BarChart
       width={1000}
       height={400}
