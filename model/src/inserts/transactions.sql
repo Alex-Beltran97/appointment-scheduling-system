@@ -127,4 +127,26 @@ INSERT INTO auth.profile
 
 -----------------------------------------------------------------------------
 
+-- Insert admin data for profile table
+
+INSERT INTO consultant.service (
+  consultant_id,
+  name,
+  description,
+  duration_minutes,
+  price
+)
+VALUES (
+  1,
+  'Asesoría Financiera Personalizada',
+  'Sesión de 60 minutos para revisar y planificar tus finanzas personales, incluyendo ahorro, inversión y presupuesto.',
+  60,
+  150000.00
+)
+RETURNING id;
+
+-- SELECT * FROM auth.profile;
+
+-----------------------------------------------------------------------------
+
 COMMIT;

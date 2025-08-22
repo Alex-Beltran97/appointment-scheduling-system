@@ -3,22 +3,36 @@ import { AppSource } from '../../data';
 import { ConsultantService } from '../../models/consultants/ConsultantService/ConsultantService';
 import { Profile } from '../../models/auth/Profile/Profile';
 import { generateAvailableSlotsForServices } from '../../Services/generateAvailableSlotsForServices';
+import moment from 'moment';
+import { Between } from 'typeorm';
 
 class ServiceController {
   public async getServices(req: Request, res: Response): Promise<void> {
-    const { consultant_id } = req.query;
+    const { consultant_id, year } = req.query;
+
+    const formattedYear = +year!; 
+    const startYear = moment.utc(`${formattedYear}-01-01`).toDate();
+    const endYear = moment.utc(`${formattedYear + 1}-01-01`).toDate();
+    
+    let dateCondition = {};
+
+    if (year && !isNaN(new Date(String(year)).getFullYear())) {
+      dateCondition = { created_at: Between(startYear, endYear) };
+    };
 
     try {
       const repo = AppSource.getRepository(ConsultantService);
       const services = await repo.find({
         where: { 
           is_active: true,
-          ...(consultant_id && !isNaN(+consultant_id) ? { consultant: { id: +consultant_id } } : {})
+          ...(consultant_id && !isNaN(+consultant_id) ? { consultant: { id: +consultant_id } } : {}),
+          ...dateCondition,
         },
         relations: ['consultant']
       });
 
       res.status(200).json({
+        lenght: services?.length,
         response: services,
         message: 'Services fetched successfully'
       });

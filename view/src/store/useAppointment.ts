@@ -8,6 +8,8 @@ type appointmentParams = {
   id_service?: string | number | undefined;
   id_appointment?: string | number | undefined;
   date?: string | number | undefined;
+  year?: string | number | undefined;
+  month?: string | number | undefined;
 };
 
 interface AppointmentStore {
@@ -30,14 +32,16 @@ export const useAppointmentStore = create<AppointmentStore>(set => ({
       throw error;
     }
   },
-  getAppointments: async ({id_status, id_consultant, id_service, date, id_appointment}:appointmentParams) : Promise<void> => {
+  getAppointments: async ({id_status, id_consultant, id_service, date, id_appointment, year, month}:appointmentParams) : Promise<void> => {
     try {
       const { data } = await getAppointments({
         id_status,
         id_consultant,
         id_service,
         date,
-        id_appointment
+        id_appointment,
+        year,
+        month
       });
       set({ appointments: data.response });
       return Promise.resolve(data.response);
