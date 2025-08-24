@@ -19,7 +19,6 @@ export interface Profile {
   email:            string;
   docNum:           number;
   nitCode:          string;
-  employeeCode:     string;
   username:         string;
   password:         string;
   confirmPassword?: string;

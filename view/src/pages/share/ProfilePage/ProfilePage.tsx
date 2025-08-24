@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
   const handleGetProfileImg = useCallback(async (id: number) => {
     try {
-      const imgUrl = await getProfileImg(id);
+      const imgUrl = await getProfileImg({id});
       setImg(imgUrl);
     } catch (error) {
       showNotification('Error fetching profile image','error');
@@ -28,7 +28,7 @@ const ProfilePage = () => {
 
   const handleGetProfileData = useCallback(async () => {
     try {
-      const result = await getProfile(idUser) as unknown as Profile;
+      const result = await getProfile({id: idUser}) as unknown as Profile;
       handleGetProfileImg(result?.photo?.id || 0);
     } catch (error) {
       showNotification('Error fetching profile data', 'error');

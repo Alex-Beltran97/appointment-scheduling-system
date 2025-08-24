@@ -10,7 +10,7 @@ import { Server as IOServer } from 'socket.io';
 import { 
   companyRouter, contractRouter, employeeRouter, docTypeRouter,
   employeeRoleRouter, paymentStatusRouter, planRouter, suscriptionRouter,
-  paymentRouter
+  paymentRouter, activeContractViewRouter
 } from '../routers/core';
 import { profileRouter, userRoleRouter, loginRouter, profileImgRouter } from '../routers/auth';
 import { config } from '../config';
@@ -64,6 +64,7 @@ class Server {
     this.app.use(`${this.API_PATH}/plan`, planRouter);
     this.app.use(`${this.API_PATH}/suscription`, suscriptionRouter);
     this.app.use(`${this.API_PATH}/payment`, paymentRouter);
+    this.app.use(`${this.API_PATH}/active-contract-view`, activeContractViewRouter);
     this.app.use(`${this.API_PATH}/login`, loginRouter);
     this.app.use(`${this.API_PATH}/services`, consultantServiceRoute);
     this.app.use(`${this.API_PATH}/generate-slots`, slotGeneratorRoute);

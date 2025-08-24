@@ -4,7 +4,7 @@ import styles from './AdminDashboard.module.css';
 import { useState } from "react";
 import SchedulesTab from "../../../components/admin/SchedulesTab/SchedulesTab";
 import ServicesTab from "../../../components/admin/ServicesTab/ServicesTab";
-// import ConsultantsTab from "../../../components/admin/ConsultantsTab/ConsultantsTab";
+import ConsultantsTab from "../../../components/admin/ConsultantsTab/ConsultantsTab";
 
 const AdminDashboard = () => {
   const [value, setValue] = useState(0);
@@ -21,12 +21,12 @@ const AdminDashboard = () => {
       <Tabs value={value} onChange={handleChange}>
         <Tab label="Agendas" />
         <Tab label="Servicios" />
-        {/* <Tab label="Consultores" /> */}
+        <Tab label="Consultores" />
       </Tabs>
       <Box sx={{padding: "1rem"}}>
         {value === 0 && <SchedulesTab />}
         {value === 1 && <ServicesTab />}
-        {/* {value === 2 && <ConsultantsTab />} */}
+        {value === 2 && <ConsultantsTab />}
       </Box>
     </section>
   </main>);

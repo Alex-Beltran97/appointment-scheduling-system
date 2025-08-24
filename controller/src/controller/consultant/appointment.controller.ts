@@ -11,7 +11,7 @@ moment.locale();
 
 class AppointmentController {
   public async getAppointments(req: Request, res: Response): Promise<void> {
-    const { consultant_id, status_id, service_id, date, appointment_id, year, month } = req.query;
+    const { consultant_id, status_id, service_id, date, appointment_id, year, month, nit_code } = req.query;
 
     const isValidDate = (d: string): boolean => {
       const parsedDate = new Date(d);

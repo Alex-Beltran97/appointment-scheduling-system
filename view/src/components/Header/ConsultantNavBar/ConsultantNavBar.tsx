@@ -65,7 +65,7 @@ const AvatarButton = () => {
 
   const handleGetProfileImg = useCallback(async (id: number) => {
     try {
-      const imgUrl = await getProfileImg(id);
+      const imgUrl = await getProfileImg({id});
       setImg(imgUrl);
     } catch (error) {
       showNotification('Error fetching profile image','error');
@@ -75,7 +75,7 @@ const AvatarButton = () => {
 
   const handleGetProfileData = useCallback(async () => {
     try {
-      const _profile = await getProfile(idUser) as unknown as Profile;
+      const _profile = await getProfile({id: idUser}) as unknown as Profile;
       handleGetProfileImg(_profile?.photo?.id || 0);
       showNotification('Perfil cargado correctamente', 'success');
     } catch (error) {

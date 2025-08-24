@@ -5,24 +5,34 @@ import { Profile, UserRole, ProfileDTO } from '../../models/auth';
 import bcrypt from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 import { config } from '../../config';
+import { parseNumber, parseString } from '../../utils';
 
 class ProfileController {
   private readonly saltRounds: number = config.login.saltRounds ? parseInt(config.login.saltRounds) : 10;
   private readonly JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY!;
 
   public async getProfiles(req: Request, res: Response) : Promise<void> {
-    const { deleted } = req.query;
+    const { deleted, employeeCode, docNum } = req.query;
+
+    const deletedParsed = deleted && JSON.parse(deleted as string) ? true : false;
+    
+    const where = {
+      is_active: !deletedParsed,    
+      ...(parseNumber(docNum) ? {docNum: parseNumber(docNum)} : {}),
+      ...(parseString(employeeCode) ? {username: parseString(employeeCode)} : {}),
+    };
+
     try {
-      const deletedParsed = deleted && JSON.parse(deleted as string) ? true : false;
       const repo = AppSource.getRepository(Profile);
       const response = await repo.find({
-        where: { is_active: !deletedParsed },
+        where,
         relations: ['userRole', 'docType', 'profileImg']
       });
 
       const profiles = response.map(ProfileDTO.fromEntity);
 
       res.status(200).json({
+        length: profiles?.length,
         response: profiles,
         message: `Profile data fetched successfully`
       });

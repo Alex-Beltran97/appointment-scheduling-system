@@ -63,9 +63,6 @@ export class Profile {
   @Column()
   nitCode!: string;
 
-  @Column()
-  employeeCode!: string;
-
   @Column({ unique: true })
   username!: string;
   

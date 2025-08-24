@@ -113,7 +113,6 @@ CREATE TABLE IF NOT EXISTS auth.profile
     email character varying COLLATE pg_catalog."default" NOT NULL,
     "docNum" integer NOT NULL,
     "nitCode" character varying COLLATE pg_catalog."default" NOT NULL,
-    "employeeCode" character varying COLLATE pg_catalog."default" NOT NULL,
     username character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL DEFAULT true,

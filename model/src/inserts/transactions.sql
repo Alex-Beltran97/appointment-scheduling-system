@@ -9,6 +9,38 @@ INSERT INTO core.contract
 '2023-01-01'::timestamp with time zone, '1'::bigint, '1'::bigint)
   returning id;
 
+INSERT INTO core.contract
+("start_date", "company_id", "employee_id") VALUES (
+'2022-01-01'::timestamp with time zone, '1'::bigint, '2'::bigint)
+  returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 2, 3) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 2, 4) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 2, 5) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 2, 6) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 1, 7) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 1, 8) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 1, 9) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 1, 10) returning id;
+
+INSERT INTO core.contract ("start_date", "company_id", "employee_id") VALUES
+('2023-01-01'::timestamp with time zone, 1, 11) returning id;
+
 -- SELECT * FROM core.contract;
 
 -----------------------------------------------------------------------------
@@ -56,7 +88,6 @@ INSERT INTO auth.profile
   email,
   "docNum",
   "nitCode",
-  "employeeCode",
   username,
   password,
   "userRole_id",
@@ -74,7 +105,6 @@ INSERT INTO auth.profile
   1033888333::numeric,
   '900428042-2'::character varying,
   'T12345'::character varying,
-  'pepito-perez90'::character varying,
   '$2b$10$g1Q9WYzGaTB0JgrsDXe.fuC2FLG/mani0cNe8sbCDI2AObvcUH14O'::character varying,
   '2'::bigint,
   '3'::bigint
@@ -99,7 +129,6 @@ INSERT INTO auth.profile
   email,
   "docNum",
   "nitCode",
-  "employeeCode",
   username,
   password,
   "userRole_id",
@@ -117,7 +146,6 @@ INSERT INTO auth.profile
   1033888555::numeric,
   '900428555-2'::character varying,
   'T67890'::character varying,
-  'arturo-rojas97'::character varying,
   '$2b$10$g1Q9WYzGaTB0JgrsDXe.fuC2FLG/mani0cNe8sbCDI2AObvcUH14O'::character varying,
   '1'::bigint,
   '3'::bigint

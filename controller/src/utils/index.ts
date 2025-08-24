@@ -33,3 +33,20 @@ export function normalizeDateToMidnight(dateInput: string | Date): Date {
   d.setUTCHours(0, 0, 0, 0);
   return d;
 }
+
+export const parseNumber = (value: unknown): number | undefined => {
+  const num = Number(value);
+  return Number.isNaN(num) ? undefined : num;
+};
+
+export const parseString = (value: unknown): string | undefined => {
+  return !String(value).trim() || !value ? undefined : String(value);
+};
+
+export const parseBoolean = (value: unknown): boolean => {
+  try {
+    return JSON.parse(String(value));
+  } catch {
+    return false;
+  }
+};

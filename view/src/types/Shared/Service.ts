@@ -99,3 +99,82 @@ export interface NotificationMsg {
   message:     string;
   created_at:  Date;
 }
+
+export interface Contract {
+    id:         number;
+    company:    Company;
+    employee:   Employee;
+    is_active:  boolean;
+    start_date: Date;
+    end_date:   null;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Company {
+    id:         number;
+    name:       string;
+    nit_code:   string;
+    is_active:  boolean;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface Employee {
+    id:             number;
+    name:           string;
+    lastName:       string;
+    secondLastName: string;
+    birthDate:      Date;
+    email:          string;
+    phone:          string;
+    docNum:         number;
+    employeeCode:   string;
+    created_at:     Date;
+    updated_at:     Date;
+    docType:        DocType;
+    employeeRole:   EmployeeRole;
+}
+
+export interface DocType {
+    id:         number;
+    docType:    string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface EmployeeRole {
+    id:           number;
+    employeeRole: string;
+    is_active:    boolean;
+    created_at:   Date;
+    updated_at:   Date;
+}
+
+export interface IActiveContract {
+    id:                  number;
+    employee_start_date: Date;
+    employee_is_active:  boolean;
+    company_name:        string;
+    company_nit:         string;
+    employee_fullname:   string;
+    employee_id:         number;
+    employee_doc_num:    number;
+    employee_code:       string;
+    employee_rol_id:     number;
+    employee_rol_name:   string;
+}
+
+export interface Employee {
+    id:             number;
+    name:           string;
+    lastName:       string;
+    secondLastName: string;
+    birthDate:      Date;
+    email:          string;
+    phone:          string;
+    docNum:         number;
+    employeeCode:   string;
+    created_at:     Date;
+    updated_at:     Date;
+}
