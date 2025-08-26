@@ -42,3 +42,9 @@ export enum MONTHS {
   'Noviembre',
   'Diciembre'
 };
+
+export enum UserType {
+  'company',
+  'independent',
+};
+

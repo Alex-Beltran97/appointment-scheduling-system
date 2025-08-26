@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import type { Profile } from "../../../../../types/auth/Register";
 import moment, { type Moment } from "moment";
 import { register } from "../../../../../service/authService";
 import { useNavigate } from "react-router-dom";
 import { useNotificationStore } from "../../../../../store/useNotificationStore";
+import { UserType } from "../../../../../utils";
 
-export function useLogin() {
+export function useLogin(userType: UserType) {
   const [initialValues, setInitialValues] = useState<Profile>({
-    userRole: "",
+    userRole: handleUserType(userType),
     name: "",
     lastName: "",
     secondLastName: "",
@@ -20,12 +21,11 @@ export function useLogin() {
     email: "",
     docNum: 0,
     docType: "",
-    nitCode: "",
-    employeeCode: "",
-    username: "",
+    nitCode: sessionStorage.getItem("company-nit"),
+    username: sessionStorage.getItem("employee-code"),
     password: "",
     confirmPassword: ""
-  });
+  } as Profile | (() => Profile));
 
   const navigate = useNavigate();
 
@@ -42,17 +42,24 @@ export function useLogin() {
       await register(payload);
       showNotification("Usuario registrado correctamente", "success");
       navigate('/login');
+      sessionStorage.removeItem("company-nit");
+      sessionStorage.removeItem("employee-code");
     } catch (error) {
       showNotification("Error al registrar el usuario", "error");
       console.error("Error al registrar el usuario:", error);
     };
   }
 
-  useEffect(() => {
+  function handleUserType(userType: UserType) {
+    if (userType === UserType.company) return '1';
+    if (userType === UserType.independent) return '2';
+    return '';  
+  };
 
+  useEffect(() => {
     return () => {
       setInitialValues({
-        userRole: "",
+        userRole: handleUserType(userType),
         name: "",
         lastName: "",
         secondLastName: "",
@@ -65,12 +72,11 @@ export function useLogin() {
         email: "",
         docNum: 0,
         docType: "",
-        nitCode: "",
-        employeeCode: "",
-        username: "",
+        nitCode: sessionStorage.getItem("company-nit"),
+        username: sessionStorage.getItem("employee-code"),
         password: "",
         confirmPassword: ""
-      });
+      } as SetStateAction<Profile>);
     };
   }, []);
 

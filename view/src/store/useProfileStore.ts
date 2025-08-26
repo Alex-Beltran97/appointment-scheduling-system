@@ -1,18 +1,26 @@
 import { create } from 'zustand';
 import type { Profile } from '../types/auth/Register';
-import { getProfile, getProfileImg } from '../service/profileService';
+import { getProfile, getProfileByIds, getProfileImg } from '../service/profileService';
+
+type profileParams = {
+  id?: string | number | undefined;
+  docNum?: string | number | undefined;
+  employeeCode?: string | number | undefined;
+};
 
 type ProfileState = {
   profile: Profile | null;
-  getProfile: (id: string | number | undefined) => void;
-  getProfileImg: (id: string | number | undefined) => Promise<string>;
+  getProfile: (id: profileParams) => void;
+  getProfileByUserIds: (id: profileParams) => Promise<string>;
+  getProfileImg: (id: profileParams) => Promise<string>;
 };
 
 export const useProfileStore = create<ProfileState>((set) => ({
   profile: null,
-  getProfile: async (id) => {
+  getProfile: async ({id}: profileParams) => {
     try {
-      const {data} = await getProfile(id);
+      const {data} = await getProfile({id});
+      sessionStorage.setItem('nit-code', data?.response?.nitCode);
       set({ profile: data.response });
       return Promise.resolve(data.response);
     } catch (error) {
@@ -21,9 +29,19 @@ export const useProfileStore = create<ProfileState>((set) => ({
       throw error;
     }
   },
-  getProfileImg: async (id: string | number | undefined) => {
+  getProfileByUserIds: async ({docNum, employeeCode}: profileParams) => {
     try {
-      const {data: blob} = await getProfileImg(id);
+      const {data} = await getProfileByIds({docNum, employeeCode});
+      return Promise.resolve(data.response);
+    } catch (error) {
+      console.error('Error fetching profile filtered:', error);
+      set({ profile: null });
+      throw error;
+    }
+  },
+  getProfileImg: async ({id}: profileParams) => {
+    try {
+      const {data: blob} = await getProfileImg({id});
       const url = URL.createObjectURL(blob);
       return Promise.resolve(url);
     } catch (error) {

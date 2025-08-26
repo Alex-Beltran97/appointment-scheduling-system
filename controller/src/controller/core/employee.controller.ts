@@ -1,12 +1,18 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
 import { DocType, Employee, EmployeeDTO, EmployeeRole } from '../../models/core';
+import { parseNumber } from '../../utils';
 
 class EmployeeController {
   public async getEmployees(req: Request, res: Response) : Promise<void> {
+    const {docNum} = req.query;
+    
     try {
       const repo = AppSource.getRepository(Employee);
       const employees = await repo.find({
+        where: {
+          ...(parseNumber(docNum)? {docNum: parseNumber(docNum)} : {})
+        },
         relations: ['docType', 'employeeRole', 'constracts', 'constracts.company'],
       });
 

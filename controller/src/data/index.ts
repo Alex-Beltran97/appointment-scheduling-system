@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { Company, Contract, Employee, DocType, EmployeeRole, PaymentStatus, Plan, Suscription, Payment } from '../models/core';
+import { Company, Contract, Employee, DocType, EmployeeRole, PaymentStatus, Plan, Suscription, Payment, ActiveContractView } from '../models/core';
 import { Appointment, AppointmentStatus, AvailableSlot, ConsultantAvailability, ConsultantException, ConsultantNotification, ConsultantService, NotificationType } from '../models/consultants';
 import { Profile, ProfileImg, UserRole } from '../models/auth';
 import { config } from '../config';
+import {join} from 'path';
 
 const coreEntities = [
   Company,
@@ -14,7 +15,8 @@ const coreEntities = [
   PaymentStatus,
   Plan,
   Suscription,
-  Payment
+  Payment,
+  ActiveContractView
 ];
 
 const authEntities = [
@@ -41,13 +43,14 @@ export const AppSource = new DataSource({
   username: config.database.username,
   password: config.database.password,
   database: 'appointment-scheduling-system-db',
-  synchronize: true,
+  synchronize: false,
+  migrationsRun: true,
   logging: false,
   entities: [
     ...coreEntities,
     ...authEntities,
     ...consultantEntities
   ],
-  migrations: [],
+  migrations: [join(__dirname, '../migrations/*{.ts, .js}')],  
   subscribers: [],
 });

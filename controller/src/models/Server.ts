@@ -10,14 +10,13 @@ import { Server as IOServer } from 'socket.io';
 import { 
   companyRouter, contractRouter, employeeRouter, docTypeRouter,
   employeeRoleRouter, paymentStatusRouter, planRouter, suscriptionRouter,
-  paymentRouter
+  paymentRouter, activeContractViewRouter
 } from '../routers/core';
 import { profileRouter, userRoleRouter, loginRouter, profileImgRouter } from '../routers/auth';
 import { config } from '../config';
 import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantNotificationRoute, consultantServiceRoute, notificationTypeRoute, slotGeneratorRoute } from '../routers/consultant';
 import { searchControllerRoute } from '../routers/client';
 import { setIO } from '../Services/socket';
-
 class Server {
   private readonly app : Application = express();
   private readonly server = createServer(this.app);
@@ -64,6 +63,7 @@ class Server {
     this.app.use(`${this.API_PATH}/plan`, planRouter);
     this.app.use(`${this.API_PATH}/suscription`, suscriptionRouter);
     this.app.use(`${this.API_PATH}/payment`, paymentRouter);
+    this.app.use(`${this.API_PATH}/active-contract-view`, activeContractViewRouter);
     this.app.use(`${this.API_PATH}/login`, loginRouter);
     this.app.use(`${this.API_PATH}/services`, consultantServiceRoute);
     this.app.use(`${this.API_PATH}/generate-slots`, slotGeneratorRoute);

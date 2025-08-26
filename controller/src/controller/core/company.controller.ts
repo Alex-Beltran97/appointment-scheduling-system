@@ -4,12 +4,25 @@ import { Company } from '../../models/core/Company/Company';
 
 class CompanyController {
   public async getCompanies(req: Request, res: Response) : Promise<void> {
+    const { nit_code } = req?.query;
+
+    const _nit_code = String(nit_code)?.trim();
+    let _nit_codeQuery = {};
+
+    if (_nit_code && _nit_code !== 'undefined' && _nit_code !== null && _nit_code !== 'null') {
+      _nit_codeQuery = {nit_code: _nit_code};
+    };
+
     try {
       const repo = AppSource.getRepository(Company);
       const companies = await repo.find({
-        where: { is_active: true },
+        where: { 
+          is_active: true,
+          ..._nit_codeQuery
+        },
       });
       res.status(200).json({
+        length: companies?.length,
         response: companies,
         message: `Company data fetched successfully`
       });

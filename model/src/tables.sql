@@ -2,6 +2,7 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+
 CREATE TABLE IF NOT EXISTS core.company
 (
     id bigserial NOT NULL,
@@ -82,7 +83,7 @@ CREATE TABLE IF NOT EXISTS core.payments
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone NOT NULL DEFAULT now(),
     "paymentStatus_id" integer NOT NULL,
-    company_id integer NOT NULL,
+    profile_id integer NOT NULL,
     plan_id integer NOT NULL,
     CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY (id)
 );
@@ -113,7 +114,6 @@ CREATE TABLE IF NOT EXISTS auth.profile
     email character varying COLLATE pg_catalog."default" NOT NULL,
     "docNum" integer NOT NULL,
     "nitCode" character varying COLLATE pg_catalog."default" NOT NULL,
-    "employeeCode" character varying COLLATE pg_catalog."default" NOT NULL,
     username character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL DEFAULT true,
@@ -300,16 +300,16 @@ ALTER TABLE IF EXISTS core.payments
 
 
 ALTER TABLE IF EXISTS core.payments
-    ADD CONSTRAINT "FK_company_id" FOREIGN KEY (company_id)
-    REFERENCES core.company (id) MATCH SIMPLE
+    ADD CONSTRAINT "FK_plan_id" FOREIGN KEY (plan_id)
+    REFERENCES core.plan (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
 
 
 ALTER TABLE IF EXISTS core.payments
-    ADD CONSTRAINT "FK_plan_id" FOREIGN KEY (plan_id)
-    REFERENCES core.plan (id) MATCH SIMPLE
+    ADD CONSTRAINT "FK_profile_id" FOREIGN KEY (profile_id)
+    REFERENCES auth.profile (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;

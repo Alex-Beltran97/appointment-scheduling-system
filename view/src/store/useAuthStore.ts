@@ -40,6 +40,7 @@ export const useAuthStore = create<AuthState>(set => ({
   },
   logout: async () => {
     try {
+      sessionStorage.removeItem('nit-code');
       await logout();
       set({ isAuthenticated: false, role: null, loading: false });
     } catch (error) {
