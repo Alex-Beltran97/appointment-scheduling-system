@@ -10,3 +10,43 @@
 .form__button {
   grid-column: 1/3;
 }
+
+.type__picker {
+  display: grid;
+  width: 100%;
+  padding: 1rem;
+  gap: 1rem;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.picker__title {
+  grid-column: 1/3;
+}
+
+.picker__company,
+.picker__independent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer
+}
+
+.picker__company:hover,
+.picker__independent:hover {
+  background-color: #6AADA3;
+  transition: all 0.3s ease;
+}
+
+.picker__company:hover > *,
+.picker__independent:hover > * {
+  color: white;
+  filter: drop-shadow(4px 4px 6px #000);
+}
+
+.picker__company {
+  grid-column: 1/2;
+}
+
+.picker__independent  {
+  grid-column: 2/3;
+}

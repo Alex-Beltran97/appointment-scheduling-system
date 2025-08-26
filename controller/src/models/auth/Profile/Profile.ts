@@ -5,6 +5,7 @@ import { ConsultantService } from '../../consultants/ConsultantService/Consultan
 import { Appointment } from '../../consultants/Appointment/Appointment';
 import { ConsultantNotification } from '../../consultants';
 import { ProfileImg } from '../ProfileImg/ProfileImg';
+import { Payment } from '../../core';
 
 @Entity({ schema: 'auth', name: 'profile' })
 export class Profile {
@@ -63,9 +64,6 @@ export class Profile {
   @Column()
   nitCode!: string;
 
-  @Column()
-  employeeCode!: string;
-
   @Column({ unique: true })
   username!: string;
   
@@ -83,6 +81,9 @@ export class Profile {
   
   @OneToMany(() => ConsultantNotification, consultantNotification => consultantNotification.consultant)
   notifications!: ConsultantNotification[];
+
+  @OneToMany(() => Payment, payment => payment.profile)
+  payments!: Payment[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;

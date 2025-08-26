@@ -8,3 +8,4 @@ export { PaymentStatus } from './PaymentStatus/PaymentStatus';
 export { Plan } from './Plan/Plan';
 export { Suscription } from './Suscription/Suscription';
 export { Payment } from './Payment/Payment';
+export { ActiveContractView } from './ActiveContractView/ActiveContractView';

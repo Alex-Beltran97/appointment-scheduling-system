@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"tsc -w\" \"nodemon dist/js/app.js \" ",
-    "clear": "rm -rf node_modules/ package-lock.json"
+    "clear": "rm -rf node_modules/ package-lock.json",
+    "typeorm": "typeorm-ts-node-commonjs -d ./src/data/index.ts",
+    "mig:gen": "npm run typeorm migration:generate",
+    "mig:gen:CreateTables": "npm run typeorm migration:generate -d ./src/migrations/CreateTables",
+    "mig:run": "npm run typeorm migration:run"   
   },
   "keywords": [],
   "author": "",

@@ -1,24 +1,54 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
-import { Company, Contract, DocType, Employee } from '../../models/core';
+import { Company, Contract, Employee } from '../../models/core';
 import ContractDTO from '../../models/core/Contract/ContractDTO';
+import { parseBoolean, parseNumber, parseString } from '../../utils';
 
 class ContractController {
   public async getContracts(req: Request, res: Response) : Promise<void> {
-    const {ended_contracts} = req.query || {};
+    const {companyId, companyNit, ended_contracts, employeeDocType, employeeDocNum, employeeRoleId} = req.query || {};
     
-    const withEndedContracts = ended_contracts && JSON?.parse(String(ended_contracts)) ? true : false;
+    const where: any = {
+      is_active: !parseBoolean(ended_contracts),
+    };
+
+    if (parseNumber(companyId)) {
+      where.company = { ...(where.company || {}), id: parseNumber(companyId) };
+    }
+
+    if (parseString(companyNit)) {
+      where.company = { ...(where.company || {}), nit_code: parseString(companyNit) };
+    }
+
+    if (parseNumber(employeeDocNum)) {
+      where.employee = { ...(where.employee || {}), docNum: parseNumber(employeeDocNum) };
+    }
+
+    if (parseNumber(employeeDocType)) {
+      where.employee = {
+        ...(where.employee || {}),
+        docType: { id: parseNumber(employeeDocType) },
+      };
+    }
+
+    if (parseNumber(employeeRoleId)) {
+      where.employee = {
+        ...(where.employee || {}),
+        employeeRole: { id: parseNumber(employeeRoleId) },
+      };
+    }
 
     try {
       const repo = AppSource.getRepository(Contract);
       const contracts = await repo.find({
         relations: ['company', 'employee','employee.docType', 'employee.employeeRole'],
-        where: {is_active: !withEndedContracts}
+        where 
       });
 
       const response = contracts.map(ContractDTO.fromEntity);
 
       res.status(200).json({
+        length: response?.length,
         response,
         message: `Contract data fetched successfully`
       });

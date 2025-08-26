@@ -1,3 +1,4 @@
+import { ActiveContractView } from '../../models/core/ActiveContractView/ActiveContractView';
 export {default as companyController} from './company.controller';
 export {default as contractController} from './contract.controller';
 export {default as employeeController} from './employee.controller';
@@ -9,3 +10,4 @@ export {default as paymentStatusController} from './paymentStatus.controller';
 export {default as planController} from './plan.controller';
 export {default as suscriptionController} from './suscription.controller';
 export {default as paymentController} from './payment.controller';
+export {default as activeContractViewController} from './activeContractView.controller';

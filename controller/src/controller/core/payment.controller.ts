@@ -1,15 +1,17 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
-import { Company, Payment, PaymentStatus, Plan } from '../../models/core';
+import { Payment, PaymentStatus, Plan } from '../../models/core';
+import { Profile } from '../../models/auth';
 
 class PaymentController {
   public async getPayments(req: Request, res: Response) : Promise<void> {
     try {
       const repo = AppSource.getRepository(Payment);
       const response = await repo.find({
-        relations: ['paymnet_status', 'company', 'plan', 'suscriptions']
+        relations: ['paymnet_status', 'profile', 'plan', 'suscriptions']
       });
       res.status(200).json({
+        length: response?.length,
         response,
         message: `Payments data fetched successfully`
       });
@@ -31,7 +33,7 @@ class PaymentController {
       const repo = AppSource.getRepository(Payment);
       const response = await repo.findOne({
         where: { id },
-        relations: ['paymnet_status', 'company', 'plan', 'suscriptions']
+        relations: ['paymnet_status', 'profile', 'plan', 'suscriptions']
       });
 
       if (!response) {
@@ -51,23 +53,23 @@ class PaymentController {
   
   public async createPayment(req: Request, res: Response) : Promise<void> {
     try {
-      const { company_id, plan_id, amount } = req.body;  
+      const { profile_id, plan_id, amount } = req.body;  
 
       const repo = AppSource.getRepository(Payment);
       const paymentStatusRepo = AppSource.getRepository(PaymentStatus);
-      const companyRepo = AppSource.getRepository(Company);
+      const profileRepo = AppSource.getRepository(Profile);
       const planRepo = AppSource.getRepository(Plan);
 
-      const company = await companyRepo.findOne({
-        where: { id: company_id, is_active: true }
+      const profile = await profileRepo.findOne({
+        where: { id: profile_id, is_active: true }
       });
 
       const plan = await planRepo.findOne({
         where: { id: plan_id, is_active: true }
       });
 
-      if (!company) {
-        res.status(404).json({ message: "Company not found" });
+      if (!profile) {
+        res.status(404).json({ message: "Profile not found" });
         return;
       };
       
@@ -94,7 +96,7 @@ class PaymentController {
 
       const newPayment = repo.create({
         paymnet_status: paymentStatus,
-        company,
+        profile,
         plan,
         amount
       });

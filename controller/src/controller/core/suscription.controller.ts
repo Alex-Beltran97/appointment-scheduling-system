@@ -1,19 +1,25 @@
 import { Request, Response } from 'express';
 import { AppSource } from '../../data';
 import { Payment, Suscription } from '../../models/core';
-import { addDaysToDate } from '../../utils';
+import { addDaysToDate, parseNumber } from '../../utils';
 
 class SuscriptionController {
   public async getSuscriptions(req: Request, res: Response) : Promise<void> {
-    const { disabled } = req.query;
+    const { disabled, profile_id } = req.query;
     try {
       const disabledParsed = disabled && JSON.parse(disabled as string) ? true : false;
 
+      const where = { 
+        is_active: !disabledParsed,
+        ...(parseNumber(profile_id) ? {payment: {profile: {id: parseNumber(profile_id)}}} : {})
+      };
+
       const repo = AppSource.getRepository(Suscription);
       const response = await repo.find({
-        where: { is_active: !disabledParsed },
-        relations: ['payment', 'payment.paymnet_status', 'payment.company', 'payment.plan']
+        where,
+        relations: ['payment', 'payment.paymnet_status', 'payment.profile', 'payment.plan']
       });
+      
       res.status(200).json({
         response,
         message: `Suscription data fetched successfully`
@@ -36,7 +42,7 @@ class SuscriptionController {
       const repo = AppSource.getRepository(Suscription);
       const response = await repo.findOne({
         where: { id },
-        relations: ['payment', 'payment.paymnet_status', 'payment.company', 'payment.plan']
+        relations: ['payment', 'payment.paymnet_status', 'payment.profile', 'payment.plan']
       });
       res.status(200).json({
         response,
