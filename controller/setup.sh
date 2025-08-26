@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Borrando schemas previos..."
+psql -U postgres -d appointment-scheduling-system-db -f ../model/src/delete_schemas.sql
+
 echo "Creando schemas..."
 psql -U postgres -d appointment-scheduling-system-db -f ../model/src/schemas.sql
 

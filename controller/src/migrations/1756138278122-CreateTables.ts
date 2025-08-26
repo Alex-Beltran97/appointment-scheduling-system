@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateTables1755954534005 implements MigrationInterface {
-    name = 'CreateTables1755954534005'
+export class CreateTables1756138278122 implements MigrationInterface {
+    name = 'CreateTables1756138278122'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "auth"."user_role" ("id" SERIAL NOT NULL, "role" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_fb2e442d14add3cefbdf33c4561" PRIMARY KEY ("id"))`);
@@ -19,11 +19,11 @@ export class CreateTables1755954534005 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "core"."employee_role" ("id" SERIAL NOT NULL, "employeeRole" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_1c105b756816efbdeae09a9ab65" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "core"."employee" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "lastName" character varying NOT NULL, "secondLastName" character varying NOT NULL, "birth_date" TIMESTAMP WITH TIME ZONE NOT NULL, "email" character varying NOT NULL, "phone" character varying NOT NULL, "docNum" integer NOT NULL, "employeeCode" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "docType_id" integer, "employeeRole_id" integer, CONSTRAINT "UQ_817d1d427138772d47eca048855" UNIQUE ("email"), CONSTRAINT "PK_3c2bc72f03fd5abbbc5ac169498" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "core"."contract" ("id" SERIAL NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "start_date" TIMESTAMP WITH TIME ZONE NOT NULL, "end_date" TIMESTAMP WITH TIME ZONE, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "company_id" integer, "employee_id" integer, CONSTRAINT "PK_17c3a89f58a2997276084e706e8" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "core"."suscription" ("id" SERIAL NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "start_date" TIMESTAMP WITH TIME ZONE NOT NULL, "end_date" TIMESTAMP WITH TIME ZONE NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "payment_id" integer, CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "core"."payment_status" ("id" SERIAL NOT NULL, "status" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_b59e2e874b077ea7acf724e4711" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "core"."plan" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price" integer NOT NULL, "description" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "core"."payments" ("id" SERIAL NOT NULL, "payment_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "amount" integer NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "paymentStatus_id" integer, "company_id" integer, "plan_id" integer, CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "core"."company" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "nit_code" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_056f7854a7afdba7cbd6d45fc20" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "core"."suscription" ("id" SERIAL NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "start_date" TIMESTAMP WITH TIME ZONE NOT NULL, "end_date" TIMESTAMP WITH TIME ZONE NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "payment_id" integer, CONSTRAINT "PK_eced4cd6c780c3752ce6e3e2214" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "core"."plan" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price" integer NOT NULL, "description" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "core"."payments" ("id" SERIAL NOT NULL, "payment_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "amount" integer NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "paymentStatus_id" integer, "profile_id" integer, "plan_id" integer, CONSTRAINT "PK_197ab7af18c93fbb0c9b28b4a59" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "core"."payment_status" ("id" SERIAL NOT NULL, "status" character varying NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), CONSTRAINT "PK_b59e2e874b077ea7acf724e4711" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "consultant"."available_slots" ADD CONSTRAINT "FK_0be27ed5233f284b8d65b8efc2a" FOREIGN KEY ("service_id") REFERENCES "consultant"."service"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "consultant"."appointments" ADD CONSTRAINT "FK_e423b517ea5503a0da8015c3e28" FOREIGN KEY ("consultant_id") REFERENCES "auth"."profile"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "consultant"."appointments" ADD CONSTRAINT "FK_2a2088e8eaa8f28d8de2bdbb857" FOREIGN KEY ("service_id") REFERENCES "consultant"."service"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
@@ -42,7 +42,7 @@ export class CreateTables1755954534005 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "core"."contract" ADD CONSTRAINT "FK_e629d91803764629bdd2fc7ce9d" FOREIGN KEY ("employee_id") REFERENCES "core"."employee"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."suscription" ADD CONSTRAINT "FK_c04281f4caad6d23cc716c38b85" FOREIGN KEY ("payment_id") REFERENCES "core"."payments"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."payments" ADD CONSTRAINT "FK_500d5dc384fecbc927697ab94bf" FOREIGN KEY ("paymentStatus_id") REFERENCES "core"."payment_status"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "core"."payments" ADD CONSTRAINT "FK_4781cf05f36ba314cdd314c0c66" FOREIGN KEY ("company_id") REFERENCES "core"."company"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "core"."payments" ADD CONSTRAINT "FK_f26b2328018bca97a2c6aa91c84" FOREIGN KEY ("profile_id") REFERENCES "auth"."profile"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "core"."payments" ADD CONSTRAINT "FK_f9b6a4c3196864cdd91b1a440ee" FOREIGN KEY ("plan_id") REFERENCES "core"."plan"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`CREATE VIEW "core"."active_contracts_with_role_2" AS 
     SELECT 
@@ -71,7 +71,7 @@ export class CreateTables1755954534005 implements MigrationInterface {
         await queryRunner.query(`DELETE FROM "typeorm_metadata" WHERE "type" = $1 AND "name" = $2 AND "schema" = $3`, ["VIEW","active_contracts_with_role_2","core"]);
         await queryRunner.query(`DROP VIEW "core"."active_contracts_with_role_2"`);
         await queryRunner.query(`ALTER TABLE "core"."payments" DROP CONSTRAINT "FK_f9b6a4c3196864cdd91b1a440ee"`);
-        await queryRunner.query(`ALTER TABLE "core"."payments" DROP CONSTRAINT "FK_4781cf05f36ba314cdd314c0c66"`);
+        await queryRunner.query(`ALTER TABLE "core"."payments" DROP CONSTRAINT "FK_f26b2328018bca97a2c6aa91c84"`);
         await queryRunner.query(`ALTER TABLE "core"."payments" DROP CONSTRAINT "FK_500d5dc384fecbc927697ab94bf"`);
         await queryRunner.query(`ALTER TABLE "core"."suscription" DROP CONSTRAINT "FK_c04281f4caad6d23cc716c38b85"`);
         await queryRunner.query(`ALTER TABLE "core"."contract" DROP CONSTRAINT "FK_e629d91803764629bdd2fc7ce9d"`);
@@ -90,11 +90,11 @@ export class CreateTables1755954534005 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "consultant"."appointments" DROP CONSTRAINT "FK_2a2088e8eaa8f28d8de2bdbb857"`);
         await queryRunner.query(`ALTER TABLE "consultant"."appointments" DROP CONSTRAINT "FK_e423b517ea5503a0da8015c3e28"`);
         await queryRunner.query(`ALTER TABLE "consultant"."available_slots" DROP CONSTRAINT "FK_0be27ed5233f284b8d65b8efc2a"`);
-        await queryRunner.query(`DROP TABLE "core"."company"`);
+        await queryRunner.query(`DROP TABLE "core"."payment_status"`);
         await queryRunner.query(`DROP TABLE "core"."payments"`);
         await queryRunner.query(`DROP TABLE "core"."plan"`);
-        await queryRunner.query(`DROP TABLE "core"."payment_status"`);
         await queryRunner.query(`DROP TABLE "core"."suscription"`);
+        await queryRunner.query(`DROP TABLE "core"."company"`);
         await queryRunner.query(`DROP TABLE "core"."contract"`);
         await queryRunner.query(`DROP TABLE "core"."employee"`);
         await queryRunner.query(`DROP TABLE "core"."employee_role"`);

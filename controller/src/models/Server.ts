@@ -17,7 +17,6 @@ import { config } from '../config';
 import { appointmentRoute, appointmentStatusRoute, availableSlotRoute, consultantAvailabilityRoute, consultantExceptionRoute, consultantNotificationRoute, consultantServiceRoute, notificationTypeRoute, slotGeneratorRoute } from '../routers/consultant';
 import { searchControllerRoute } from '../routers/client';
 import { setIO } from '../Services/socket';
-
 class Server {
   private readonly app : Application = express();
   private readonly server = createServer(this.app);

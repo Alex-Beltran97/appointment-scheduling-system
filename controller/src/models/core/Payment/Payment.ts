@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Suscription } from '../Suscription/Suscription';
 import { PaymentStatus } from '../PaymentStatus/PaymentStatus';
-import { Company } from '../Company/Company';
 import { Plan } from '../Plan/Plan';
+import { Profile } from '../../auth';
 
 @Entity({ schema: 'core', name: 'payments' })
 export class Payment {
@@ -19,9 +19,9 @@ export class Payment {
   @JoinColumn({name: 'paymentStatus_id'})
   paymnet_status!: PaymentStatus;
   
-  @ManyToOne(() => Company, company => company.payments)
-  @JoinColumn({name: 'company_id'})
-  company!: Company;
+  @ManyToOne(() => Profile, profile => profile.payments)
+  @JoinColumn({name: 'profile_id'})
+  profile!: Profile;
   
   @ManyToOne(() => Plan, plan => plan.payments)
   @JoinColumn({name: 'plan_id'})

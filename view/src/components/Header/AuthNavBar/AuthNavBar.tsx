@@ -26,6 +26,10 @@ const AuthNavBar = () => {
             </IconButton>
             <Button
               color="inherit"
+              onClick={() => handleNavigate('plans')}
+            >Planes</Button>       
+            <Button
+              color="inherit"
               onClick={() => handleNavigate('home')}
             >Inicio</Button>       
             <Button

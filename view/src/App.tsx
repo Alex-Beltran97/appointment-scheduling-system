@@ -42,9 +42,9 @@ const App = () => {
           {['/', '/home'].map((path) => (
             <Route key={path} path={path} element={<HomePage />} />
           ))}
-          <Route path="/plans" element={<PrivateRoute>
+          <Route path="/plans" element={<PublicOnlyRoute>
             <PlansPage />
-          </PrivateRoute>} />
+          </PublicOnlyRoute>} />
           <Route path="/suscribe-plan" element={<SuscribePlanPage />} />
           {/* Auth Routes */}
           <Route path="/login" element={<PublicOnlyRoute>

@@ -18,9 +18,6 @@ export class Company {
 
   @OneToMany(() => Contract, contract => contract.company)
   contracts!: Contract[];
-  
-  @OneToMany(() => Payment, payment => payment.company)
-  payments!: Payment[];
 
   @CreateDateColumn({type: 'timestamp with time zone', default: () => 'NOW()'})
   created_at!: Date;
